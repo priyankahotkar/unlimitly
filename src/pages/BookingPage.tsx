@@ -674,34 +674,34 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
   }, [domain]);
 
   return (
-    <div className="mt-6">
-      <h2 className="text-xl font-bold mb-4">Top Mentors for {domain}</h2>
-      {mentors.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mentors.map((mentor) => (
-            <div key={mentor.id} className="p-4 bg-white rounded-lg shadow-md">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-                  <AvatarFallback>{mentor.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold text-lg">{mentor.name}</h3>
-                  <p className="text-sm text-gray-500">{mentor.expertise}</p>
-                  <p className="text-sm text-gray-400">Experience: {mentor.experience} years</p>
-                  <p className="text-sm text-yellow-500">
-                    High Ratings: {mentor.highRatingFrequency}
-                  </p>
-                </div>
-              </div>
-              <Button className="mt-4 w-full bg-blue-500 text-white">View Profile</Button>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p className="text-gray-500">No top mentors found for this domain.</p>
-      )}
-    </div>
+    // <div className="mt-6">
+    //   <h2 className="text-xl font-bold mb-4">Top Mentors for {domain}</h2>
+    //   {mentors.length > 0 ? (
+    //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    //       {mentors.map((mentor) => (
+    //         <div key={mentor.id} className="p-4 bg-white rounded-lg shadow-md">
+    //           <div className="flex items-center space-x-4">
+    //             <Avatar>
+    //               <AvatarImage src={mentor.photoURL} alt={mentor.name} />
+    //               <AvatarFallback>{mentor.name[0]}</AvatarFallback>
+    //             </Avatar>
+    //             <div>
+    //               <h3 className="font-semibold text-lg">{mentor.name}</h3>
+    //               <p className="text-sm text-gray-500">{mentor.expertise}</p>
+    //               <p className="text-sm text-gray-400">Experience: {mentor.experience} years</p>
+    //               <p className="text-sm text-yellow-500">
+    //                 High Ratings: {mentor.highRatingFrequency}
+    //               </p>
+    //             </div>
+    //           </div>
+    //           <Button className="mt-4 w-full bg-blue-500 text-white">View Profile</Button>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   ) : (
+    //     <p className="text-gray-500">No top mentors found for this domain.</p>
+    //   )}
+    // </div>
   );
 };
 
