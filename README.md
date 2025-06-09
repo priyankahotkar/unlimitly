@@ -68,8 +68,13 @@ MentorConnect addresses these issues by offering a free platform with automated 
 - **Inclusivity**: Open to students and professionals from diverse backgrounds.
 - **Versatility**: Applicable for career guidance, higher education, skill development, and corporate training.
 
+## Live Link
+- **Hosted using Firebase hosting**:
+  ![link to view live website](https://mentorconnect-fd483.web.app/)
+
+
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/MentorSync/MentorConnect.git
+   git clone https://github.com/priyankahotkar/MentorConnect.git
 
