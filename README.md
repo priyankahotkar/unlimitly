@@ -70,7 +70,7 @@ MentorConnect addresses these issues by offering a free platform with automated 
 
 ## Live Link
 - **Hosted using Firebase hosting**:
-  ![link to view live website](https://mentorconnect-fd483.web.app/)
+  [link to view live website](https://mentorconnect-fd483.web.app/)
 
 
 ## Installation
