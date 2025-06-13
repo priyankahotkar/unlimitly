@@ -62,7 +62,7 @@ export function AboutPage() {
             <div className="text-center transform transition-transform duration-300 hover:translate-y-[-5px] hover:shadow-lg">
               <img
                 src="../images/pragati.jpg"
-                alt="Pragati Chavan"
+                alt="Aditya Binjagermath"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
               <h3 className="font-bold">Aditya BInjagermath</h3>
