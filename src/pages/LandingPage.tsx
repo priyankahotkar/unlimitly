@@ -118,22 +118,22 @@ export const LandingPage: React.FC = () => {
       {/* Top Mentors Section */}
       <section className="container mx-auto px-6 py-16">
         <h2 className="text-2xl font-bold mb-8 text-blue-900">Top Mentors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {mentors.map((mentor) => (
-            <div key={mentor.id} className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all">
-              <div className="flex items-center space-x-4">
-                <Avatar className="h-16 w-16">
-                  <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-                  <AvatarFallback>{mentor.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold text-lg text-blue-900">{mentor.name}</h3>
-                  <p className="text-sm text-gray-500">{mentor.expertise}</p>
-                  <p className="text-sm text-gray-400">Domain: {mentor.domain}</p>
-                  <p className="text-sm text-yellow-600 font-semibold">
-                    Most Frequent Rating: {mentor.highestFrequencyRating}
-                  </p>
-                </div>
+            <div
+              key={mentor.id}
+              className="p-4 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-xl transition-all flex items-center space-x-4"
+              onClick={() => navigate(`/mentor/${mentor.id}`)}
+            >
+              <Avatar>
+                <AvatarImage src={mentor.photoURL} alt={mentor.name} />
+                <AvatarFallback>{mentor.name[0]}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h3 className="font-semibold text-lg">{mentor.name}</h3>
+                <p className="text-sm text-gray-500">{mentor.expertise}</p>
+                {/* <p className="text-sm text-gray-400">Domain: {mentor.domain || 'N/A'}</p> */}
+                <p className="text-sm text-yellow-500">Most Frequent Rating: {mentor.highestFrequencyRating}</p>
               </div>
             </div>
           ))}
