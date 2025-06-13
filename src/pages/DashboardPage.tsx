@@ -21,6 +21,7 @@ interface Mentor {
   id: string;
   name: string;
   photoURL: string;
+  email: string;
   domain: string;
   experience: string;
   expertise: string;
@@ -74,31 +75,35 @@ export function DashboardPage() {
         const mentorsRef = collection(db, "users");
         const snapshot = await getDocs(mentorsRef);
 
-        const fetchedMentors = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          const ratings = data.ratings || [];
+        const fetchedMentors = snapshot.docs
+          .map((doc) => {
+            const data = doc.data();
+            const ratings = data.ratings || [];
 
-          // Calculate the frequency of each rating (1-5)
-          const ratingFrequency = ratings.reduce((acc: Record<number, number>, rating: number) => {
-            acc[rating] = (acc[rating] || 0) + 1;
-            return acc;
-          }, {});
+            // Calculate the frequency of each rating (1-5)
+            const ratingFrequency = ratings.reduce((acc: Record<number, number>, rating: number) => {
+              acc[rating] = (acc[rating] || 0) + 1;
+              return acc;
+            }, {});
 
-          // Find the rating with the highest frequency
-          const highestFrequencyRating = Object.keys(ratingFrequency).reduce((a, b) => {
-            return ratingFrequency[Number(a)] > ratingFrequency[Number(b)] ? a : b;
-          }, "1");
+            // Find the rating with the highest frequency
+            const highestFrequencyRating = Object.keys(ratingFrequency).reduce((a, b) => {
+              return ratingFrequency[Number(a)] > ratingFrequency[Number(b)] ? a : b;
+            }, "1");
 
-          return {
-            id: doc.id,
-            name: data.name,
-            photoURL: data.photoURL,
-            domain: data.domain,
-            experience: data.experience,
-            expertise: data.expertise,
-            highestFrequencyRating,
-          };
-        });
+            return {
+              id: doc.id,
+              name: data.name,
+              email: data.email,
+              photoURL: data.photoURL,
+              domain: data.domain,
+              expertise: data.expertise,
+              experience: data.experience,
+              highestFrequencyRating,
+              role: data.role,
+            };
+          })
+          .filter((mentor) => mentor.role === "mentor");
 
         setMentors(fetchedMentors);
       } catch (error) {
@@ -110,7 +115,7 @@ export function DashboardPage() {
   }, []);
 
   const handleRoleChange = async (newRole: "mentor" | "mentee") => {
-    if (!newRole || newRole === role) return; // Prevent unnecessary updates
+    if (!newRole || newRole === role || !user) return; // Prevent unnecessary updates and null user
     try {
       const userRef = doc(db, "users", user.uid);
       await setDoc(userRef, {
@@ -128,7 +133,7 @@ export function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -160,32 +165,28 @@ export function DashboardPage() {
 
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           {/* Quick Actions */}
-          <div className="col-span-1 space-y-4">
-            <h2 className="text-2xl font-bold mb-4">Quick Actions</h2>
-            <Link to="/booking">
-              <Button className="w-full justify-start" variant="outline">
-                <Calendar className="mr-2 h-5 w-5" />
-                Book Session
+          <div className="col-span-1 bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col items-center">
+            <h2 className="text-2xl font-bold mb-4 text-blue-900 w-full text-center">Quick Actions</h2>
+            <Link to="/booking" className="w-full mb-2">
+              <Button className="w-full justify-start bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-full">
+                <Calendar className="mr-2 h-5 w-5" /> Book Session
               </Button>
             </Link>
-            <Link to="/chat">
-              <Button className="w-full justify-start" variant="outline">
-                <MessageSquare className="mr-2 h-5 w-5" />
-                Messages
+            <Link to="/chat" className="w-full mb-2">
+              <Button className="w-full justify-start bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-full">
+                <MessageSquare className="mr-2 h-5 w-5" /> Messages
               </Button>
             </Link>
-            <Link to="/discussion-forum">
-              <Button className="w-full justify-start" variant="outline">
-                <MessageSquare className="mr-2 h-5 w-5" />
-                Discussion Forum
+            <Link to="/discussion-forum" className="w-full mb-2">
+              <Button className="w-full justify-start bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-full">
+                <MessageSquare className="mr-2 h-5 w-5" /> Discussion Forum
               </Button>
             </Link>
-            <Link to="/faq">
-              <Button className="w-full justify-start" variant="outline">
-                <MessageSquare className="mr-2 h-5 w-5" />
-                FAQs
+            <Link to="/faq" className="w-full">
+              <Button className="w-full justify-start bg-blue-700 hover:bg-blue-800 text-white px-6 py-3 rounded-full">
+                <MessageSquare className="mr-2 h-5 w-5" /> FAQs
               </Button>
             </Link>
           </div>
@@ -230,23 +231,16 @@ export function DashboardPage() {
 
       {/* Mentors Section */}
       <div className="container mx-auto px-6 py-8">
-        <h2 className="text-2xl font-bold mb-4">Mentors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <h2 className="text-2xl font-bold mb-4 text-blue-900">Mentors</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {mentors.map((mentor) => (
-            <div key={mentor.id} className="p-4 bg-white rounded-lg shadow-md">
-              <div className="flex items-center space-x-4">
-                <Avatar>
-                  <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-                  <AvatarFallback>{mentor.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h3 className="font-semibold text-lg">{mentor.name}</h3>
-                  <p className="text-sm text-gray-500">{mentor.expertise}</p>
-                  <p className="text-sm text-yellow-500">
-                    Most Frequent Rating: {mentor.highestFrequencyRating}
-                  </p>
-                </div>
-              </div>
+            <div
+              key={mentor.id}
+              className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all cursor-pointer flex items-center justify-between"
+              onClick={() => window.location.href = `/mentor/${mentor.id}`}
+            >
+              <span className="font-semibold text-blue-900 text-lg">{mentor.name}</span>
+              <span className="text-yellow-600 font-semibold">Rating: {mentor.highestFrequencyRating}</span>
             </div>
           ))}
         </div>

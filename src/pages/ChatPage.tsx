@@ -9,12 +9,14 @@ import {
   query,
   orderBy,
   onSnapshot,
-  serverTimestamp,
   doc,
   getDocs,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { serverTimestamp as firestoreServerTimestamp } from "firebase/firestore";
 
 interface Message {
   id: string;
@@ -30,6 +32,7 @@ interface User {
   name: string;
   email: string;
   photoURL: string;
+  lastMessageTimestamp?: string | number | Date;
 }
 
 export function ChatPage() {
@@ -39,20 +42,15 @@ export function ChatPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [user] = useAuthState(auth);
 
-  // Fetch user list
+  // Replace users fetching logic with real-time listener
   useEffect(() => {
-    const fetchUsers = async () => {
-      if (!user) return;
-      const usersRef = collection(db, "users");
-      const snapshot = await getDocs(usersRef);
-      const usersList = snapshot.docs
-        .map((doc) => ({ id: doc.id, ...doc.data() } as User))
-        .filter((u) => u.id !== user?.uid);
+    const usersRef = collection(db, 'users');
+    const unsubscribe = onSnapshot(usersRef, (snapshot) => {
+      const usersList = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setUsers(usersList);
-    };
-
-    fetchUsers();
-  }, [user]);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Fetch previous messages and listen for new messages in real-time
   useEffect(() => {
@@ -109,6 +107,14 @@ export function ChatPage() {
       timestamp: serverTimestamp(),
     });
 
+    // Update lastMessageTimestamp for both users in Firestore
+    await updateDoc(doc(db, 'users', user.uid), {
+      [`chats.${selectedUser.id}.lastMessageTimestamp`]: serverTimestamp(),
+    });
+    await updateDoc(doc(db, 'users', selectedUser.id), {
+      [`chats.${user.uid}.lastMessageTimestamp`]: serverTimestamp(),
+    });
+
     setNewMessage("");
   };
 
@@ -142,105 +148,92 @@ export function ChatPage() {
     }
   };
 
+  const handleUserSelect = (userId: string) => {
+    const selected = users.find((u) => u.id === userId) || null;
+    setSelectedUser(selected);
+  };
+
+  // When fetching users, get lastMessageTimestamp from Firestore and sort:
+  const sortedUsers = [...users].sort((a, b) => {
+    const aTime = a.chats && a.chats[user?.uid]?.lastMessageTimestamp ? new Date(a.chats[user?.uid].lastMessageTimestamp.seconds * 1000).getTime() : 0;
+    const bTime = b.chats && b.chats[user?.uid]?.lastMessageTimestamp ? new Date(b.chats[user?.uid].lastMessageTimestamp.seconds * 1000).getTime() : 0;
+    return bTime - aTime;
+  });
+
   return (
-    <div className="h-screen flex">
-      {/* Sidebar: User List */}
-      <div className="w-1/4 bg-gray-200 p-4 border-r">
-        <h2 className="text-lg font-bold mb-3">Available Users</h2>
-        <ul>
-          {users.map((u) => (
-            <li
-              key={u.id}
-              className={`p-2 flex items-center space-x-2 cursor-pointer rounded-lg ${
-                selectedUser?.id === u.id ? "bg-blue-300" : "hover:bg-gray-300"
-              }`}
-              onClick={() => setSelectedUser(u)}
+    <div className="flex h-screen w-full bg-[#f3f6fb] font-sans">
+      {/* Users List - Scrollable */}
+      <div className="w-72 bg-white border-r border-gray-200 overflow-y-auto h-[90vh] p-4 shadow-md rounded-l-2xl flex flex-col">
+        <h2 className="text-xl font-bold mb-4 text-blue-900 text-center">Available Users</h2>
+        <div className="flex-1 space-y-1">
+          {sortedUsers.map((user) => (
+            <div
+              key={user.id}
+              className={`flex items-center space-x-3 cursor-pointer hover:bg-blue-50 rounded-lg p-2 transition-all ${selectedUser?.id === user.id ? 'bg-blue-100' : ''}`}
+              onClick={() => handleUserSelect(user.id)}
             >
-              <img src={u.photoURL} alt={u.name} className="w-8 h-8 rounded-full" />
-              <span>{u.name}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Chat Section */}
-      <div className="w-3/4 flex flex-col bg-gray-100">
-        {/* Chat Header */}
-        <div className="p-4 bg-primary text-white text-center text-lg font-bold">
-          {selectedUser ? `Chat with ${selectedUser.name}` : "Select a user to chat"}
-        </div>
-
-        {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {selectedUser ? (
-            messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.senderId === user?.uid ? "justify-end" : "justify-start"
-                }`}
-              >
-                <div
-                  className={`p-2 rounded-lg max-w-xs ${
-                    message.senderId === user?.uid
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-200 text-black"
-                  }`}
-                >
-                  {message.text && <p>{message.text}</p>}
-                  {message.fileURL && (
-                    <a
-                      href={message.fileURL}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 underline"
-                    >
-                      {message.fileName}
-                    </a>
-                  )}
-                  <p className="text-xs opacity-70 mt-1">
-                    {message.timestamp?.toDate?.()?.toLocaleTimeString?.()}
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-gray-500">Select a user to start chatting</p>
-          )}
-        </div>
-
-        {/* Message Input */}
-        {selectedUser && (
-          <form onSubmit={handleSendMessage} className="p-4 bg-white border-t flex">
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="flex-1 p-2 border rounded-md focus:outline-none"
-            />
-            <Button type="submit" disabled={!newMessage.trim()} className="ml-2">
-              <Send className="h-5 w-5" />
-            </Button>
-            <div className="flex items-center space-x-2">
-              <input
-                type="file"
-                onChange={(e) => {
-                  if (e.target.files) handleFileUpload(e.target.files[0]);
-                }}
-                className="hidden"
-                id="file-upload"
-              />
-              <label
-                htmlFor="file-upload"
-                className="cursor-pointer bg-gray-200 p-2 rounded hover:bg-gray-300"
-              >
-                Upload File
-              </label>
+              <Avatar className="h-10 w-10">
+                <AvatarImage src={user.photoURL || undefined} alt={user.name} />
+                <AvatarFallback>{user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}</AvatarFallback>
+              </Avatar>
+              <span className="font-medium text-blue-900">{user.name}</span>
             </div>
-          </form>
-        )}
+          ))}
+        </div>
+      </div>
+      {/* Chat Area */}
+      <div className="flex-1 w-full min-w-0 flex flex-col bg-[#f3f6fb]">
+        {/* Chat header */}
+        <div className="bg-blue-700 text-white px-8 py-4 rounded-tr-2xl flex items-center shadow-md">
+          <span className="text-lg font-semibold">
+            {selectedUser ? `Chat with ${selectedUser.name}` : 'Select a user to start chatting'}
+          </span>
+        </div>
+        {/* Messages - Scrollable */}
+        <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4" style={{ maxHeight: 'calc(100vh - 180px)' }}>
+          {messages.map((msg, idx) => (
+            <div
+              key={idx}
+              className={`max-w-xl ${msg.senderId === user?.uid ? 'ml-auto' : ''}`}
+            >
+              <div className={`rounded-2xl px-5 py-3 shadow ${msg.senderId === user?.uid ? 'bg-blue-500 text-white' : 'bg-white text-gray-800 border border-gray-200'}`}>
+                <div className="whitespace-pre-line">{msg.text}</div>
+                <div className="text-xs text-gray-400 mt-1 text-right">{formatTime(msg.timestamp)}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Message input and send button - always visible */}
+        <div className="p-6 bg-white border-t border-gray-200 flex items-center gap-4 rounded-b-2xl shadow-md">
+          <input
+            type="text"
+            value={newMessage}
+            onChange={e => setNewMessage(e.target.value)}
+            className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 bg-[#f7fafd]"
+            placeholder="Type your message..."
+            onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+          />
+          <Button className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-full shadow" onClick={handleSendMessage}>
+            Send
+          </Button>
+        </div>
       </div>
     </div>
   );
 }
+function serverTimestamp(): any {
+  return firestoreServerTimestamp();
+}
+
+// Utility function to format timestamps
+function formatTime(timestamp: any) {
+  if (!timestamp) return '';
+  let dateObj;
+  if (typeof timestamp === 'object' && timestamp.seconds) {
+    dateObj = new Date(timestamp.seconds * 1000);
+  } else {
+    dateObj = new Date(timestamp);
+  }
+  return dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+}
+

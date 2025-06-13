@@ -1,15 +1,27 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-import { db } from "../firebase";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
+const db = getFirestore();
 
 // Google Sign-In Function
-async function signInWithGoogle() {
+export const signInWithGoogle = async () => {
   try {
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+
+    // Store user profile photo URL in Firestore
+    if (user) {
+      await setDoc(
+        doc(db, "users", user.uid),
+        {
+          photoURL: user.photoURL || "",
+          // ...existing user fields...
+        },
+        { merge: true }
+      );
+    }
 
     // Check if user exists in Firestore
     const userRef = doc(db, "users", user.uid);
@@ -81,4 +93,4 @@ async function logout() {
 }
 
 // Export all functions and constants
-export { auth, signInWithGoogle, signInWithEmail, registerWithEmail, logout };
+export { auth, signInWithEmail, registerWithEmail, logout };

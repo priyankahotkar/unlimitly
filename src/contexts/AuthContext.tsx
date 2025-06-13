@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { signInWithGoogle, signInWithEmail, registerWithEmail, logout } from "../services/auth";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { db, auth } from "../firebase"; // ✅ Ensure `auth` is imported from firebase.ts
+import { db, auth } from "../firebase"; // Ensure `auth` is imported from firebase.ts
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 interface AuthContextType {

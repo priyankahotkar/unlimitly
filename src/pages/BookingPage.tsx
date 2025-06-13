@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebase";
 import { collection, getDocs, query, where, orderBy, doc, addDoc, serverTimestamp, getDoc, updateDoc, Timestamp, onSnapshot, limit, arrayUnion } from "firebase/firestore";
@@ -7,8 +7,11 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
 
 interface Mentor {
+  highRatingFrequency: ReactNode;
+  highestFrequencyRating: ReactNode;
   id: string;
   name: string;
   email: string;
@@ -454,9 +457,29 @@ export function BookingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-[#f3f6fb] font-sans">
+      {/* Sticky Navigation Bar */}
+      <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
+        <div className="container mx-auto px-6 py-3 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-2xl font-bold text-blue-800 tracking-tight">MentorConnect</span>
+          </div>
+          <div className="hidden md:flex space-x-4">
+            <Link to="/dashboard">
+              <Button variant="ghost" className="hover:bg-blue-50">Dashboard</Button>
+            </Link>
+            <Link to="/chat">
+              <Button variant="ghost" className="hover:bg-blue-50">Messages</Button>
+            </Link>
+            <Link to="/faq">
+              <Button variant="ghost" className="hover:bg-blue-50">FAQs</Button>
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Book a Mentoring Session</h1>
+        <h1 className="text-3xl font-extrabold mb-8 text-blue-900">Book a Mentoring Session</h1>
 
         {/* Search Bar */}
         <div className="mb-6">
@@ -532,8 +555,8 @@ export function BookingPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Mentor Selection */}
-          <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-semibold mb-4">Choose a Mentor</h2>
+          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+            <h2 className="text-xl font-semibold mb-4 text-blue-900">Choose a Mentor</h2>
             <div className="space-y-4">
               {filteredMentors.map((mentor) => (
                 <div
@@ -568,8 +591,8 @@ export function BookingPage() {
 
           {/* Calendar and Time Selection */}
           <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow-sm">
-              <h2 className="text-xl font-semibold mb-4">Select Date</h2>
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+              <h2 className="text-xl font-semibold mb-4 text-blue-900">Select Date</h2>
               <DayPicker
                 mode="single"
                 selected={selectedDate}
@@ -579,8 +602,8 @@ export function BookingPage() {
             </div>
 
             {selectedDate && (
-              <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h2 className="text-xl font-semibold mb-4">Select Time</h2>
+              <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
+                <h2 className="text-xl font-semibold mb-4 text-blue-900">Select Time</h2>
                 {mentorTimeSlots.length > 0 ? (
                   <div className="grid grid-cols-3 gap-2">
                     {mentorTimeSlots.map((time) => (
@@ -608,6 +631,7 @@ export function BookingPage() {
         <div className="mt-8 flex justify-end">
           <Button
             size="lg"
+            className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-full shadow"
             disabled={!selectedDate || !selectedMentor || !selectedTime || loading}
             onClick={handleBooking}
           >
@@ -647,21 +671,34 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
           const ratings = data.ratings || [];
           const highRatingFrequency = ratings.filter((r: number) => r >= 4).length; // Count ratings >= 4
 
+          // Calculate the frequency of each rating (1-5)
+          const ratingFrequency = ratings.reduce((acc: Record<number, number>, rating: number) => {
+            acc[rating] = (acc[rating] || 0) + 1;
+            return acc;
+          }, {});
+          // Find the rating with the highest frequency
+          const highestFrequencyRating = Object.keys(ratingFrequency).reduce((a, b) => {
+            return ratingFrequency[Number(a)] > ratingFrequency[Number(b)] ? a : b;
+          }, "1");
+
           return {
             id: doc.id,
-            name: data.name,
-            photoURL: data.photoURL,
-            domain: data.domain,
-            experience: data.experience,
-            expertise: data.expertise,
-            ratings,
+            name: data.name || "Unknown",
+            email: data.email || "No Email",
+            photoURL: data.photoURL || "",
+            role: data.role || "",
+            domain: data.domain || "Not Specified",
+            experience: data.experience || "Not Specified",
+            expertise: data.expertise || "Not Specified",
             highRatingFrequency,
-          };
+            highestFrequencyRating,
+          } as Mentor;
         });
 
         // Sort mentors by the frequency of high ratings (descending)
         const sortedMentors = fetchedMentors.sort(
-          (a, b) => b.highRatingFrequency - a.highRatingFrequency
+          (a, b) => 
+            (Number(b.highRatingFrequency ?? 0)) - (Number(a.highRatingFrequency ?? 0))
         );
 
         setMentors(sortedMentors.slice(0, 5)); // Limit to top 5 mentors
@@ -674,90 +711,8 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
   }, [domain]);
 
   return (
-    // <div className="mt-6">
-    //   <h2 className="text-xl font-bold mb-4">Top Mentors for {domain}</h2>
-    //   {mentors.length > 0 ? (
-    //     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    //       {mentors.map((mentor) => (
-    //         <div key={mentor.id} className="p-4 bg-white rounded-lg shadow-md">
-    //           <div className="flex items-center space-x-4">
-    //             <Avatar>
-    //               <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-    //               <AvatarFallback>{mentor.name[0]}</AvatarFallback>
-    //             </Avatar>
-    //             <div>
-    //               <h3 className="font-semibold text-lg">{mentor.name}</h3>
-    //               <p className="text-sm text-gray-500">{mentor.expertise}</p>
-    //               <p className="text-sm text-gray-400">Experience: {mentor.experience} years</p>
-    //               <p className="text-sm text-yellow-500">
-    //                 High Ratings: {mentor.highRatingFrequency}
-    //               </p>
-    //             </div>
-    //           </div>
-    //           <Button className="mt-4 w-full bg-blue-500 text-white">View Profile</Button>
-    //         </div>
-    //       ))}
-    //     </div>
-    //   ) : (
-    //     <p className="text-gray-500">No top mentors found for this domain.</p>
-    //   )}
-    // </div>
-  );
-};
-
-const TopMentors: React.FC = () => {
-  const [mentors, setMentors] = useState<Mentor[]>([]);
-
-  useEffect(() => {
-    const fetchTopMentors = async () => {
-      try {
-        const mentorsRef = collection(db, "users");
-        const q = query(mentorsRef);
-
-        const snapshot = await getDocs(q);
-        const fetchedMentors = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          const ratings = data.ratings || [];
-
-          // Calculate the frequency of each rating (1-5)
-          const ratingFrequency = ratings.reduce((acc: Record<number, number>, rating: number) => {
-            acc[rating] = (acc[rating] || 0) + 1;
-            return acc;
-          }, {});
-
-          // Find the rating with the highest frequency
-          const highestFrequencyRating = Object.keys(ratingFrequency).reduce((a, b) => {
-            return ratingFrequency[Number(a)] > ratingFrequency[Number(b)] ? a : b;
-          }, "1");
-
-          return {
-            id: doc.id,
-            name: data.name,
-            photoURL: data.photoURL,
-            domain: data.domain,
-            experience: data.experience,
-            expertise: data.expertise,
-            highestFrequencyRating,
-          };
-        });
-
-        // Sort mentors by the frequency of high ratings (descending)
-        const sortedMentors = fetchedMentors.sort(
-          (a, b) => b.highestFrequencyRating - a.highestFrequencyRating
-        );
-
-        setMentors(sortedMentors.slice(0, 5)); // Limit to top 5 mentors
-      } catch (error) {
-        console.error("Error fetching top mentors:", error);
-      }
-    };
-
-    fetchTopMentors();
-  }, []);
-
-  return (
     <div className="mt-6">
-      <h2 className="text-xl font-bold mb-4">Top Mentors</h2>
+      <h2 className="text-xl font-bold mb-4">Top Mentors for {domain}</h2>
       {mentors.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {mentors.map((mentor) => (
@@ -770,17 +725,71 @@ const TopMentors: React.FC = () => {
                 <div>
                   <h3 className="font-semibold text-lg">{mentor.name}</h3>
                   <p className="text-sm text-gray-500">{mentor.expertise}</p>
+                  <p className="text-sm text-gray-400">Experience: {mentor.experience} years</p>
                   <p className="text-sm text-yellow-500">
-                    Most Frequent Rating: {mentor.highestFrequencyRating}
+                    High Ratings: {mentor.highRatingFrequency}
                   </p>
                 </div>
               </div>
+              <Button className="mt-4 w-full bg-blue-500 text-white">View Profile</Button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No top mentors found.</p>
+        <p className="text-gray-500">No top mentors found for this domain.</p>
       )}
+    </div>
+  );
+};
+
+const TopMentors: React.FC = () => {
+  const [mentors, setMentors] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchTopMentors = async () => {
+      try {
+        const mentorsRef = collection(db, "users");
+        const snapshot = await getDocs(mentorsRef);
+        const fetchedMentors = snapshot.docs
+          .map((doc) => {
+            const data = doc.data();
+            const ratings = data.ratings || [];
+            const ratingFrequency = ratings.reduce((acc: Record<number, number>, rating: number) => {
+              acc[rating] = (acc[rating] || 0) + 1;
+              return acc;
+            }, {});
+            const highestFrequencyRating = Object.keys(ratingFrequency).reduce((a, b) => ratingFrequency[Number(a)] > ratingFrequency[Number(b)] ? a : b, "1");
+            return {
+              id: doc.id,
+              name: data.name,
+              highestFrequencyRating,
+              role: data.role,
+            };
+          })
+          .filter((mentor) => mentor.role === "mentor");
+        setMentors(fetchedMentors);
+      } catch (error) {
+        console.error("Error fetching top mentors:", error);
+      }
+    };
+    fetchTopMentors();
+  }, []);
+
+  return (
+    <div className="mt-6">
+      <h2 className="text-xl font-bold mb-4 text-blue-900">Top Mentors</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {mentors.map((mentor) => (
+          <div
+            key={mentor.id}
+            className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all cursor-pointer flex items-center justify-between"
+            onClick={() => window.location.href = `/mentor/${mentor.id}`}
+          >
+            <span className="font-semibold text-blue-900 text-lg">{mentor.name}</span>
+            <span className="text-yellow-600 font-semibold">Rating: {mentor.highestFrequencyRating}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
