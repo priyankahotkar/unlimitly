@@ -128,11 +128,5 @@ We welcome contributions! Follow these steps:
 - [React.js](https://reactjs.org/)
 - [Google Calendar API](https://developers.google.com/calendar)
 
-## Team
-**Team Name**: MentorSync  
-- Priyanka Hotkar (Frontend Developer, Team Lead)  
-- [Other Member Names and Roles Here]
-
----
 
 © 2025 MentorConnect. All Rights Reserved.
