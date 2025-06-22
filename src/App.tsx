@@ -7,6 +7,7 @@ import { DashboardPage } from "./pages/DashboardPage";
 import { BookingPage } from "./pages/BookingPage";
 import { ChatPage } from "./pages/ChatPage";
 import { VideoCallPage } from "./pages/VideoCallPage";
+import { GroupPage } from "./pages/GroupPage";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { v4 as uuidv4 } from "uuid";
 import { MentorDashboardPage } from "./pages/MentorDashboard"; // Import MentorDashboard
@@ -40,14 +41,15 @@ const DashboardWithVideoCall: React.FC = () => {
   };
 
   return (
-    <DashboardPage>
+    <div>
+      <DashboardPage />
       <button
         className="bg-blue-500 text-white px-4 py-2 mt-4 rounded hover:bg-blue-600 transition duration-300"
         onClick={startVideoCall}
       >
         Start Video Call
       </button>
-    </DashboardPage>
+    </div>
   );
 };
 
@@ -65,6 +67,7 @@ const App: React.FC = () => {
           <Route path="/mentor-dashboard" element={<PrivateRoute><MentorDashboardPage /></PrivateRoute>} />
           <Route path="/booking" element={<PrivateRoute><BookingPage /></PrivateRoute>} />
           <Route path="/chat" element={<PrivateRoute><ChatPage /></PrivateRoute>} />
+          <Route path="/groups" element={<PrivateRoute><GroupPage /></PrivateRoute>} />
           <Route path="/video-call/:sessionId" element={<PrivateRoute><VideoCallPage /></PrivateRoute>} />
           <Route path="/discussion-forum" element={<PrivateRoute><DiscussionForumPage /></PrivateRoute>} />
           <Route path="/faq" element={<PrivateRoute><FAQPage /></PrivateRoute>} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db } from "@/firebase";
-import { collection, query, where, onSnapshot, updateDoc, doc } from "firebase/firestore";
+import { collection, query, where, onSnapshot, updateDoc, doc, deleteDoc } from "firebase/firestore";
 import { useAuth } from "@/contexts/AuthContext";
 
 interface Notification {
@@ -20,12 +20,39 @@ const Notifications: React.FC = () => {
     const notificationsRef = collection(db, "notifications");
     const q = query(notificationsRef, where("mentorId", "==", user.uid));
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedNotifications = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Notification[];
-      setNotifications(fetchedNotifications);
+    const unsubscribe = onSnapshot(q, async (snapshot) => {
+      const fiveDaysAgo = new Date();
+      fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 5);
+
+      const notificationsList: Notification[] = [];
+      const notificationsToDelete: string[] = [];
+
+      snapshot.docs.forEach((doc) => {
+        const data = doc.data();
+        const createdAt = data.createdAt?.toDate?.() || new Date(data.createdAt);
+        const isOlderThanFiveDays = createdAt < fiveDaysAgo;
+
+        if (!isOlderThanFiveDays || (isOlderThanFiveDays && !data.read)) {
+          // Keep notifications from the past 5 days or unread notifications
+          notificationsList.push({
+            id: doc.id,
+            message: data.message,
+            read: data.read || false,
+            createdAt,
+          });
+        } else if (isOlderThanFiveDays && data.read) {
+          // Mark read notifications older than 5 days for deletion
+          notificationsToDelete.push(doc.id);
+        }
+      });
+
+      // Delete read notifications older than 5 days
+      for (const notificationId of notificationsToDelete) {
+        const notificationRef = doc(db, "notifications", notificationId);
+        await deleteDoc(notificationRef);
+      }
+
+      setNotifications(notificationsList);
     });
 
     return () => unsubscribe();

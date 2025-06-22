@@ -3,7 +3,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { db } from "@/firebase";
 import { collection, getDocs, query, where, orderBy, doc, addDoc, serverTimestamp, getDoc, updateDoc, Timestamp, onSnapshot, limit, arrayUnion } from "firebase/firestore";
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { Calendar as CalendarIcon, Search, Clock, Star, MapPin, Users, MessageSquare, Video, ArrowLeft } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -76,27 +76,27 @@ const RateMentor: React.FC<{ mentorId: string; mentorName: string }> = ({ mentor
   };
 
   return (
-    <div className="mt-4">
-      <h3 className="text-lg font-semibold">Rate {mentorName}</h3>
-      <div className="flex space-x-2 mt-2">
+    <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+      <h3 className="text-lg font-semibold text-gray-900 mb-3">Rate {mentorName}</h3>
+      <div className="flex space-x-2 mb-3">
         {[1, 2, 3, 4, 5].map((star) => (
           <button
             key={star}
-            className={`p-2 rounded-full ${
-              rating === star ? "bg-yellow-400" : "bg-gray-200"
+            className={`p-2 rounded-full transition-colors ${
+              rating === star ? "bg-yellow-400 text-white" : "bg-gray-200 hover:bg-gray-300"
             }`}
             onClick={() => setRating(star)}
           >
-            {star}★
+            <Star className="w-4 h-4" />
           </button>
         ))}
       </div>
       <button
-        className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
         onClick={handleRatingSubmit}
-        disabled={submitted}
+        disabled={submitted || !rating}
       >
-        {submitted ? "Submitted" : "Submit Rating"}
+        {submitted ? "Rating Submitted ✓" : "Submit Rating"}
       </button>
     </div>
   );
@@ -457,142 +457,190 @@ export function BookingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f3f6fb] font-sans">
-      {/* Sticky Navigation Bar */}
-      <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-blue-800 tracking-tight">MentorConnect</span>
-          </div>
-          <div className="hidden md:flex space-x-4">
-            <Link to="/dashboard">
-              <Button variant="ghost" className="hover:bg-blue-50">Dashboard</Button>
-            </Link>
-            <Link to="/chat">
-              <Button variant="ghost" className="hover:bg-blue-50">Messages</Button>
-            </Link>
-            <Link to="/faq">
-              <Button variant="ghost" className="hover:bg-blue-50">FAQs</Button>
-            </Link>
+    <div className="min-h-screen bg-gray-50">
+      {/* Professional Header */}
+      <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center space-x-8">
+              <Link to="/dashboard" className="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
+                <ArrowLeft className="w-5 h-5" />
+                <span>Back to Dashboard</span>
+              </Link>
+              <Link to="/booking" className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <CalendarIcon className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-gray-900">MentorConnect</span>
+              </Link>
+            </div>
+            <nav className="hidden md:flex space-x-8">
+              <Link to="/dashboard" className="text-gray-600 hover:text-gray-900 font-medium">Dashboard</Link>
+              <Link to="/chat" className="text-gray-600 hover:text-gray-900 font-medium">Messages</Link>
+              <Link to="/faq" className="text-gray-600 hover:text-gray-900 font-medium">FAQs</Link>
+            </nav>
           </div>
         </div>
-      </nav>
+      </header>
 
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-extrabold mb-8 text-blue-900">Book a Mentoring Session</h1>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Book a Mentoring Session
+          </h1>
+          <p className="text-gray-600">Connect with expert mentors to accelerate your learning journey.</p>
+        </div>
 
         {/* Search Bar */}
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="Search mentors by domain..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+        <div className="mb-8">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder="Search mentors by domain (e.g., React, Python, Data Science)..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm"
+            />
+          </div>
         </div>
 
-        {/* Ongoing Meetings */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Ongoing Meetings</h2>
-          {ongoingMeetingsFiltered.length > 0 ? (
-            <ul className="space-y-4">
-              {ongoingMeetingsFiltered.map((meeting) => (
-                <li key={meeting.id} className="p-4 bg-white rounded-lg shadow-sm border">
-                  <p className="font-semibold">Mentor: {meeting.mentorName}</p>
-                  <p>Room ID: {meeting.roomId}</p>
-                  <p>Scheduled At: {meeting.createdAt.toString()}</p>
-                  <a
-                    href={`https://meet.jit.si/${meeting.roomId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-500 hover:underline"
-                    onClick={() => handleJoinMeeting(meeting.id)}
-                  >
-                    Join Meeting
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No ongoing meetings</p>
-          )}
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Attended Meetings</h2>
-          {attendedMeetingsFiltered.length > 0 ? (
-            <ul className="space-y-4">
-              {attendedMeetingsFiltered.map((meeting) => (
-                <li key={meeting.id} className="p-4 bg-white rounded-lg shadow-sm border">
-                  <p className="font-semibold">Mentor: {meeting.mentorName}</p>
-                  <p>Room ID: {meeting.roomId}</p>
-                  <p>Attended At: {meeting.createdAt.toString()}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No attended meetings</p>
-          )}
-        </div>
-
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Missed Meetings</h2>
-          {missedMeetings.length > 0 ? (
-            <ul className="space-y-4">
-              {missedMeetings.map((meeting) => (
-                <li key={meeting.id} className="p-4 bg-white rounded-lg shadow-sm border">
-                  <p className="font-semibold">Mentor: {meeting.mentorName}</p>
-                  <p>Room ID: {meeting.roomId}</p>
-                  <p>Missed At: {meeting.createdAt.toString()}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500">No missed meetings</p>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Mentor Selection */}
-          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <h2 className="text-xl font-semibold mb-4 text-blue-900">Choose a Mentor</h2>
-            <div className="space-y-4">
-              {filteredMentors.map((mentor) => (
-                <div
-                  key={mentor.id}
-                  className={`p-4 rounded-lg border cursor-pointer transition-colors ${
-                    selectedMentor?.id === mentor.id
-                      ? 'border-primary bg-primary/5'
-                      : 'border-gray-200 hover:border-primary/50'
-                  }`}
-                  onClick={() => setSelectedMentor(mentor)}
-                >
-                  <div className="flex items-center space-x-4">
-                    <Avatar>
-                      <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-                      <AvatarFallback>{mentor.name[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <h3 className="font-semibold">{mentor.name}</h3>
-                      <p className="text-sm text-gray-500">{mentor.email}</p>
-                      <p className="text-sm text-gray-400">Domain: {mentor.domain}</p> {/* Display domain */}
-                      <p className="text-sm text-gray-400">Experience: {mentor.experience}</p>
-                      <p className="text-sm text-gray-400">Expertise: {mentor.expertise}</p>
-                    </div>
+        {/* Meeting Status Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {/* Ongoing Meetings */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center mb-4">
+              <div className="p-2 bg-green-100 rounded-lg">
+                <Video className="w-5 h-5 text-green-600" />
+              </div>
+              <h3 className="ml-3 font-semibold text-gray-900">Ongoing Meetings</h3>
+            </div>
+            {ongoingMeetingsFiltered.length > 0 ? (
+              <div className="space-y-3">
+                {ongoingMeetingsFiltered.slice(0, 3).map((meeting) => (
+                  <div key={meeting.id} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <p className="font-medium text-gray-900 text-sm">{meeting.mentorName}</p>
+                    <p className="text-xs text-gray-600">Room: {meeting.roomId}</p>
+                    <a
+                      href={`https://meet.jit.si/${meeting.roomId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm mt-2"
+                      onClick={() => handleJoinMeeting(meeting.id)}
+                    >
+                      <Video className="w-4 h-4 mr-1" />
+                      Join Meeting
+                    </a>
                   </div>
-                  {selectedMentor?.id === mentor.id && (
-                    <RateMentor mentorId={mentor.id} mentorName={mentor.name} />
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">No ongoing meetings</p>
+            )}
+          </div>
+
+          {/* Attended Meetings */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center mb-4">
+              <div className="p-2 bg-blue-100 rounded-lg">
+                <Users className="w-5 h-5 text-blue-600" />
+              </div>
+              <h3 className="ml-3 font-semibold text-gray-900">Attended Meetings</h3>
+            </div>
+            {attendedMeetingsFiltered.length > 0 ? (
+              <div className="space-y-3">
+                {attendedMeetingsFiltered.slice(0, 3).map((meeting) => (
+                  <div key={meeting.id} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <p className="font-medium text-gray-900 text-sm">{meeting.mentorName}</p>
+                    <p className="text-xs text-gray-600">Room: {meeting.roomId}</p>
+                    <p className="text-xs text-green-600">✓ Completed</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">No attended meetings</p>
+            )}
+          </div>
+
+          {/* Missed Meetings */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <div className="flex items-center mb-4">
+              <div className="p-2 bg-red-100 rounded-lg">
+                <Clock className="w-5 h-5 text-red-600" />
+              </div>
+              <h3 className="ml-3 font-semibold text-gray-900">Missed Meetings</h3>
+            </div>
+            {missedMeetings.length > 0 ? (
+              <div className="space-y-3">
+                {missedMeetings.slice(0, 3).map((meeting) => (
+                  <div key={meeting.id} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <p className="font-medium text-gray-900 text-sm">{meeting.mentorName}</p>
+                    <p className="text-xs text-gray-600">Room: {meeting.roomId}</p>
+                    <p className="text-xs text-red-600">✗ Missed</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">No missed meetings</p>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Mentor Selection */}
+          <div className="lg:col-span-2">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold mb-6 text-gray-900">Choose a Mentor</h2>
+              <div className="space-y-4">
+                {filteredMentors.map((mentor) => (
+                  <div
+                    key={mentor.id}
+                    className={`p-4 rounded-xl border cursor-pointer transition-all ${
+                      selectedMentor?.id === mentor.id
+                        ? 'border-blue-500 bg-blue-50 shadow-md'
+                        : 'border-gray-200 hover:border-blue-300 hover:shadow-sm'
+                    }`}
+                    onClick={() => setSelectedMentor(mentor)}
+                  >
+                    <div className="flex items-start space-x-4">
+                      <Avatar className="w-12 h-12">
+                        <AvatarImage src={mentor.photoURL} alt={mentor.name} />
+                        <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                          {mentor.name[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-semibold text-gray-900">{mentor.name}</h3>
+                        <p className="text-sm text-gray-600">{mentor.email}</p>
+                        <div className="flex items-center space-x-4 mt-2">
+                          <span className="inline-flex items-center text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
+                            <MapPin className="w-3 h-3 mr-1" />
+                            {mentor.domain}
+                          </span>
+                          <span className="text-xs text-gray-500">{mentor.experience} years exp.</span>
+                        </div>
+                        <p className="text-sm text-gray-600 mt-1">{mentor.expertise}</p>
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm font-medium text-gray-900">4.5</span>
+                      </div>
+                    </div>
+                    {selectedMentor?.id === mentor.id && (
+                      <RateMentor mentorId={mentor.id} mentorName={mentor.name} />
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Calendar and Time Selection */}
           <div className="space-y-6">
-            <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-              <h2 className="text-xl font-semibold mb-4 text-blue-900">Select Date</h2>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h2 className="text-xl font-semibold mb-4 text-gray-900">Select Date</h2>
               <DayPicker
                 mode="single"
                 selected={selectedDate}
@@ -602,17 +650,17 @@ export function BookingPage() {
             </div>
 
             {selectedDate && (
-              <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-                <h2 className="text-xl font-semibold mb-4 text-blue-900">Select Time</h2>
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-xl font-semibold mb-4 text-gray-900">Select Time</h2>
                 {mentorTimeSlots.length > 0 ? (
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-2 gap-2">
                     {mentorTimeSlots.map((time) => (
                       <button
                         key={time}
-                        className={`p-2 text-sm rounded-md border transition-colors ${
+                        className={`p-3 text-sm rounded-lg border transition-all ${
                           selectedTime === time
-                            ? "border-primary bg-primary text-white"
-                            : "border-gray-200 hover:border-primary/50"
+                            ? "border-blue-500 bg-blue-50 text-blue-700 font-medium"
+                            : "border-gray-200 hover:border-blue-300 hover:bg-gray-50"
                         }`}
                         onClick={() => setSelectedTime(time)}
                       >
@@ -621,23 +669,33 @@ export function BookingPage() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500">No available time slots for this mentor.</p>
+                  <div className="text-center py-6">
+                    <Clock className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                    <p className="text-gray-500 text-sm">No available time slots</p>
+                    <p className="text-xs text-gray-400">This mentor hasn't set their availability yet</p>
+                  </div>
                 )}
               </div>
             )}
-          </div>
-        </div>
 
-        <div className="mt-8 flex justify-end">
-          <Button
-            size="lg"
-            className="bg-blue-700 hover:bg-blue-800 text-white px-8 py-3 rounded-full shadow"
-            disabled={!selectedDate || !selectedMentor || !selectedTime || loading}
-            onClick={handleBooking}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {loading ? "Booking..." : "Book Session"}
-          </Button>
+            {/* Booking Button */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <Button
+                size="lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={!selectedDate || !selectedMentor || !selectedTime || loading}
+                onClick={handleBooking}
+              >
+                <CalendarIcon className="mr-2 h-5 w-5" />
+                {loading ? "Booking Session..." : "Book Session"}
+              </Button>
+              {selectedMentor && selectedDate && selectedTime && (
+                <p className="text-sm text-gray-600 mt-3 text-center">
+                  Session with {selectedMentor.name} on {selectedDate.toLocaleDateString()} at {selectedTime}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* Recommended Mentors */}
@@ -645,7 +703,7 @@ export function BookingPage() {
 
         {/* Top Mentors Section */}
         <TopMentors />
-      </div>
+      </main>
     </div>
   );
 }
@@ -711,32 +769,40 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
   }, [domain]);
 
   return (
-    <div className="mt-6">
-      <h2 className="text-xl font-bold mb-4">Top Mentors for {domain}</h2>
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Mentors for {domain}</h2>
       {mentors.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {mentors.map((mentor) => (
-            <div key={mentor.id} className="p-4 bg-white rounded-lg shadow-md">
-              <div className="flex items-center space-x-4">
-                <Avatar>
+            <div key={mentor.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+              <div className="flex items-center space-x-4 mb-4">
+                <Avatar className="w-12 h-12">
                   <AvatarImage src={mentor.photoURL} alt={mentor.name} />
-                  <AvatarFallback>{mentor.name[0]}</AvatarFallback>
+                  <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                    {mentor.name[0]}
+                  </AvatarFallback>
                 </Avatar>
-                <div>
-                  <h3 className="font-semibold text-lg">{mentor.name}</h3>
-                  <p className="text-sm text-gray-500">{mentor.expertise}</p>
-                  <p className="text-sm text-gray-400">Experience: {mentor.experience} years</p>
-                  <p className="text-sm text-yellow-500">
-                    High Ratings: {mentor.highRatingFrequency}
-                  </p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900">{mentor.name}</h3>
+                  <p className="text-sm text-gray-600">{mentor.expertise}</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                    <span className="text-sm font-medium text-gray-900">{mentor.highestFrequencyRating}</span>
+                    <span className="text-xs text-gray-500">({mentor.highRatingFrequency} high ratings)</span>
+                  </div>
                 </div>
               </div>
-              <Button className="mt-4 w-full bg-blue-500 text-white">View Profile</Button>
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                View Profile
+              </Button>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No top mentors found for this domain.</p>
+        <div className="text-center py-8">
+          <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-500">No top mentors found for this domain.</p>
+        </div>
       )}
     </div>
   );
@@ -776,17 +842,22 @@ const TopMentors: React.FC = () => {
   }, []);
 
   return (
-    <div className="mt-6">
-      <h2 className="text-xl font-bold mb-4 text-blue-900">Top Mentors</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Rated Mentors</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {mentors.map((mentor) => (
           <div
             key={mentor.id}
-            className="p-6 bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-all cursor-pointer flex items-center justify-between"
+            className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer"
             onClick={() => window.location.href = `/mentor/${mentor.id}`}
           >
-            <span className="font-semibold text-blue-900 text-lg">{mentor.name}</span>
-            <span className="text-yellow-600 font-semibold">Rating: {mentor.highestFrequencyRating}</span>
+            <div className="flex items-center justify-between">
+              <span className="font-semibold text-gray-900 text-lg">{mentor.name}</span>
+              <div className="flex items-center space-x-1">
+                <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                <span className="text-yellow-600 font-semibold">{mentor.highestFrequencyRating}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>

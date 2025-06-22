@@ -34,7 +34,7 @@ export function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="text-center transform transition-transform duration-300 hover:translate-y-[-5px] hover:shadow-lg">
               <img
-                src="../images/priyanka.png"
+                src="./priyanka.png"
                 alt="Priyanka Hotkar"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
@@ -43,7 +43,7 @@ export function AboutPage() {
             </div>
             <div className="text-center transform transition-transform duration-300 hover:translate-y-[-5px] hover:shadow-lg">
               <img
-                src="../images/arpita.png"
+                src="./arpita.png"
                 alt="Arpita Baraskar"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
@@ -52,7 +52,7 @@ export function AboutPage() {
             </div>
             <div className="text-center transform transition-transform duration-300 hover:translate-y-[-5px] hover:shadow-lg">
               <img
-                src="../images/nayan.jpg"
+                src="./nayan.jpg"
                 alt="Nayan Fulambarkar"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
@@ -61,7 +61,7 @@ export function AboutPage() {
             </div>
             <div className="text-center transform transition-transform duration-300 hover:translate-y-[-5px] hover:shadow-lg">
               <img
-                src="../images/pragati.jpg"
+                src="./pragati.jpg"
                 alt="Aditya Binjagermath"
                 className="w-32 h-32 rounded-full mx-auto mb-4"
               />
