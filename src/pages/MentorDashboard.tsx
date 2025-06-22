@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { MessageSquare, Video, LogOut, PlusCircle, Sun, Moon, Calendar, Users, Bell, Settings, Briefcase, Clock, MapPin, BookOpen } from 'lucide-react';
+import { MessageSquare, Video, LogOut, PlusCircle, Sun, Moon, Calendar, Users, Bell, Settings, Briefcase, Clock, MapPin, BookOpen, User, Edit3 } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { doc, setDoc, collection, query, where, orderBy, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
@@ -228,12 +228,17 @@ export function MentorDashboardPage() {
                 <Settings className="w-5 h-5" />
               </button>
               <div className="flex items-center space-x-3">
-                <Avatar className="w-8 h-8">
-                  <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
-                  <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
-                    {user?.displayName?.[0] || "U"}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative">
+                  <Avatar className="w-8 h-8">
+                    <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
+                    <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                      {user?.displayName?.[0] || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <Link to="/edit-profile" className="absolute -bottom-0.5 -right-0.5 bg-blue-600 text-white p-0.5 rounded-full hover:bg-blue-700 transition-colors">
+                    <Edit3 className="w-2.5 h-2.5" />
+                  </Link>
+                </div>
                 <Button variant="ghost" onClick={logout} className="text-gray-600 hover:text-gray-900">
                   <LogOut className="h-4 w-4" />
                 </Button>
@@ -259,12 +264,17 @@ export function MentorDashboardPage() {
             {/* Profile Card */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <div className="text-center mb-4">
-                <Avatar className="w-20 h-20 mx-auto mb-4">
-                  <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
-                  <AvatarFallback className="bg-blue-100 text-blue-600 text-2xl font-semibold">
-                    {user?.displayName?.[0] || "U"}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative inline-block">
+                  <Avatar className="w-20 h-20 mx-auto mb-4">
+                    <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
+                    <AvatarFallback className="bg-blue-100 text-blue-600 text-2xl font-semibold">
+                      {user?.displayName?.[0] || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <Link to="/edit-profile" className="absolute -bottom-1 -right-1 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition-colors">
+                    <Edit3 className="w-4 h-4" />
+                  </Link>
+                </div>
                 <h3 className="font-semibold text-gray-900">{user?.displayName || "Mentor"}</h3>
                 <p className="text-sm text-gray-600">Professional Mentor</p>
               </div>

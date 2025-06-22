@@ -72,7 +72,7 @@ export const LandingPage: React.FC = () => {
           <div className="hidden md:flex space-x-4">
             <Button variant="ghost" className="hover:bg-blue-50" onClick={() => navigate('/about')}>About</Button>
             <Button variant="ghost" className="hover:bg-blue-50" onClick={() => navigate('/features')}>Features</Button>
-            <Button variant="ghost" className="hover:bg-blue-50">Testimonials</Button>
+            <Button variant="ghost" className="hover:bg-blue-50" onClick={() => navigate('/testimonials')}>Testimonials</Button>
             <Button className="bg-blue-700 hover:bg-blue-800 text-white px-6" onClick={() => navigate('/auth')}>Sign In</Button>
           </div>
         </div>
