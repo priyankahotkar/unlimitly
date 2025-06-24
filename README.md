@@ -39,6 +39,8 @@ MentorConnect addresses these issues by offering a free platform with automated 
 - **Discussion Forum**: Engage with peers and mentors to clear doubts.
 - **Filtered FAQs**: Access topic-specific answers to common career queries.
 - **Group Video Calls**: Participate in group mentoring via dedicated channels.
+- **Group Voice Chats**: Participate in group mentoring via dedicated voice channels.
+- **A Completely free all in one solution for everything you need for a good placement**: All resources curated in a single platform. We have brought to you all resources at a single place right from downloads, tutorials to practice and projects everything right at one place.
 
 ### Mentor-Side Features
 - **Profile Creation**: Showcase expertise, experience, and availability.
