@@ -1,17 +1,21 @@
 import React from "react";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 
-const JitsiMeet = ({ roomName }: { roomName: string }) => {
+const VoiceJitsi = ({ roomName }: { roomName: string }) => {
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100vh", width: "100%", position: 'relative' }}>
       <JitsiMeeting
         roomName={roomName}
         configOverwrite={{
-          startWithAudioMuted: true,
+          startWithAudioMuted: false,
           startWithVideoMuted: true,
+          startAudioOnly: true,
         }}
         interfaceConfigOverwrite={{
           SHOW_JITSI_WATERMARK: false,
+          SHOW_WATERMARK_FOR_GUESTS: false,
+          SHOW_BRAND_WATERMARK: false,
+          SHOW_POWERED_BY: false,
         }}
         userInfo={{
           displayName: "Guest User",
@@ -26,4 +30,4 @@ const JitsiMeet = ({ roomName }: { roomName: string }) => {
   );
 };
 
-export default JitsiMeet;
+export default VoiceJitsi; 

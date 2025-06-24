@@ -8,7 +8,7 @@ const teamMembers = [
     name: "Priyanka Hotkar",
     role: "Team Leader, Full-Stack Developer",
     image: "./priyanka.png",
-    linkedin: "www.linkedin.com/in/priyanka-h-3a667a259",
+    linkedin: "www.linkedin.com/in/priyanka-hotkar-3a667a259",
     github: "https://github.com/priyankahotkar"
   },
   {

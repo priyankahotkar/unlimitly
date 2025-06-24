@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Calendar, MessageSquare, Video, LogOut, Bell, Settings, Briefcase, Users, Clock, Star, MapPin, BookOpen, User, Edit3 } from "lucide-react";
-import { collection, query, where, getDocs, orderBy, doc, setDoc } from "firebase/firestore";
+import { Calendar, MessageSquare, Video, LogOut, Bell, Settings, Briefcase, Users, Clock, Star, MapPin, BookOpen, User, Edit3, Award } from "lucide-react";
+import { collection, query, where, getDocs, orderBy, doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase";
 
 interface UpcomingSession {
@@ -32,6 +32,7 @@ export function DashboardPage() {
   const { user, logout, role, updateRole } = useAuth();
   const [upcomingSessions, setUpcomingSessions] = useState<UpcomingSession[]>([]);
   const [mentors, setMentors] = useState<Mentor[]>([]);
+  const [badges, setBadges] = useState<string[]>([]);
 
   // Fetch real upcoming sessions from Firestore
   useEffect(() => {
@@ -124,6 +125,22 @@ export function DashboardPage() {
     fetchMentors();
   }, []);
 
+  // Fetch user badges from Firestore
+  useEffect(() => {
+    if (!user) return;
+    const fetchBadges = async () => {
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        if (data.badges && Array.isArray(data.badges)) {
+          setBadges(data.badges);
+        }
+      }
+    };
+    fetchBadges();
+  }, [user]);
+
   const handleRoleChange = async (newRole: "mentor" | "mentee") => {
     if (!newRole || newRole === role || !user) return; // Prevent unnecessary updates and null user
     try {
@@ -158,6 +175,7 @@ export function DashboardPage() {
                 <Link to="/booking" className="text-gray-600 hover:text-gray-900 font-medium">Book Session</Link>
                 <Link to="/chat" className="text-gray-600 hover:text-gray-900 font-medium">Messages</Link>
                 <Link to="/discussion-forum" className="text-gray-600 hover:text-gray-900 font-medium">Community</Link>
+                <Link to="/study-materials" className="text-gray-600 hover:text-gray-900 font-medium">Study Materials</Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
@@ -168,7 +186,7 @@ export function DashboardPage() {
                 <Settings className="w-5 h-5" />
               </button>
               <div className="flex items-center space-x-3">
-                <div className="relative">
+                <div className="relative flex items-center">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
                     <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
@@ -178,6 +196,25 @@ export function DashboardPage() {
                   <Link to="/edit-profile" className="absolute -bottom-0.5 -right-0.5 bg-blue-600 text-white p-0.5 rounded-full hover:bg-blue-700 transition-colors">
                     <Edit3 className="w-2.5 h-2.5" />
                   </Link>
+                  {/* Realistic Badges next to avatar */}
+                  {badges.length > 0 && (
+                    <div className="flex space-x-1 ml-2">
+                      {badges.map((badge, i) => (
+                        <span
+                          key={i}
+                          title={badge}
+                          className="relative group"
+                        >
+                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 border-2 border-yellow-700 shadow-lg ring-2 ring-yellow-200">
+                            <Award className="w-4 h-4 text-white drop-shadow" />
+                          </span>
+                          <span className="absolute left-1/2 -translate-x-1/2 mt-2 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap">
+                            {badge}
+                          </span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <select
                   className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"

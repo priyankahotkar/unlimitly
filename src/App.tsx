@@ -18,6 +18,11 @@ import MentorProfile from './pages/MentorProfile'; // Import MentorProfile
 import FeaturesPage from './pages/FeaturesPage'; // Import FeaturesPage
 import { EditProfile } from './pages/EditProfile'; // Import EditProfile
 import { Testimonials } from './pages/Testimonials'; // Import Testimonials
+import VoiceChatPage from "./pages/VoiceChatPage";
+import FreeResources from "./pages/FreeResources";
+import StudyMaterialsPage from "./pages/StudyMaterialsPage";
+import DSAPractice from "./pages/DSAPractice";
+import FullStackRoadmap from "./pages/FullStackRoadmap";
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -78,6 +83,11 @@ const App: React.FC = () => {
           <Route path="/features" element={<FeaturesPage />} /> {/* Route for FeaturesPage */}
           <Route path="/edit-profile" element={<PrivateRoute><EditProfile /></PrivateRoute>} /> {/* Route for EditProfile */}
           <Route path="/testimonials" element={<Testimonials />} /> {/* Route for Testimonials */}
+          <Route path="/voice-chat" element={<PrivateRoute><VoiceChatPage /></PrivateRoute>} />
+          <Route path="/free-resources" element={<FreeResources />} />
+          <Route path="/study-materials" element={<StudyMaterialsPage />} />
+          <Route path="/dsa-practice" element={<DSAPractice />} />
+          <Route path="/fullstack-roadmap" element={<FullStackRoadmap />} />
         </Routes>
       </AuthProvider>
     </Router>

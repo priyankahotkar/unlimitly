@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Send, Users, Plus, Video, ArrowLeft, Search, UserPlus, MessageSquare, Bell, Phone } from "lucide-react";
+import { Send, Users, Plus, Video, ArrowLeft, Search, UserPlus, MessageSquare, Bell, Phone, Mic } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { auth, db, storage } from "@/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -21,6 +21,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Link, useNavigate } from 'react-router-dom';
 import JitsiMeet from "../components/JitsiMeet";
+import VoiceJitsi from "../components/VoiceJitsi";
 
 interface Message {
   id: string;
@@ -80,6 +81,9 @@ export function GroupPage() {
   const [groupVideoRoom, setGroupVideoRoom] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState("");
   const [ongoingVideoCalls, setOngoingVideoCalls] = useState<GroupVideoCall[]>([]);
+  const [showGroupVoice, setShowGroupVoice] = useState(false);
+  const [groupVoiceRoom, setGroupVoiceRoom] = useState("");
+  const [ongoingVoiceCalls, setOngoingVoiceCalls] = useState<any[]>([]);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -155,6 +159,26 @@ export function GroupPage() {
       setOngoingVideoCalls(relevantVideoCalls);
     });
     
+    return () => unsubscribe();
+  }, [user, groups]);
+
+  // Fetch ongoing voice calls for groups where user is a member
+  useEffect(() => {
+    if (!user) return;
+    const voiceCallsRef = collection(db, 'groupVoiceCalls');
+    const q = query(voiceCallsRef, orderBy('startedAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const voiceCalls = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      // Filter voice calls for groups where current user is a member
+      const userGroups = groups.map(group => group.id);
+      const relevantVoiceCalls = voiceCalls.filter(call => 
+        userGroups.includes(call.groupId) && call.participants.includes(user.uid)
+      );
+      setOngoingVoiceCalls(relevantVoiceCalls);
+    });
     return () => unsubscribe();
   }, [user, groups]);
 
@@ -348,6 +372,86 @@ export function GroupPage() {
     setShowGroupVideo(false);
   };
 
+  // Start group voice call
+  const handleStartVoiceCall = async () => {
+    if (!selectedGroup) return;
+    const roomName = `voice-group-${selectedGroup.id}-${Date.now()}`;
+    setGroupVoiceRoom(roomName);
+    setShowGroupVoice(true);
+    // Save voice call session
+    const voiceCallRef = await addDoc(collection(db, "groupVoiceCalls"), {
+      groupId: selectedGroup.id,
+      groupName: selectedGroup.name,
+      roomName,
+      startedBy: user?.uid,
+      startedByName: user?.displayName,
+      participants: selectedGroup.members,
+      startedAt: firestoreServerTimestamp(),
+      status: 'active',
+    });
+    // Send notification message to group
+    const messagesRef = collection(db, "groups", selectedGroup.id, "messages");
+    await addDoc(messagesRef, {
+      text: `🔊 ${user?.displayName || 'User'} started a voice chat`,
+      senderId: 'system',
+      senderName: 'System',
+      timestamp: firestoreServerTimestamp(),
+      voiceCallId: voiceCallRef.id,
+      roomName: roomName,
+    });
+    // Update last message timestamp
+    await updateDoc(doc(db, 'groups', selectedGroup.id), {
+      lastMessageTimestamp: firestoreServerTimestamp(),
+    });
+    // Send notifications to all group members
+    selectedGroup.members.forEach(async (memberId) => {
+      if (memberId !== user?.uid) {
+        await addDoc(collection(db, "notifications"), {
+          userId: memberId,
+          title: "Group Voice Chat Started",
+          message: `${user?.displayName || 'User'} started a voice chat in ${selectedGroup.name}`,
+          type: "voice_call",
+          groupId: selectedGroup.id,
+          roomName: roomName,
+          read: false,
+          createdAt: firestoreServerTimestamp(),
+        });
+      }
+    });
+  };
+
+  // Join existing voice call
+  const handleJoinVoiceCall = (voiceCall: any) => {
+    setGroupVoiceRoom(voiceCall.roomName);
+    setShowGroupVoice(true);
+  };
+
+  // End voice call
+  const handleEndVoiceCall = async () => {
+    if (!selectedGroup) return;
+    // Find the active voice call for this group
+    const activeCall = ongoingVoiceCalls.find(call => call.groupId === selectedGroup.id);
+    if (activeCall) {
+      await updateDoc(doc(db, 'groupVoiceCalls', activeCall.id), {
+        status: 'ended',
+        endedAt: firestoreServerTimestamp(),
+      });
+      // Send notification message to group
+      const messagesRef = collection(db, "groups", selectedGroup.id, "messages");
+      await addDoc(messagesRef, {
+        text: `🔇 Voice chat ended`,
+        senderId: 'system',
+        senderName: 'System',
+        timestamp: firestoreServerTimestamp(),
+      });
+      // Update last message timestamp
+      await updateDoc(doc(db, 'groups', selectedGroup.id), {
+        lastMessageTimestamp: firestoreServerTimestamp(),
+      });
+    }
+    setShowGroupVoice(false);
+  };
+
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -362,6 +466,16 @@ export function GroupPage() {
   // Get ended video call for selected group
   const getEndedVideoCall = () => {
     return ongoingVideoCalls.find(call => call.groupId === selectedGroup?.id && call.status === 'ended');
+  };
+
+  // Get ongoing voice call for selected group
+  const getOngoingVoiceCall = () => {
+    return ongoingVoiceCalls.find(call => call.groupId === selectedGroup?.id && call.status === 'active');
+  };
+
+  // Get ended voice call for selected group
+  const getEndedVoiceCall = () => {
+    return ongoingVoiceCalls.find(call => call.groupId === selectedGroup?.id && call.status === 'ended');
   };
 
   // Format timestamp
@@ -399,6 +513,33 @@ export function GroupPage() {
           </Button>
         </div>
         <JitsiMeet roomName={groupVideoRoom} />
+      </div>
+    );
+  }
+
+  if (showGroupVoice) {
+    return (
+      <div className="h-screen">
+        <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Button 
+              variant="ghost" 
+              onClick={() => setShowGroupVoice(false)}
+              className="flex items-center space-x-2"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span>Back to Group</span>
+            </Button>
+            <h2 className="text-lg font-semibold">Group Voice Chat - {selectedGroup?.name}</h2>
+          </div>
+          <Button
+            onClick={handleEndVoiceCall}
+            className="bg-red-600 hover:bg-red-700 text-white"
+          >
+            End Voice Chat
+          </Button>
+        </div>
+        <VoiceJitsi roomName={groupVoiceRoom} />
       </div>
     );
   }
@@ -608,6 +749,24 @@ export function GroupPage() {
                     Start Video Call
                   </Button>
                 )}
+                {/* Voice Chat Button */}
+                {getOngoingVoiceCall() ? (
+                  <Button
+                    onClick={() => handleJoinVoiceCall(getOngoingVoiceCall()!)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Mic className="w-4 h-4 mr-2" />
+                    Join Voice Chat
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleStartVoiceCall}
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Mic className="w-4 h-4 mr-2" />
+                    Start Voice Chat
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -651,6 +810,52 @@ export function GroupPage() {
                     </p>
                     <p className="text-sm text-gray-700">
                       Started by {getEndedVideoCall()?.startedByName} • Ended at {formatTime(getEndedVideoCall()?.endedAt)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Ongoing Voice Call Alert */}
+            {getOngoingVoiceCall() && (
+              <div className="bg-blue-50 border-l-4 border-blue-400 p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="flex-shrink-0">
+                      <Mic className="h-5 w-5 text-blue-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-blue-800">
+                        Voice chat in progress
+                      </p>
+                      <p className="text-sm text-blue-700">
+                        Started by {getOngoingVoiceCall()?.startedByName} at {formatTime(getOngoingVoiceCall()?.startedAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    onClick={() => handleJoinVoiceCall(getOngoingVoiceCall()!)}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                  >
+                    Join Now
+                  </Button>
+                </div>
+              </div>
+            )}
+
+            {/* Ended Voice Call Alert */}
+            {getEndedVoiceCall() && (
+              <div className="bg-gray-50 border-l-4 border-gray-400 p-4">
+                <div className="flex items-center space-x-3">
+                  <div className="flex-shrink-0">
+                    <Mic className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-gray-800">
+                      Voice chat ended
+                    </p>
+                    <p className="text-sm text-gray-700">
+                      Started by {getEndedVoiceCall()?.startedByName} • Ended at {formatTime(getEndedVoiceCall()?.endedAt)}
                     </p>
                   </div>
                 </div>
