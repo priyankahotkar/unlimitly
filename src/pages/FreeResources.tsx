@@ -199,18 +199,18 @@ export default function FreeResources() {
   const progress = Math.round((badges.length / DSA_LEVELS.length) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-10 px-2 md:px-0">
+    <div className="min-h-screen bg-gradient-to-br from-[#f3f6fb] to-white py-10 px-2 md:px-0 font-sans">
       {/* Confetti and Celebration Modal */}
       {showCelebration && (
         <>
           <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={350} recycle={false} />
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center border-4 border-yellow-300 animate-pop">
-              <PartyPopper className="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" />
+            <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full text-center border-2 border-blue-200 animate-pop">
+              <PartyPopper className="w-16 h-16 text-blue-500 mx-auto mb-4 animate-bounce" />
               <h2 className="text-3xl font-extrabold text-blue-700 mb-2">Congratulations!</h2>
-              <p className="text-lg text-gray-700 mb-4">You've earned the <span className="font-bold text-yellow-600">{showCelebration.badge}</span> badge!</p>
-              <span className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg mb-4">
-                <Award className="w-7 h-7 text-yellow-500" /> {showCelebration.badge}
+              <p className="text-lg text-gray-700 mb-4">You've earned the <span className="font-bold text-blue-600">{showCelebration.badge}</span> badge!</p>
+              <span className="inline-flex items-center gap-2 bg-blue-50 text-blue-800 px-6 py-3 rounded-2xl font-bold text-xl shadow mb-4">
+                <Award className="w-7 h-7 text-blue-500" /> {showCelebration.badge}
               </span>
               <div>
                 <button onClick={closeCelebration} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-full font-bold text-lg shadow transition-all">Awesome!</button>
@@ -219,7 +219,7 @@ export default function FreeResources() {
           </div>
         </>
       )}
-      <div className="max-w-3xl mx-auto bg-white/90 rounded-3xl shadow-2xl p-8 border border-blue-100">
+      <div className="max-w-3xl mx-auto bg-white/95 rounded-3xl shadow-2xl p-8 border border-blue-100">
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-2">
@@ -234,13 +234,13 @@ export default function FreeResources() {
           </div>
         </div>
         <h1 className="text-4xl font-extrabold text-blue-800 mb-2 text-center flex items-center justify-center gap-2 tracking-tight">
-          <Award className="w-8 h-8 text-yellow-500" /> Free DSA Roadmap
+          <Award className="w-8 h-8 text-blue-500" /> Free DSA Roadmap
         </h1>
-        <p className="text-center text-lg text-gray-600 mb-8">From Zero to Algorithm Hero 🚀</p>
+        <p className="text-center text-lg text-gray-600 mb-8">From Zero to Algorithm Hero</p>
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           {badges.length > 0 && badges.map((badge, i) => (
-            <span key={i} className="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 px-3 py-1 rounded-full font-semibold text-sm shadow border border-yellow-300">
-              <Award className="w-4 h-4 text-yellow-500" /> {badge}
+            <span key={i} className="inline-flex items-center gap-1 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 px-3 py-1 rounded-full font-semibold text-sm shadow border border-blue-300">
+              <Award className="w-4 h-4 text-blue-500" /> {badge}
             </span>
           ))}
           {badges.length === DSA_LEVELS.length && (
@@ -252,12 +252,12 @@ export default function FreeResources() {
         {DSA_LEVELS.map((level, idx) => (
           <div
             key={level.level}
-            className="mb-10 bg-white rounded-2xl shadow-lg p-8 relative border border-blue-100 hover:shadow-2xl transition-shadow duration-300 group"
+            className="mb-10 bg-white rounded-2xl shadow-lg p-8 relative border-l-4 border-blue-400 hover:shadow-2xl transition-shadow duration-300 group"
           >
             <div className="flex items-center gap-3 mb-2">
-              <span className="text-3xl">{level.emoji}</span>
-              <h2 className="text-2xl font-bold text-blue-800 group-hover:text-purple-700 transition-colors duration-200">Level {level.level}: {level.title}</h2>
-              <span className="ml-2 inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 px-2 py-0.5 rounded-full font-semibold text-xs border border-yellow-300">
+              <h2 style={{ fontFamily: 'Times New Roman, Times, serif' }}
+              className="text-2xl font-bold text-blue-900 group-hover:text-purple-700 transition-colors duration-200">Level {level.level}: {level.title}</h2>
+              <span className="ml-2 inline-flex items-center gap-1 bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full font-semibold text-xs border border-blue-200">
                 {level.badgeEmoji} {level.badge}
               </span>
               {completed[idx] && <CheckCircle className="w-5 h-5 text-green-500 ml-2" />}

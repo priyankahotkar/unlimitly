@@ -240,62 +240,72 @@ const PHASES = [
 
 export default function FullStackRoadmap() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-10 px-2 md:px-0">
-      <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border border-blue-100">
-        <h1 className="text-4xl font-extrabold mb-6 text-center" style={{ color: 'black', fontFamily: 'Times New Roman, Times, serif' }}>
+    <div className="min-h-screen bg-gradient-to-br from-[#f3f6fb] to-white py-10 px-2 md:px-0 font-sans">
+      <div className="max-w-4xl mx-auto bg-white/95 rounded-3xl shadow-2xl p-8 border border-blue-100">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-blue-800 tracking-tight" style={{ fontFamily: 'Times New Roman, Times, serif' }}>
           MERN Stack Developer Roadmap (Beginner to Job-Ready)
         </h1>
-        {PHASES.map((phase, idx) => (
-          <div key={idx} className="mb-10 bg-white rounded-2xl shadow p-6 border border-blue-100">
-            <h2 className="text-2xl font-bold mb-2" style={{ color: 'black', fontFamily: 'Times New Roman, Times, serif' }}>{phase.title}</h2>
-            {phase.steps.map((step, sidx) => (
-              <div key={sidx} className="mb-4">
-                <h3 className="text-lg font-semibold mb-1" style={{ color: 'black', fontFamily: 'Times New Roman, Times, serif' }}>{step.subtitle}</h3>
-                {step.concepts && (
-                  <ul className="list-disc ml-6 mb-2 text-gray-700">
-                    {step.concepts.map((c, i) => (
-                      <li key={i}>{c}</li>
-                    ))}
-                  </ul>
-                )}
-                {step.resources && (
-                  <div className="mb-2">
-                    <span className="font-semibold text-blue-700">Best Free Resources:</span>
-                    <ul className="list-disc ml-6">
-                      {step.resources.map((r, i) => (
-                        <li key={i}>
-                          <a href={r.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">{r.label}</a>
-                        </li>
-                      ))}
-                    </ul>
+        <div className="flex flex-col gap-10">
+          {PHASES.map((phase, idx) => (
+            <div key={idx} className="relative group">
+              {/* Timeline Dot */}
+              <div className="absolute -left-6 top-6 w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-lg z-10"></div>
+              {/* Vertical Line */}
+              {idx !== PHASES.length - 1 && (
+                <div className="absolute -left-4 top-10 h-full w-1 bg-gradient-to-b from-blue-200 to-purple-200 z-0"></div>
+              )}
+              <div className="mb-2 bg-white rounded-2xl shadow-lg p-8 border-l-4 border-blue-400 hover:shadow-2xl transition-shadow duration-300">
+                <h2 className="text-2xl font-bold mb-2 text-blue-900 group-hover:text-purple-700 transition-colors duration-200" style={{ fontFamily: 'Times New Roman, Times, serif' }}>{phase.title}</h2>
+                {phase.steps.map((step, sidx) => (
+                  <div key={sidx} className="mb-4">
+                    <h3 className="text-lg font-semibold mb-1 text-blue-800" style={{ fontFamily: 'Times New Roman, Times, serif' }}>{step.subtitle}</h3>
+                    {'concepts' in step && Array.isArray((step as any).concepts) && (
+                      <ul className="list-disc ml-6 mb-2 text-gray-700">
+                        {(step as any).concepts.map((c: string, i: number) => (
+                          <li key={i}>{c}</li>
+                        ))}
+                      </ul>
+                    )}
+                    {'resources' in step && Array.isArray((step as any).resources) && (
+                      <div className="mb-2">
+                        <span className="font-semibold text-blue-700">Best Free Resources:</span>
+                        <ul className="list-disc ml-6">
+                          {(step as any).resources.map((r: { label: string; url: string }, i: number) => (
+                            <li key={i}>
+                              <a href={r.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-purple-700 font-medium transition-colors duration-200">{r.label}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {'downloads' in step && Array.isArray((step as any).downloads) && (
+                      <div className="mb-2">
+                        <span className="font-semibold text-blue-700">Official Download Links:</span>
+                        <ul className="list-disc ml-6">
+                          {(step as any).downloads.map((d: { label: string; url: string }, i: number) => (
+                            <li key={i}>
+                              <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-purple-700 font-medium transition-colors duration-200">{d.label}</a>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    {'projects' in step && Array.isArray((step as any).projects) && (
+                      <div className="mb-2">
+                        <span className="font-semibold text-blue-700">Project Ideas:</span>
+                        <ul className="list-disc ml-6">
+                          {(step as any).projects.map((p: string, i: number) => (
+                            <li key={i}>{p}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
                   </div>
-                )}
-                {step.downloads && (
-                  <div className="mb-2">
-                    <span className="font-semibold text-blue-700">Official Download Links:</span>
-                    <ul className="list-disc ml-6">
-                      {step.downloads.map((d, i) => (
-                        <li key={i}>
-                          <a href={d.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">{d.label}</a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {step.projects && (
-                  <div className="mb-2">
-                    <span className="font-semibold text-blue-700">Project Ideas:</span>
-                    <ul className="list-disc ml-6">
-                      {step.projects.map((p, i) => (
-                        <li key={i}>{p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+                ))}
               </div>
-            ))}
-          </div>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

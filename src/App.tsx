@@ -24,6 +24,10 @@ import StudyMaterialsPage from "./pages/StudyMaterialsPage";
 import DSAPractice from "./pages/DSAPractice";
 import FullStackRoadmap from "./pages/FullStackRoadmap";
 import GithubDocs from './pages/GithubDocs';
+import MachineLearningHub from "./pages/MachineLearningHub";
+import AIAndDeployment from "./pages/AIAndDeployment";
+import FlutterResources from './pages/FlutterResources';
+import ProjectIdeas from './pages/ProjectIdeas';
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -90,6 +94,10 @@ const App: React.FC = () => {
           <Route path="/dsa-practice" element={<DSAPractice />} />
           <Route path="/fullstack-roadmap" element={<FullStackRoadmap />} />
           <Route path="/getting-started-with-github" element={<GithubDocs />} />
+          <Route path="/machine-learning-hub" element={<MachineLearningHub />} />
+          <Route path="/ai-and-deployment" element={<AIAndDeployment />} />
+          <Route path="/flutter-resources" element={<FlutterResources />} />
+          <Route path="/project-ideas" element={<ProjectIdeas />} />
         </Routes>
       </AuthProvider>
     </Router>

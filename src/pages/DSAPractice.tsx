@@ -192,18 +192,31 @@ export default function DSAPractice() {
   const closeCelebration = () => setShowCelebration(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-10 px-2 md:px-0">
+    <div className="min-h-screen bg-gradient-to-br from-[#f3f6fb] to-white py-10 px-2 md:px-0 font-sans">
+      {/* Progress Bar */}
+      <div className="max-w-3xl mx-auto mb-8">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-sm font-semibold text-blue-700">Practice Progress</span>
+          <span className="text-xs font-bold text-blue-600">{Math.round((badges.length / DSA_TOPICS.length) * 100)}%</span>
+        </div>
+        <div className="w-full h-3 bg-blue-100 rounded-full overflow-hidden">
+          <div
+            className="h-3 bg-gradient-to-r from-blue-500 to-purple-400 rounded-full transition-all duration-500"
+            style={{ width: `${(badges.length / DSA_TOPICS.length) * 100}%` }}
+          ></div>
+        </div>
+      </div>
       {/* Confetti and Celebration Modal */}
       {showCelebration && (
         <>
           <Confetti width={window.innerWidth} height={window.innerHeight} numberOfPieces={350} recycle={false} />
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="bg-white rounded-3xl shadow-2xl p-10 max-w-md w-full text-center border-4 border-yellow-300 animate-pop">
-              <PartyPopper className="w-16 h-16 text-yellow-500 mx-auto mb-4 animate-bounce" />
+            <div className="bg-white rounded-2xl shadow-2xl p-10 max-w-md w-full text-center border-2 border-blue-200 animate-pop">
+              <PartyPopper className="w-16 h-16 text-blue-500 mx-auto mb-4 animate-bounce" />
               <h2 className="text-3xl font-extrabold text-blue-700 mb-2">Congratulations!</h2>
-              <p className="text-lg text-gray-700 mb-4">You've earned the <span className="font-bold text-yellow-600">{showCelebration.badge}</span> badge!</p>
-              <span className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg mb-4">
-                <Award className="w-7 h-7 text-yellow-500" /> {showCelebration.badge}
+              <p className="text-lg text-gray-700 mb-4">You've earned the <span className="font-bold text-blue-600">{showCelebration.badge}</span> badge!</p>
+              <span className="inline-flex items-center gap-2 bg-blue-50 text-blue-800 px-6 py-3 rounded-2xl font-bold text-xl shadow mb-4">
+                <Award className="w-7 h-7 text-blue-500" /> {showCelebration.badge}
               </span>
               <div>
                 <button onClick={closeCelebration} className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-8 py-2 rounded-full font-bold text-lg shadow transition-all">Awesome!</button>
@@ -212,28 +225,28 @@ export default function DSAPractice() {
           </div>
         </>
       )}
-      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border border-blue-100">
-        <h1 className="text-4xl font-extrabold text-blue-700 mb-2 text-center flex items-center justify-center gap-2">
-          <Award className="w-8 h-8 text-yellow-500" /> DSA Practice Problems
+      <div className="max-w-3xl mx-auto bg-white/95 rounded-3xl shadow-2xl p-8 border border-blue-100">
+        <h1 className="text-4xl font-extrabold text-blue-800 mb-2 text-center flex items-center justify-center gap-2 tracking-tight">
+          <Award className="w-8 h-8 text-blue-500" /> DSA Practice Problems
         </h1>
         <p className="text-center text-lg text-gray-600 mb-8">Top DSA problems by topic & difficulty, with direct links to LeetCode, GfG, CodeChef, CodeForces, and HackerRank.</p>
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           {badges.length > 0 && badges.map((badge, i) => (
-            <span key={i} className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold text-sm shadow">
-              <Award className="w-4 h-4 text-yellow-500" /> {badge}
+            <span key={i} className="inline-flex items-center gap-1 bg-gradient-to-r from-blue-100 to-blue-200 text-blue-900 px-3 py-1 rounded-full font-semibold text-sm shadow border border-blue-300">
+              <Award className="w-4 h-4 text-blue-500" /> {badge}
             </span>
           ))}
           {badges.length === DSA_TOPICS.length && (
-            <span className="inline-flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold text-base shadow animate-bounce">
+            <span className="inline-flex items-center gap-1 bg-gradient-to-r from-green-100 to-green-200 text-green-900 px-3 py-1 rounded-full font-bold text-base shadow border border-green-300 animate-bounce">
               {FINAL_BADGE.emoji} {FINAL_BADGE.title}
             </span>
           )}
         </div>
         {DSA_TOPICS.map((topic, idx) => (
-          <div key={topic.key} className="mb-10 bg-white rounded-2xl shadow p-6 relative border border-blue-100">
+          <div key={topic.key} className="mb-10 bg-white rounded-2xl shadow-lg p-8 relative border-l-4 border-blue-400 hover:shadow-2xl transition-shadow duration-300 group">
             <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl font-bold" style={{ color: 'black', fontFamily: 'Times New Roman, Times, serif' }}>{topic.title}</h2>
-              <span className="ml-2 inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-semibold text-xs">
+              <h2 className="text-2xl font-bold text-blue-900 group-hover:text-purple-700 transition-colors duration-200" style={{ fontFamily: 'Times New Roman, Times, serif' }}>{topic.title}</h2>
+              <span className="ml-2 inline-flex items-center gap-1 bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full font-semibold text-xs border border-blue-200">
                 🏅 {topic.badge}
               </span>
               {completed[idx] && <CheckCircle className="w-5 h-5 text-green-500 ml-2" />}
@@ -244,7 +257,7 @@ export default function DSAPractice() {
                 <ul className="list-disc ml-6 mt-1">
                   {problems.map((p: { url: string | undefined; label: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }, i: React.Key | null | undefined) => (
                     <li key={i}>
-                      <a href={p.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
+                      <a href={p.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-purple-700 font-medium transition-colors duration-200">
                         {p.label}
                       </a>
                     </li>
@@ -254,39 +267,41 @@ export default function DSAPractice() {
             ))}
             <div className="flex items-center gap-2 mt-4">
               <input type="checkbox" id={`complete-${idx}`} checked={completed[idx]} disabled={completed[idx]} onChange={() => handleComplete(idx)} className="w-5 h-5 accent-blue-600" />
-              <label htmlFor={`complete-${idx}`} className="text-blue-700 font-semibold cursor-pointer">Mark as Practiced</label>
+              <label htmlFor={`complete-${idx}`} className="text-blue-700 font-semibold cursor-pointer select-none">Mark as Practiced</label>
               {completed[idx] && <span className="text-green-600 font-bold ml-2">Badge Earned!</span>}
             </div>
             {/* Verification Modal */}
             {showVerify === idx && (
               <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                <div className="bg-white rounded-xl shadow-lg p-8 max-w-sm w-full text-center">
+                <div className="bg-white rounded-xl shadow-lg p-8 max-w-sm w-full text-center border border-blue-200">
                   <h3 className="text-xl font-bold mb-4 text-blue-700">Verify Practice</h3>
                   <p className="mb-4">Are you sure you have practiced all the problems for <span className="font-semibold">{topic.title}</span>?</p>
-                  <button onClick={() => confirmComplete(idx)} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold mr-2">Yes, I did!</button>
-                  <button onClick={() => setShowVerify(-1)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-bold">Cancel</button>
+                  <button onClick={() => confirmComplete(idx)} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold mr-2 shadow transition-all">Yes, I did!</button>
+                  <button onClick={() => setShowVerify(-1)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-bold shadow">Cancel</button>
                 </div>
               </div>
             )}
           </div>
         ))}
         {/* Additional Practice Section */}
-        <div className="mb-10 bg-white rounded-2xl shadow p-6 border border-blue-100">
-          <h2 className="text-xl font-bold text-blue-800 mb-2">🧩 Additional Practice (Competitive Focus)</h2>
+        <div className="mb-10 bg-white rounded-2xl shadow p-6 border-l-4 border-purple-300 border border-blue-100">
+          <h2 className="text-xl font-bold text-purple-800 mb-2">🧩 Additional Practice (Competitive Focus)</h2>
           <ul className="list-disc ml-6">
-            {ADDITIONAL_PRACTICE.map((p, i) => (
-              <li key={i}>
-                <a href={p.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
-                  {p.label}
-                </a>
-              </li>
-            ))}
+            {ADDITIONAL_PRACTICE.map(function(p: { label: string; url: string }, i: number) {
+              return (
+                <li key={i}>
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-purple-700 font-medium transition-colors duration-200">
+                    {p.label}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
         {/* Final Badge */}
         {badges.length === DSA_TOPICS.length && (
           <div className="text-center mt-10">
-            <span className="inline-flex items-center gap-2 bg-green-200 text-green-900 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg animate-bounce">
+            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-200 to-green-300 text-green-900 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg border border-green-300 animate-bounce">
               {FINAL_BADGE.emoji} {FINAL_BADGE.title}
             </span>
             <p className="text-green-700 mt-2 font-semibold">{FINAL_BADGE.desc}</p>

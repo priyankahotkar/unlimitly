@@ -40,15 +40,29 @@ export default function StudyMaterialsPage() {
             <GitBranch className="w-8 h-8 text-green-500 mb-2" />
             <span className="font-semibold text-green-700">Getting Started with GitHub</span>
           </div>
-          <div className="bg-pink-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer">
+          <div className="bg-pink-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer"
+            onClick={() => navigate("/machine-learning-hub")}
+          >
             <Brain className="w-8 h-8 text-pink-500 mb-2" />
-            <span className="font-semibold text-pink-700">ML Resources</span>
+            <span className="font-semibold text-pink-700">Machine Learning Hub</span>
           </div>
-          <div className="bg-yellow-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer">
+          <div className="bg-indigo-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer"
+            onClick={() => navigate("/ai-and-deployment")}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-8 h-8 text-indigo-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span className="font-semibold text-indigo-700">AI Tools & Deployment Platforms</span>
+          </div>
+          <div className="bg-yellow-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer"
+            onClick={() => navigate("/project-ideas")}
+          >
             <Lightbulb className="w-8 h-8 text-yellow-500 mb-2" />
             <span className="font-semibold text-yellow-700">Free Project Ideas</span>
           </div>
-          <div className="bg-cyan-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer">
+          <div className="bg-cyan-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer"
+            onClick={() => navigate("/flutter-resources")}
+          >
             <Smartphone className="w-8 h-8 text-cyan-500 mb-2" />
             <span className="font-semibold text-cyan-700">Flutter Development Resources</span>
           </div>
