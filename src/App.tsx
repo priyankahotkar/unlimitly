@@ -23,6 +23,7 @@ import FreeResources from "./pages/FreeResources";
 import StudyMaterialsPage from "./pages/StudyMaterialsPage";
 import DSAPractice from "./pages/DSAPractice";
 import FullStackRoadmap from "./pages/FullStackRoadmap";
+import GithubDocs from './pages/GithubDocs';
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -88,6 +89,7 @@ const App: React.FC = () => {
           <Route path="/study-materials" element={<StudyMaterialsPage />} />
           <Route path="/dsa-practice" element={<DSAPractice />} />
           <Route path="/fullstack-roadmap" element={<FullStackRoadmap />} />
+          <Route path="/getting-started-with-github" element={<GithubDocs />} />
         </Routes>
       </AuthProvider>
     </Router>

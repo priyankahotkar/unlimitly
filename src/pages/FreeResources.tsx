@@ -195,8 +195,11 @@ export default function FreeResources() {
 
   const closeCelebration = () => setShowCelebration(null);
 
+  // Progress calculation
+  const progress = Math.round((badges.length / DSA_LEVELS.length) * 100);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 py-10 px-2 md:px-0">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-100 py-10 px-2 md:px-0">
       {/* Confetti and Celebration Modal */}
       {showCelebration && (
         <>
@@ -216,29 +219,45 @@ export default function FreeResources() {
           </div>
         </>
       )}
-      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-2xl p-8 border border-blue-100">
-        <h1 className="text-4xl font-extrabold text-blue-700 mb-2 text-center flex items-center justify-center gap-2">
+      <div className="max-w-3xl mx-auto bg-white/90 rounded-3xl shadow-2xl p-8 border border-blue-100">
+        {/* Progress Bar */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold text-blue-700">Roadmap Progress</span>
+            <span className="text-xs font-bold text-blue-600">{progress}%</span>
+          </div>
+          <div className="w-full h-3 bg-blue-100 rounded-full overflow-hidden">
+            <div
+              className="h-3 bg-gradient-to-r from-blue-500 to-purple-400 rounded-full transition-all duration-500"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
+        </div>
+        <h1 className="text-4xl font-extrabold text-blue-800 mb-2 text-center flex items-center justify-center gap-2 tracking-tight">
           <Award className="w-8 h-8 text-yellow-500" /> Free DSA Roadmap
         </h1>
         <p className="text-center text-lg text-gray-600 mb-8">From Zero to Algorithm Hero 🚀</p>
         <div className="flex flex-wrap gap-2 justify-center mb-6">
           {badges.length > 0 && badges.map((badge, i) => (
-            <span key={i} className="inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full font-semibold text-sm shadow">
+            <span key={i} className="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 px-3 py-1 rounded-full font-semibold text-sm shadow border border-yellow-300">
               <Award className="w-4 h-4 text-yellow-500" /> {badge}
             </span>
           ))}
           {badges.length === DSA_LEVELS.length && (
-            <span className="inline-flex items-center gap-1 bg-green-100 text-green-800 px-3 py-1 rounded-full font-bold text-base shadow animate-bounce">
+            <span className="inline-flex items-center gap-1 bg-gradient-to-r from-green-100 to-green-200 text-green-900 px-3 py-1 rounded-full font-bold text-base shadow border border-green-300 animate-bounce">
               {FINAL_BADGE.emoji} {FINAL_BADGE.title}
             </span>
           )}
         </div>
         {DSA_LEVELS.map((level, idx) => (
-          <div key={level.level} className="mb-10 bg-white rounded-2xl shadow p-6 relative border border-blue-100">
+          <div
+            key={level.level}
+            className="mb-10 bg-white rounded-2xl shadow-lg p-8 relative border border-blue-100 hover:shadow-2xl transition-shadow duration-300 group"
+          >
             <div className="flex items-center gap-3 mb-2">
               <span className="text-3xl">{level.emoji}</span>
-              <h2 className="text-2xl font-bold text-blue-800">Level {level.level}: {level.title}</h2>
-              <span className="ml-2 inline-flex items-center gap-1 bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full font-semibold text-xs">
+              <h2 className="text-2xl font-bold text-blue-800 group-hover:text-purple-700 transition-colors duration-200">Level {level.level}: {level.title}</h2>
+              <span className="ml-2 inline-flex items-center gap-1 bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-900 px-2 py-0.5 rounded-full font-semibold text-xs border border-yellow-300">
                 {level.badgeEmoji} {level.badge}
               </span>
               {completed[idx] && <CheckCircle className="w-5 h-5 text-green-500 ml-2" />}
@@ -253,27 +272,27 @@ export default function FreeResources() {
               <span className="font-semibold text-blue-700">Goal:</span> <span className="text-gray-700">{level.goal || "-"}</span>
             </div>
             <div className="mb-2">
-              <span className="font-semibold text-blue-700">Topics:</span> {level.topics.map((t, i) => <span key={i} className="inline-block bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full text-xs mx-1">{t}</span>)}
+              <span className="font-semibold text-blue-700">Topics:</span> {level.topics.map((t, i) => <span key={i} className="inline-block bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full text-xs mx-1 border border-blue-100">{t}</span>)}
             </div>
             <div className="mb-2">
-              <span className="font-semibold text-blue-700">Resources:</span> {level.resources.map((r, i) => <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" className="inline-block underline text-blue-600 hover:text-blue-800 mx-1">{r.label}</a>)}
+              <span className="font-semibold text-blue-700">Resources:</span> {level.resources.map((r, i) => <a key={i} href={r.url} target="_blank" rel="noopener noreferrer" className="inline-block underline text-blue-600 hover:text-purple-700 mx-1 font-medium transition-colors duration-200">{r.label}</a>)}
             </div>
             <div className="mb-2">
-              <span className="font-semibold text-blue-700">Practice:</span> {level.practice.map((p, i) => <span key={i} className="inline-block bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full text-xs mx-1">{p}</span>)}
+              <span className="font-semibold text-blue-700">Practice:</span> {level.practice.map((p, i) => <span key={i} className="inline-block bg-blue-50 text-blue-800 px-2 py-0.5 rounded-full text-xs mx-1 border border-blue-100">{p}</span>)}
             </div>
             <div className="flex items-center gap-2 mt-4">
               <input type="checkbox" id={`complete-${idx}`} checked={completed[idx]} disabled={completed[idx]} onChange={() => handleComplete(idx)} className="w-5 h-5 accent-blue-600" />
-              <label htmlFor={`complete-${idx}`} className="text-blue-700 font-semibold cursor-pointer">Mark as Completed</label>
+              <label htmlFor={`complete-${idx}`} className="text-blue-700 font-semibold cursor-pointer select-none">Mark as Completed</label>
               {completed[idx] && <span className="text-green-600 font-bold ml-2">Badge Earned!</span>}
             </div>
             {/* Verification Modal */}
             {showVerify === idx && (
               <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                <div className="bg-white rounded-xl shadow-lg p-8 max-w-sm w-full text-center">
+                <div className="bg-white rounded-xl shadow-lg p-8 max-w-sm w-full text-center border border-blue-200">
                   <h3 className="text-xl font-bold mb-4 text-blue-700">Verify Completion</h3>
                   <p className="mb-4">Are you sure you have completed all the topics and practice for <span className="font-semibold">Level {level.level}: {level.title}</span>?</p>
-                  <button onClick={() => confirmComplete(idx)} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold mr-2">Yes, I did!</button>
-                  <button onClick={() => setShowVerify(-1)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-bold">Cancel</button>
+                  <button onClick={() => confirmComplete(idx)} className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-bold mr-2 shadow transition-all">Yes, I did!</button>
+                  <button onClick={() => setShowVerify(-1)} className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-full font-bold shadow">Cancel</button>
                 </div>
               </div>
             )}
@@ -282,7 +301,7 @@ export default function FreeResources() {
         {/* Final Badge */}
         {badges.length === DSA_LEVELS.length && (
           <div className="text-center mt-10">
-            <span className="inline-flex items-center gap-2 bg-green-200 text-green-900 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg animate-bounce">
+            <span className="inline-flex items-center gap-2 bg-gradient-to-r from-green-200 to-green-300 text-green-900 px-6 py-3 rounded-2xl font-bold text-xl shadow-lg border border-green-300 animate-bounce">
               {FINAL_BADGE.emoji} {FINAL_BADGE.title}
             </span>
             <p className="text-green-700 mt-2 font-semibold">{FINAL_BADGE.desc}</p>

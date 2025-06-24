@@ -34,7 +34,9 @@ export default function StudyMaterialsPage() {
             <Code className="w-8 h-8 text-purple-500 mb-2" />
             <span className="font-semibold text-purple-700">Full Stack Roadmap</span>
           </div>
-          <div className="bg-green-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer">
+          <div className="bg-green-50 rounded-xl p-6 flex flex-col items-center shadow hover:shadow-lg transition cursor-pointer"
+            onClick={() => navigate("/getting-started-with-github")}
+          >
             <GitBranch className="w-8 h-8 text-green-500 mb-2" />
             <span className="font-semibold text-green-700">Getting Started with GitHub</span>
           </div>
