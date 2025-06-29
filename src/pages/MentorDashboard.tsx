@@ -215,6 +215,7 @@ export function MentorDashboardPage() {
                 <Link to="/mentor-dashboard" className="text-blue-600 font-medium">Dashboard</Link>
                 <Link to="/chat" className="text-gray-600 hover:text-gray-900 font-medium">Messages</Link>
                 <Link to="/discussion-forum" className="text-gray-600 hover:text-gray-900 font-medium">Community</Link>
+                <Link to="/users" className="text-gray-600 hover:text-gray-900 font-medium">Users</Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
@@ -316,6 +317,12 @@ export function MentorDashboardPage() {
                   <Button className="w-full justify-start bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200" variant="outline">
                     <BookOpen className="mr-3 h-4 w-4" />
                     FAQs
+                  </Button>
+                </Link>
+                <Link to="/users">
+                  <Button className="w-full justify-start bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-200" variant="outline">
+                    <Users className="mr-3 h-4 w-4" />
+                    All Users
                   </Button>
                 </Link>
                 <Button 

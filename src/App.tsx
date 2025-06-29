@@ -28,6 +28,7 @@ import MachineLearningHub from "./pages/MachineLearningHub";
 import AIAndDeployment from "./pages/AIAndDeployment";
 import FlutterResources from './pages/FlutterResources';
 import ProjectIdeas from './pages/ProjectIdeas';
+import { UsersPage }from './pages/UsersPage';
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -98,6 +99,7 @@ const App: React.FC = () => {
           <Route path="/ai-and-deployment" element={<AIAndDeployment />} />
           <Route path="/flutter-resources" element={<FlutterResources />} />
           <Route path="/project-ideas" element={<ProjectIdeas />} />
+          <Route path="/users" element={<PrivateRoute><UsersPage /></PrivateRoute>} /> {/* Route for UsersPage */}
         </Routes>
       </AuthProvider>
     </Router>

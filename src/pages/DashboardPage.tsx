@@ -176,11 +176,12 @@ export function DashboardPage() {
                 <Link to="/chat" className="text-gray-600 hover:text-gray-900 font-medium">Messages</Link>
                 <Link to="/discussion-forum" className="text-gray-600 hover:text-gray-900 font-medium">Community</Link>
                 <Link to="/study-materials" className="text-gray-600 hover:text-gray-900 font-medium">Study Materials</Link>
+                <Link to="/users" className="text-gray-600 hover:text-gray-900 font-medium">Users</Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
               <button className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100">
-                <Bell className="w-5 h-5" />
+                {/* <Bell className="w-5 h-5" /> */}
               </button>
               <button className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100">
                 <Settings className="w-5 h-5" />
@@ -205,7 +206,7 @@ export function DashboardPage() {
                           title={badge}
                           className="relative group"
                         >
-                          <span className="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 border-2 border-yellow-700 shadow-lg ring-2 ring-yellow-200">
+                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 border-2 border-yellow-700 shadow-lg ring-2 ring-yellow-200">
                             <Award className="w-4 h-4 text-white drop-shadow" />
                           </span>
                           <span className="absolute left-1/2 -translate-x-1/2 mt-2 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap">
@@ -308,6 +309,12 @@ export function DashboardPage() {
                   <Button className="w-full justify-start bg-purple-50 text-purple-700 hover:bg-purple-100 border-purple-200" variant="outline">
                     <BookOpen className="mr-3 h-4 w-4" />
                     FAQs
+                  </Button>
+                </Link>
+                <Link to="/users">
+                  <Button className="w-full justify-start bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-200" variant="outline">
+                    <Users className="mr-3 h-4 w-4" />
+                    All Users
                   </Button>
                 </Link>
               </div>
