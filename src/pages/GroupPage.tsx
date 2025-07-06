@@ -86,6 +86,7 @@ export function GroupPage() {
   const [ongoingVoiceCalls, setOngoingVoiceCalls] = useState<any[]>([]);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   // Fetch all users
   useEffect(() => {
@@ -199,6 +200,11 @@ export function GroupPage() {
 
     return () => unsubscribe();
   }, [selectedGroup, user]);
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // Create new group
   const handleCreateGroup = async () => {
@@ -454,7 +460,7 @@ export function GroupPage() {
 
   // Filter users based on search query
   const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    user.name && user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
     !selectedUsers.includes(user.id)
   );
 
@@ -933,6 +939,8 @@ export function GroupPage() {
                   </div>
                 </div>
               ))}
+              {/* Invisible div for auto-scrolling */}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Message Input */}
