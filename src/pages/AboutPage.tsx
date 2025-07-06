@@ -16,21 +16,21 @@ const teamMembers = [
     role: "Backend & Database Specialist",
     image: "./arpita.png",
     linkedin: "#",
-    github: "#"
+    github: "https://github.com/arpitabaraskar"
   },
-  {
-    name: "Nayan Fulambarkar",
-    role: "UI/UX Designer & Frontend Developer",
-    image: "./nayan.jpg",
-    linkedin: "#",
-    github: "#"
-  },
+  // {
+  //   name: "Nayan Fulambarkar",
+  //   role: "UI/UX Designer & Frontend Developer",
+  //   image: "./nayan.jpg",
+  //   linkedin: "#",
+  //   github: "#"
+  // },
   {
     name: "Aditya Binjagermath",
-    role: "Content Support & Designing",
-    image: "./pragati.jpg",
-    linkedin: "#",
-    github: "#"
+    role: "UI/UX Designer & Frontend Developer",
+    image: "./aditya.jpg",
+    linkedin: "https://www.linkedin.com/in/aditya-binjagermath-775672259/",
+    github: "https://github.com/ADiTY0102"
   }
 ];
 

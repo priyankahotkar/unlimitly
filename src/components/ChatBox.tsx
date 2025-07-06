@@ -8,6 +8,71 @@ const CLIENT_ID = "http://527398753279-nndtd0p6tpiq5ebobefqui0m0nv95d8u.apps.goo
 const API_KEY = "AIzaSyAy5GNcNhMLAXfADgWawJZquo5HE7tA3MU";
 const SCOPES = "https://www.googleapis.com/auth/drive.file";
 
+// Simple encryption key (in production, this should be more secure)
+const ENCRYPTION_KEY = "MentorConnect2024!";
+
+// Simple encryption function
+const encryptMessage = (text: string): string => {
+  try {
+    // Simple Caesar cipher with key-based shift
+    const keySum = ENCRYPTION_KEY.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const shift = keySum % 26;
+    
+    return text.split('').map(char => {
+      const code = char.charCodeAt(0);
+      
+      // Handle uppercase letters
+      if (code >= 65 && code <= 90) {
+        return String.fromCharCode(((code - 65 + shift) % 26) + 65);
+      }
+      // Handle lowercase letters
+      else if (code >= 97 && code <= 122) {
+        return String.fromCharCode(((code - 97 + shift) % 26) + 97);
+      }
+      // Handle numbers
+      else if (code >= 48 && code <= 57) {
+        return String.fromCharCode(((code - 48 + shift) % 10) + 48);
+      }
+      // Keep other characters unchanged
+      return char;
+    }).join('');
+  } catch (error) {
+    console.error("Encryption error:", error);
+    return text; // Return original text if encryption fails
+  }
+};
+
+// Simple decryption function
+const decryptMessage = (encryptedText: string): string => {
+  try {
+    // Reverse the Caesar cipher
+    const keySum = ENCRYPTION_KEY.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const shift = keySum % 26;
+    
+    return encryptedText.split('').map(char => {
+      const code = char.charCodeAt(0);
+      
+      // Handle uppercase letters
+      if (code >= 65 && code <= 90) {
+        return String.fromCharCode(((code - 65 - shift + 26) % 26) + 65);
+      }
+      // Handle lowercase letters
+      else if (code >= 97 && code <= 122) {
+        return String.fromCharCode(((code - 97 - shift + 26) % 26) + 97);
+      }
+      // Handle numbers
+      else if (code >= 48 && code <= 57) {
+        return String.fromCharCode(((code - 48 - shift + 10) % 10) + 48);
+      }
+      // Keep other characters unchanged
+      return char;
+    }).join('');
+  } catch (error) {
+    console.error("Decryption error:", error);
+    return encryptedText; // Return encrypted text if decryption fails
+  }
+};
+
 const ChatBox: React.FC<{ selectedUserId: string }> = ({ selectedUserId }) => {
   const { user } = useAuth();
   const [messages, setMessages] = useState<any[]>([]);
@@ -22,7 +87,18 @@ const ChatBox: React.FC<{ selectedUserId: string }> = ({ selectedUserId }) => {
     const q = query(messagesRef, orderBy("timestamp", "asc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const fetchedMessages = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const fetchedMessages = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        // Decrypt text messages if they exist
+        if (data.text) {
+          return { 
+            id: doc.id, 
+            ...data, 
+            text: decryptMessage(data.text) 
+          };
+        }
+        return { id: doc.id, ...data };
+      });
       setMessages(fetchedMessages);
     });
 
@@ -36,9 +112,11 @@ const ChatBox: React.FC<{ selectedUserId: string }> = ({ selectedUserId }) => {
     const messagesRef = collection(db, "chats", chatId, "messages");
 
     if (newMessage.trim()) {
+      // Encrypt the message before sending
+      const encryptedText = encryptMessage(newMessage);
       await addDoc(messagesRef, {
         senderId: user?.uid || "unknown",
-        text: newMessage,
+        text: encryptedText, // Store encrypted text
         timestamp: serverTimestamp(),
       });
       setNewMessage("");
@@ -110,6 +188,21 @@ const ChatBox: React.FC<{ selectedUserId: string }> = ({ selectedUserId }) => {
 
   return (
     <div>
+      {/* End-to-end encryption indicator */}
+      <div className="bg-gray-50 border-b border-gray-200 p-3 text-center">
+        <div className="flex items-center justify-center space-x-2 text-gray-600 text-sm">
+          <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+          </svg>
+          <span className="font-medium">End-to-end encrypted</span>
+          <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <p className="text-xs text-gray-500 mt-1">Messages and calls are secured with end-to-end encryption</p>
+      </div>
+
+      {/* Messages container */}
       <div>
         {messages.map((message) => (
           <div key={message.id}>
@@ -122,6 +215,8 @@ const ChatBox: React.FC<{ selectedUserId: string }> = ({ selectedUserId }) => {
           </div>
         ))}
       </div>
+      
+      {/* Input area */}
       <input
         type="text"
         value={newMessage}

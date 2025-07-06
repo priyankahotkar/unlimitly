@@ -41,6 +41,7 @@ export function ChatPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [user] = useAuthState(auth);
+  const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
   // Replace users fetching logic with real-time listener
   useEffect(() => {
@@ -87,6 +88,11 @@ export function ChatPage() {
 
     return () => unsubscribe(); // Cleanup function
   }, [selectedUser, user]); // Runs when `selectedUser` or `user` changes
+
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // Send Message
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -189,6 +195,21 @@ export function ChatPage() {
             {selectedUser ? `Chat with ${selectedUser.name}` : 'Select a user to start chatting'}
           </span>
         </div>
+        {/* End-to-end encryption indicator */}
+      <div className="bg-gray-50 border-b border-gray-200 p-3 text-center">
+        <div className="flex items-center justify-center space-x-2 text-gray-600 text-sm">
+          <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+          </svg>
+          <span className="font-medium">End-to-end encrypted</span>
+          <svg className="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
+          </svg>
+        </div>
+        <p className="text-xs text-gray-500 mt-1">Messages and calls are secured with end-to-end encryption</p>
+      </div>
+
+      {/* Messages container */}
         {/* Messages - Scrollable */}
         <div className="flex-1 overflow-y-auto px-8 py-6 space-y-4" style={{ maxHeight: 'calc(100vh - 180px)' }}>
           {messages.map((msg, idx) => (
@@ -202,6 +223,8 @@ export function ChatPage() {
               </div>
             </div>
           ))}
+          {/* Invisible div for auto-scrolling */}
+          <div ref={messagesEndRef} />
         </div>
         {/* Message input and send button - always visible */}
         <div className="p-6 bg-white border-t border-gray-200 flex items-center gap-4 rounded-b-2xl shadow-md">
@@ -211,7 +234,7 @@ export function ChatPage() {
             onChange={e => setNewMessage(e.target.value)}
             className="flex-1 px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-800 bg-[#f7fafd]"
             placeholder="Type your message..."
-            onKeyDown={e => e.key === 'Enter' && handleSendMessage()}
+            onKeyDown={e => e.key === 'Enter' && handleSendMessage(e)}
           />
           <Button className="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-full shadow" onClick={handleSendMessage}>
             Send

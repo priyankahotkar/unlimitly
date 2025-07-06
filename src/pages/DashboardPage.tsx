@@ -163,51 +163,91 @@ export function DashboardPage() {
       <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
+            {/* Logo and Brand */}
             <div className="flex items-center space-x-8">
-              <Link to="/dashboard" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+              <Link to="/dashboard" className="flex items-center space-x-3">
+                <div className="w-9 h-9 bg-blue-600 rounded-lg flex items-center justify-center shadow-sm">
                   <Briefcase className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">MentorConnect</span>
+                <span className="text-xl font-bold text-gray-900 tracking-tight">MentorConnect</span>
               </Link>
-              <nav className="hidden md:flex space-x-8">
-                <Link to="/dashboard" className="text-blue-600 font-medium">Dashboard</Link>
-                <Link to="/booking" className="text-gray-600 hover:text-gray-900 font-medium">Book Session</Link>
-                <Link to="/chat" className="text-gray-600 hover:text-gray-900 font-medium">Messages</Link>
-                <Link to="/discussion-forum" className="text-gray-600 hover:text-gray-900 font-medium">Community</Link>
-                <Link to="/study-materials" className="text-gray-600 hover:text-gray-900 font-medium">Study Materials</Link>
-                <Link to="/users" className="text-gray-600 hover:text-gray-900 font-medium">Users</Link>
+              
+              {/* Navigation Links */}
+              <nav className="hidden lg:flex items-center space-x-1">
+                <Link 
+                  to="/dashboard" 
+                  className="px-4 py-2 text-blue-600 font-medium rounded-md bg-blue-50 hover:bg-blue-100 transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  to="/booking" 
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Book Session
+                </Link>
+                <Link 
+                  to="/chat" 
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Messages
+                </Link>
+                <Link 
+                  to="/discussion-forum" 
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Community
+                </Link>
+                <Link 
+                  to="/study-materials" 
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Study Materials
+                </Link>
+                <Link 
+                  to="/users" 
+                  className="px-4 py-2 text-gray-600 hover:text-gray-900 font-medium rounded-md hover:bg-gray-100 transition-colors"
+                >
+                  Users
+                </Link>
               </nav>
             </div>
+
+            {/* Right Side - User Controls */}
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100">
+              {/* Notification Button (commented out) */}
+              <button className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100 transition-colors">
                 {/* <Bell className="w-5 h-5" /> */}
               </button>
-              <button className="p-2 text-gray-600 hover:text-gray-900 rounded-full hover:bg-gray-100">
-                <Settings className="w-5 h-5" />
-              </button>
+              
+              {/* User Profile Section */}
               <div className="flex items-center space-x-3">
+                {/* Avatar with Edit Button */}
                 <div className="relative flex items-center">
-                  <Avatar className="w-8 h-8">
+                  <Avatar className="w-9 h-9 border-2 border-gray-200">
                     <AvatarImage src={user?.photoURL || ""} alt={user?.displayName || "User"} />
-                    <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold">
+                    <AvatarFallback className="bg-blue-100 text-blue-600 font-semibold text-sm">
                       {user?.displayName?.[0] || "U"}
                     </AvatarFallback>
                   </Avatar>
-                  <Link to="/edit-profile" className="absolute -bottom-0.5 -right-0.5 bg-blue-600 text-white p-0.5 rounded-full hover:bg-blue-700 transition-colors">
+                  <Link 
+                    to="/edit-profile" 
+                    className="absolute -bottom-1 -right-1 bg-blue-600 text-white p-1 rounded-full hover:bg-blue-700 transition-colors shadow-sm"
+                  >
                     <Edit3 className="w-2.5 h-2.5" />
                   </Link>
-                  {/* Realistic Badges next to avatar */}
+                  
+                  {/* Badges */}
                   {badges.length > 0 && (
-                    <div className="flex space-x-1 ml-2">
+                    <div className="flex space-x-1 ml-3">
                       {badges.map((badge, i) => (
                         <span
                           key={i}
                           title={badge}
                           className="relative group"
                         >
-                          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 border-2 border-yellow-700 shadow-lg ring-2 ring-yellow-200">
-                            <Award className="w-4 h-4 text-white drop-shadow" />
+                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-yellow-300 via-yellow-400 to-yellow-600 border-2 border-yellow-700 shadow-lg ring-2 ring-yellow-200">
+                            <Award className="w-3.5 h-3.5 text-white drop-shadow" />
                           </span>
                           <span className="absolute left-1/2 -translate-x-1/2 mt-2 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap">
                             {badge}
@@ -217,16 +257,24 @@ export function DashboardPage() {
                     </div>
                   )}
                 </div>
-                <select
-                  className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                
+                {/* Role Selector */}
+                {/* <select
+                  className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition-colors"
                   value={role || ""}
                   onChange={(e) => handleRoleChange(e.target.value as "mentor" | "mentee")}
                 >
                   <option value="">Select Role</option>
                   <option value="mentor">Mentor</option>
                   <option value="mentee">Mentee</option>
-                </select>
-                <Button variant="ghost" onClick={logout} className="text-gray-600 hover:text-gray-900">
+                </select> */}
+                
+                {/* Logout Button */}
+                <Button 
+                  variant="ghost" 
+                  onClick={logout} 
+                  className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-2 rounded-lg transition-colors"
+                >
                   <LogOut className="h-4 w-4" />
                 </Button>
               </div>

@@ -215,7 +215,7 @@ export const LandingPage: React.FC = () => {
               <Button variant="ghost" className="text-gray-600 hover:text-gray-900 font-medium" onClick={() => navigate('/testimonials')}>
                 Testimonials
               </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors" onClick={() => navigate('/auth')}>
                 Sign In
               </Button>
             </div>
@@ -257,8 +257,8 @@ export const LandingPage: React.FC = () => {
                   className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 rounded-lg text-lg font-medium"
                   onClick={() => navigate('/features')}
                 >
-                  <Play className="mr-2 h-5 w-5" />
-                  Watch Demo
+                  {/* <Play className="mr-2 h-5 w-5" /> */}
+                  View Features
                 </Button>
               </div>
 
@@ -539,13 +539,13 @@ export const LandingPage: React.FC = () => {
                 Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
                   <Github className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="http://www.linkedin.com/in/priyanka-hotkar-3a667a259" className="text-gray-400 hover:text-white transition-colors">
                   <Linkedin className="h-5 w-5" />
                 </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <a href="mailto:priyankahotkar4@gmail.com?subject=Hello%20Priyanka&body=I%20saw%20your%20website..." className="text-gray-400 hover:text-white transition-colors">
                   <Mail className="h-5 w-5" />
                 </a>
               </div>
@@ -565,7 +565,7 @@ export const LandingPage: React.FC = () => {
               <h3 className="font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="/contact-us" className="hover:text-white transition-colors">Contact Us</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
               </ul>
