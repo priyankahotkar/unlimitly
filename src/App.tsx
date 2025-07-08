@@ -31,6 +31,7 @@ import ProjectIdeas from './pages/ProjectIdeas';
 import { UsersPage }from './pages/UsersPage';
 import { ContactUs } from './pages/ContactUs';
 import ViewProfile from './pages/ViewProfile';
+import CreateWorkspace from './pages/CreateWorkspace';
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -104,6 +105,7 @@ const App: React.FC = () => {
           <Route path="/users" element={<PrivateRoute><UsersPage /></PrivateRoute>} /> {/* Route for UsersPage */}
           <Route path="/contact-us" element={<ContactUs />} /> {/* Route for ContactUs */}
           <Route path="/view-profile" element={<ViewProfile />} /> {/* Route for ViewProfile */}
+          <Route path="/create-workspace" element={<CreateWorkspace />} /> {/* Route for CreateWorkspace */}
         </Routes>
       </AuthProvider>
     </Router>
