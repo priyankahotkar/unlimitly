@@ -30,6 +30,7 @@ import FlutterResources from './pages/FlutterResources';
 import ProjectIdeas from './pages/ProjectIdeas';
 import { UsersPage }from './pages/UsersPage';
 import { ContactUs } from './pages/ContactUs';
+import ViewProfile from './pages/ViewProfile';
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -102,6 +103,7 @@ const App: React.FC = () => {
           <Route path="/project-ideas" element={<ProjectIdeas />} />
           <Route path="/users" element={<PrivateRoute><UsersPage /></PrivateRoute>} /> {/* Route for UsersPage */}
           <Route path="/contact-us" element={<ContactUs />} /> {/* Route for ContactUs */}
+          <Route path="/view-profile" element={<ViewProfile />} /> {/* Route for ViewProfile */}
         </Routes>
       </AuthProvider>
     </Router>

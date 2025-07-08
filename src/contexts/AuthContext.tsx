@@ -9,10 +9,11 @@ interface AuthContextType {
   user: User | null;
   role: string | null;
   signInWithGoogle: () => Promise<void>;
-  signInWithEmail: (email: string, password: string) => Promise<User>;
-  registerWithEmail: (email: string, password: string, role: "mentor" | "mentee") => Promise<User>;
+  signInWithEmail: (email: string, password: string) => Promise<void>;
+  registerWithEmail: (email: string, password: string, role: "mentor" | "mentee") => Promise<void>;
   logout: () => Promise<void>;
   updateRole: (newRole: "mentor" | "mentee") => Promise<void>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   // Fetch user role from Firestore
@@ -46,12 +48,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setLoading(true);
       if (currentUser) {
         setUser(currentUser);
         await fetchUserRole(currentUser.uid);
+        setLoading(false);
       } else {
         setUser(null);
         setRole(null);
+        setLoading(false);
       }
     });
 
@@ -185,6 +190,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         registerWithEmail: handleRegisterWithEmail, // Expose registerWithEmail
         logout: handleLogout,
         updateRole,
+        loading,
       }}
     >
       {children}

@@ -28,6 +28,17 @@ const AuthPage = () => {
     }
   }, [user]);
 
+  // After login, redirect to intended page if present, but only if not being sent to FillDetails or role selection
+  useEffect(() => {
+    if (user) {
+      const path = window.localStorage.getItem('redirectAfterLogin');
+      if (path && !window.location.pathname.startsWith('/FillDetails') && !window.location.pathname.startsWith('/auth')) {
+        window.localStorage.removeItem('redirectAfterLogin');
+        navigate(path, { replace: true });
+      }
+    }
+  }, [user, navigate]);
+
   const checkUserRole = async () => {
     if (!user) return;
 
