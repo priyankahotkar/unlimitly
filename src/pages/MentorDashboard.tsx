@@ -245,6 +245,19 @@ export function MentorDashboardPage() {
                 <Button variant="ghost" onClick={logout} className="text-gray-600 hover:text-gray-900">
                   <LogOut className="h-4 w-4" />
                 </Button>
+                <div className="relative group">
+                  <Button
+                    onClick={logout}
+                    className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-blue-700 text-white px-3 py-2 rounded-lg shadow-sm hover:from-blue-600 hover:to-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    aria-label="Logout"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    <span className="hidden sm:inline font-medium">Logout</span>
+                  </Button>
+                  <span className="absolute left-1/2 -translate-x-1/2 mt-2 px-2 py-1 rounded bg-gray-900 text-white text-xs opacity-0 group-hover:opacity-100 transition pointer-events-none z-50 whitespace-nowrap">
+                    Logout
+                  </span>
+                </div>
               </div>
             </div>
           </div>
