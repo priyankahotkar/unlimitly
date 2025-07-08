@@ -40,6 +40,8 @@ MentorConnect addresses these issues by offering a free platform with automated 
 - **Filtered FAQs**: Access topic-specific answers to common career queries.
 - **Group Video Calls**: Participate in group mentoring via dedicated channels.
 - **Group Voice Chats**: Participate in group mentoring via dedicated voice channels.
+- **Badges & Progress Tracking**: Earn and display DSA and Machine Learning badges, with progress bars and clear labeling, directly on your profile. Progress is fetched and updated from Firestore.
+- **LeetCode-Style Activity Grid**: Visualize your activity over the last 180 days with a modern, color-gradient grid, including month separators and subtle spacing for a clean look.
 - **A Completely free all in one solution for everything you need for a good placement**: All resources curated in a single platform. We have brought to you all resources at a single place right from downloads, tutorials to practice and projects everything right at one place.
 
 ### Mentor-Side Features
@@ -50,6 +52,13 @@ MentorConnect addresses these issues by offering a free platform with automated 
 - **Webinars & Group Sessions**: Host career-related group mentoring.
 - **Forum Participation**: Share insights and answer questions in the discussion forum.
 - **Create Groups/Channels**: Initiate and manage topic-specific mentoring groups.
+- **Role-Based Profile View**: Mentor profiles display only relevant mentor details, while mentee profiles show badges, progress, and activity.
+
+### Platform-Wide Features
+- **Consistent Footer**: Unified footer across all main pages for branding and navigation.
+- **Professional UI/UX**: Modernized headers, improved logout button with icons and tooltips, and visually appealing layouts throughout the app.
+- **Protected Routes & Authentication**: Secure private routes with a loading spinner during authentication checks, and automatic redirection to the intended page after login.
+- **Bug Fixes & Clean Structure**: Import errors resolved, extra spacing removed, and page structures standardized for a seamless experience.
 
 ## Technical Design
 ### Tech Stack
@@ -64,7 +73,7 @@ MentorConnect addresses these issues by offering a free platform with automated 
 ### Development Process
 1. **Requirement Analysis**: Define features like mentor-mentee matching, scheduling, and communication.
 2. **System Design**: Architect the platform with scalable frontend and backend components.
-3. **Development**: Build UI, APIs, and integrate scheduling, chat, and video features.
+3. **Development**: Build UI, APIs, and integrate scheduling, chat, and video features. Recent updates include advanced profile features (badges, activity grid), role-based rendering, and improved authentication flow with loading states and redirect logic.
 4. **Testing & Deployment**: Test functionality, optimize performance, and deploy on Firebase.
 
 ## Impact
@@ -106,6 +115,8 @@ MentorConnect addresses these issues by offering a free platform with automated 
 - Use real-time chat for quick communication.
 - Schedule or join mentoring sessions.
 - Launch 1:1 or group video calls from the dashboard.
+- Click your profile avatar in the dashboard to view your profile, badges, and activity grid (mentees) or mentor details (mentors).
+- Enjoy a consistent experience with unified navigation, footers, and professional UI elements across all pages.
 
 ## Contributing
 We welcome contributions! Follow these steps:
@@ -130,5 +141,13 @@ We welcome contributions! Follow these steps:
 - [React.js](https://reactjs.org/)
 - [Google Calendar API](https://developers.google.com/calendar)
 
+## Recent Updates
+- **Badges & Progress Tracking**: DSA and ML badges with progress bars for mentees, fetched from Firestore.
+- **LeetCode-Style Activity Grid**: 180-day activity grid with month separators and color gradients.
+- **Role-Based Profile View**: Mentor profiles show only mentor details; mentee profiles show badges and progress.
+- **Consistent Footer**: Unified footer across all main pages.
+- **Improved Authentication**: Loading spinner during auth check and redirect to intended page after login.
+- **UI/UX Improvements**: Professional headers, improved logout button, and modernized grid and spacing.
+- **Bug Fixes**: Import errors resolved, extra spacing removed, and page structures standardized.
 
 © 2025 MentorConnect. All Rights Reserved.
