@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { MessageSquare, Video, LogOut, PlusCircle, Sun, Moon, Calendar, Users, Bell, Settings, Briefcase, Clock, MapPin, BookOpen, User, Edit3, Compass, Github, Linkedin, Mail } from 'lucide-react';
+import { MessageSquare, Video, LogOut, PlusCircle, Sun, Moon, Calendar, Users, Bell, Settings, Briefcase, Clock, MapPin, BookOpen, User, Edit3, Github, Linkedin, Mail } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import { doc, setDoc, collection, query, where, orderBy, getDocs, getDoc } from 'firebase/firestore';
 import { db } from '@/firebase';
@@ -209,7 +209,7 @@ export function MentorDashboardPage() {
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
                   <Briefcase className="w-5 h-5 text-white" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">MentorConnect</span>
+                <span className="text-xl font-bold text-gray-900">Unlimitly</span>
               </Link>
               <nav className="hidden md:flex space-x-8">
                 <Link to="/mentor-dashboard" className="text-blue-600 font-medium">Dashboard</Link>
@@ -242,9 +242,9 @@ export function MentorDashboardPage() {
                     <Edit3 className="w-2.5 h-2.5" />
                   </Link>
                 </div>
-                <Button variant="ghost" onClick={logout} className="text-gray-600 hover:text-gray-900">
+                {/* <Button variant="ghost" onClick={logout} className="text-gray-600 hover:text-gray-900">
                   <LogOut className="h-4 w-4" />
-                </Button>
+                </Button> */}
                 <div className="relative group">
                   <Button
                     onClick={logout}
@@ -503,11 +503,11 @@ export function MentorDashboardPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Compass className="h-6 w-6 text-white" />
+                  <img src="./logo2.png" alt="Unlimitly" className="h-6 w-6" />
                 </div>
                 <div>
-                  <span className="text-xl font-bold">MentorConnect</span>
-                  <p className="text-sm text-gray-400">Professional Mentorship Platform</p>
+                  <span className="text-xl font-bold">Unlimitly</span>
+                  <p className="text-sm text-gray-400">Be Limitless</p>
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
@@ -545,7 +545,7 @@ export function MentorDashboardPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MentorConnect. All rights reserved. Built with ❤️ for the developer community.</p>
+            <p>&copy; 2025 Unlimitly. All rights reserved. Built with ❤️ for the developer community.</p>
           </div>
         </div>
       </footer>

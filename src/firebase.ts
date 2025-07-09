@@ -4,13 +4,13 @@ import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSn
 import { getStorage } from "firebase/storage"; // Import getStorage for Firebase Storage
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDmt3FShMYxE4dwH4UJkXhD-poZaSPt-_M",
-  authDomain: "mentorconnect-fd483.firebaseapp.com",
-  projectId: "mentorconnect-fd483",
-  storageBucket: "mentorconnect-fd483.firebasestorage.app",
-  messagingSenderId: "527398753279",
-  appId: "1:527398753279:web:699c1a5925363d46498dca",
-  measurementId: "G-J2V1LVJP3K"
+  apiKey: "AIzaSyD-hJk3YA9hCL8L71VeTfFtDu7JQxwrwc4",
+  authDomain: "unlimitly-c1506.firebaseapp.com",
+  projectId: "unlimitly-c1506",
+  storageBucket: "unlimitly-c1506.firebasestorage.app",
+  messagingSenderId: "383481102582",
+  appId: "1:383481102582:web:b950ea0ebb340cf84dacd7",
+  measurementId: "G-PMN7Y9EVSR"
 };
 
 // Initialize Firebase

@@ -197,12 +197,17 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+              {/* <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
                 <Compass className="h-6 w-6 text-white" />
               </div>
               <div>
                 <span className="text-xl font-bold text-gray-900">MentorConnect</span>
                 <p className="text-xs text-gray-500 -mt-1">Professional Mentorship Platform</p>
+              </div> */}
+              <img src="./logo2.png" alt="Unlimitly" className="w-15 h-10" />
+              <div>
+                <span className="text-xl font-bold text-gray-900">Unlimitly</span>
+                <p className="text-xs text-gray-500 -mt-1">Be Limitless</p>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-6">
@@ -231,7 +236,7 @@ export const LandingPage: React.FC = () => {
               <div className="space-y-4">
                 <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
                   <Zap className="h-4 w-4 mr-2" />
-                  Free Professional Mentorship Platform
+                  Free Be Limitless
                 </div>
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   Accelerate Your Career with
@@ -443,7 +448,7 @@ export const LandingPage: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Why Choose MentorConnect?
+                Why Choose Unlimitly?
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 We've built the most comprehensive mentorship platform that combines professional networking, skill development, and career guidance in one seamless experience.
@@ -527,12 +532,10 @@ export const LandingPage: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Compass className="h-6 w-6 text-white" />
-                </div>
+              <img src="./logo2.png" alt="Unlimitly" className="w-15 h-10" />
                 <div>
-                  <span className="text-xl font-bold">MentorConnect</span>
-                  <p className="text-sm text-gray-400">Professional Mentorship Platform</p>
+                  <span className="text-xl font-bold">Unlimitly</span>
+                  <p className="text-sm text-gray-400">Be limitless</p>
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
@@ -573,7 +576,7 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MentorConnect. All rights reserved. Built with ❤️ for the developer community.</p>
+            <p>&copy; 2025 Unlimitly. All rights reserved. Built with ❤️ for the developer community.</p>
           </div>
         </div>
       </footer>

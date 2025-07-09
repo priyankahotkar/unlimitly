@@ -572,11 +572,11 @@ export function UsersPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Compass className="h-6 w-6 text-white" />
+                  <img src="./logo2.png" alt="Unlimitly" className="h-6 w-6" />
                 </div>
                 <div>
-                  <span className="text-xl font-bold">MentorConnect</span>
-                  <p className="text-sm text-gray-400">Professional Mentorship Platform</p>
+                  <span className="text-xl font-bold">Unlimitly</span>
+                  <p className="text-sm text-gray-400">Be Limitless</p>
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
@@ -614,7 +614,7 @@ export function UsersPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MentorConnect. All rights reserved. Built with ❤️ for the developer community.</p>
+            <p>&copy; 2025 Unlimitly. All rights reserved. Built with ❤️ for the developer community.</p>
           </div>
         </div>
       </footer>

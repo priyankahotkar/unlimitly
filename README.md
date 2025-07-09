@@ -1,7 +1,7 @@
 
-# MentorConnect
+# Unlimitly
 
-MentorConnect is a free, AI-driven online mentoring platform designed to connect mentees with experienced mentors seamlessly. It integrates automated scheduling, built-in video conferencing, real-time chat, and community discussion forums into a single platform to provide a structured and accessible mentoring experience.
+Unlimitly is a free, AI-driven online mentoring platform designed to connect mentees with experienced mentors seamlessly. It integrates automated scheduling, built-in video conferencing, real-time chat, and community discussion forums into a single platform to provide a structured and accessible mentoring experience.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -16,12 +16,12 @@ MentorConnect is a free, AI-driven online mentoring platform designed to connect
 - [Team](#team)
 
 ## Project Overview
-**Project Name**: MentorConnect  
+**Project Name**: Unlimitly  
 **Theme**: Education  
 **Team Name**: MentorSync  
 **Event**: ORCHATHON 2K25, organized by N.K. Orchid College of Engineering and Technology, Solapur  
 
-MentorConnect aims to eliminate the limitations of existing mentoring platforms by providing a free, all-in-one solution for career guidance, skill development, and professional networking.
+Unlimitly aims to eliminate the limitations of existing mentoring platforms by providing a free, all-in-one solution for career guidance, skill development, and professional networking.
 
 ## Problem Statement
 Many existing mentoring platforms suffer from:
@@ -29,7 +29,7 @@ Many existing mentoring platforms suffer from:
 - Lack of integrated scheduling and communication tools (e.g., LinkedIn Mentorship, ADPList)
 - Dependency on third-party tools like Calendly and Zoom, causing inefficiencies
 
-MentorConnect addresses these issues by offering a free platform with automated scheduling, built-in video calls, real-time chat, and secure authentication, ensuring a seamless mentoring experience.
+Unlimitly addresses these issues by offering a free platform with automated scheduling, built-in video calls, real-time chat, and secure authentication, ensuring a seamless mentoring experience.
 
 ## Features
 ### Mentee-Side Features
@@ -85,12 +85,12 @@ MentorConnect addresses these issues by offering a free platform with automated 
 
 ## Live Link
 - **Hosted using Firebase hosting**:  
-  [View Live Website](https://mentorconnect-fd483.web.app/)
+  [View Live Website](https://unlimitly-c1506.web.app/)
 
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/priyankahotkar/MentorConnect.git
+   git clone https://github.com/priyankahotkar/Unlimitly.git
    ```
 
 2. Install dependencies:
@@ -150,4 +150,4 @@ We welcome contributions! Follow these steps:
 - **UI/UX Improvements**: Professional headers, improved logout button, and modernized grid and spacing.
 - **Bug Fixes**: Import errors resolved, extra spacing removed, and page structures standardized.
 
-© 2025 MentorConnect. All Rights Reserved.
+© 2025 Unlimitly. All Rights Reserved.

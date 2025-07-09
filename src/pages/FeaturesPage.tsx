@@ -1,68 +1,115 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Compass, Github, Linkedin, Mail, Calendar, Users, Video, MessageSquare, Star, FileText, Lock, Globe, HelpCircle, Layers, ArrowLeft, CheckCircle, Zap, Shield, Heart } from "lucide-react";
+import { Github, Linkedin, Mail, Calendar, Users, Video, MessageSquare, Star, FileText, Lock, Globe, HelpCircle, Layers, ArrowLeft, CheckCircle, Zap, Shield, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const features = [
+  // Mentee Experience
   {
     icon: <Users className="h-8 w-8 text-blue-600" />,
-    title: "Seamless Mentor-Mentee Matching",
-    desc: "Connect with the right mentor based on your interests, domain, goals, and availability. Our smart search and profile-based filters help mentees find the best-fit mentor in just a few clicks.",
-    category: "Core Feature"
+    title: "Find Your Perfect Mentor",
+    desc: "Search and match with mentors who fit your goals, interests, and schedule.",
+    category: "For Mentees"
   },
   {
     icon: <Calendar className="h-8 w-8 text-green-600" />,
-    title: "Smart Session Booking",
-    desc: "Book sessions effortlessly with real-time mentor availability. Integrated with Google Calendar, the platform ensures hassle-free scheduling and automatic reminders.",
-    category: "Scheduling"
+    title: "Book Sessions Instantly",
+    desc: "See real-time mentor availability and book sessions in just a few clicks.",
+    category: "For Mentees"
   },
   {
     icon: <Video className="h-8 w-8 text-purple-600" />,
-    title: "Built-in Video Meetings",
-    desc: "No need for third-party apps! MentorConnect provides secure, in-platform video sessions powered by Jitsi Meet, so you can interact face-to-face—right from your dashboard.",
-    category: "Communication"
+    title: "Join Video or Voice Calls",
+    desc: "Attend 1:1 or group mentoring sessions with built-in video and voice chat.",
+    category: "For Mentees"
   },
   {
     icon: <MessageSquare className="h-8 w-8 text-orange-600" />,
-    title: "Real-Time Chat with File Sharing",
-    desc: "Chat with your mentor instantly using Firebase-powered messaging. Share documents, links, and files seamlessly before, during, or after your session.",
-    category: "Communication"
+    title: "Chat in Real Time",
+    desc: "Message your mentor, share files, and get instant feedback before, during, or after sessions.",
+    category: "For Mentees"
   },
   {
     icon: <Layers className="h-8 w-8 text-indigo-600" />,
-    title: "Role-Based Dashboards",
-    desc: "Personalized dashboards for mentors and mentees. Mentors can manage bookings and feedback; mentees can track sessions, post doubts, and explore guidance opportunities.",
-    category: "Core Feature"
-  },
-  {
-    icon: <Star className="h-8 w-8 text-yellow-600" />,
-    title: "Feedback & Ratings System",
-    desc: "Rate your sessions and share your feedback to help mentors grow and mentees choose the right guide. The platform evolves with your input.",
-    category: "Quality"
+    title: "Track Your Progress",
+    desc: "Earn badges, see your learning streak, and visualize your activity with a LeetCode-style grid.",
+    category: "For Mentees"
   },
   {
     icon: <HelpCircle className="h-8 w-8 text-teal-600" />,
-    title: "Evolving FAQ Section",
-    desc: "Get instant answers from a curated FAQ section—and even contribute! Mentees and mentors can submit session-based Q&As to help future users.",
-    category: "Support"
+    title: "Get Instant Answers",
+    desc: "Access a smart FAQ and discussion forum to clear doubts and learn from the community.",
+    category: "For Mentees"
   },
   {
-    icon: <MessageSquare className="h-8 w-8 text-pink-600" />,
-    title: "Community Discussion Forum",
-    desc: "Engage in group discussions, post queries, and share insights beyond one-on-one sessions. A space for collaborative learning and networking.",
-    category: "Community"
+    icon: <Star className="h-8 w-8 text-yellow-600" />,
+    title: "Give Feedback & Rate Sessions",
+    desc: "Help mentors improve and guide other mentees by sharing your experience.",
+    category: "For Mentees"
   },
+
+  // Mentor Experience
+  {
+    icon: <Users className="h-8 w-8 text-blue-600" />,
+    title: "Showcase Your Expertise",
+    desc: "Create a profile, highlight your skills, and attract mentees who need your guidance.",
+    category: "For Mentors"
+  },
+  {
+    icon: <Calendar className="h-8 w-8 text-green-600" />,
+    title: "Set Your Own Schedule",
+    desc: "Choose your available time slots and manage bookings with ease.",
+    category: "For Mentors"
+  },
+  {
+    icon: <Video className="h-8 w-8 text-purple-600" />,
+    title: "Host Group Sessions & Webinars",
+    desc: "Lead group mentoring, webinars, and Q&A sessions to impact more students at once.",
+    category: "For Mentors"
+  },
+  {
+    icon: <MessageSquare className="h-8 w-8 text-orange-600" />,
+    title: "Support Mentees in Real Time",
+    desc: "Answer questions, provide resources, and offer feedback instantly via chat.",
+    category: "For Mentors"
+  },
+  {
+    icon: <Layers className="h-8 w-8 text-indigo-600" />,
+    title: "Manage Groups & Channels",
+    desc: "Create and moderate topic-specific groups for focused mentoring.",
+    category: "For Mentors"
+  },
+  {
+    icon: <Star className="h-8 w-8 text-yellow-600" />,
+    title: "Build Your Reputation",
+    desc: "Receive ratings and testimonials from mentees to grow your profile.",
+    category: "For Mentors"
+  },
+
+  // Platform/General User Experience
   {
     icon: <Lock className="h-8 w-8 text-red-600" />,
-    title: "Secure Authentication",
-    desc: "Powered by Firebase, our Google Sign-In ensures a safe and smooth login experience for every user.",
-    category: "Security"
+    title: "Enjoy Secure, Private Access",
+    desc: "Sign in with Google and access protected routes with peace of mind.",
+    category: "Platform"
   },
   {
     icon: <Globe className="h-8 w-8 text-emerald-600" />,
-    title: "100% Free & Scalable",
-    desc: "MentorConnect is built using open-source, cost-free technologies—making it accessible for everyone, anywhere.",
-    category: "Accessibility"
+    title: "Access Everything for Free",
+    desc: "No hidden costs, no third-party dependencies—just pure learning and growth.",
+    category: "Platform"
+  },
+  {
+    icon: <Heart className="h-8 w-8 text-pink-600" />,
+    title: "Experience a Modern, Friendly UI",
+    desc: "Enjoy a beautiful, mobile-responsive design with intuitive navigation and helpful tooltips.",
+    category: "Platform"
+  },
+  {
+    icon: <HelpCircle className="h-8 w-8 text-teal-600" />,
+    title: "Get 24/7 Community Support",
+    desc: "Join a vibrant community, ask questions, and get help anytime.",
+    category: "Platform"
   },
 ];
 
@@ -97,7 +144,7 @@ const FeaturesPage: React.FC = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">🚀 Powerful Features for Seamless Mentorship</h2>
+          <h2 className="text-4xl font-bold mb-4">Powerful Features for Seamless Mentorship</h2>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
             Everything you need for effective mentorship in one integrated platform. No external tools, no complexity, just pure learning.
           </p>
@@ -159,7 +206,7 @@ const FeaturesPage: React.FC = () => {
         {/* Benefits Section */}
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-12">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose MentorConnect?</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Unlimitly?</h3>
             <p className="text-gray-600">The advantages that set us apart from traditional mentorship platforms</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -215,7 +262,7 @@ const FeaturesPage: React.FC = () => {
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">Ready to Experience These Features?</h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join thousands of users who are already benefiting from MentorConnect's comprehensive feature set.
+              Join thousands of users who are already benefiting from Unlimitly's comprehensive feature set.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth">
@@ -240,11 +287,11 @@ const FeaturesPage: React.FC = () => {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Compass className="h-6 w-6 text-white" />
+                  <img src="./logo2.png" alt="Unlimitly" className="h-6 w-6" />
                 </div>
                 <div>
-                  <span className="text-xl font-bold">MentorConnect</span>
-                  <p className="text-sm text-gray-400">Professional Mentorship Platform</p>
+                  <span className="text-xl font-bold">Unlimitly</span>
+                  <p className="text-sm text-gray-400">Be Limitless</p>
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
@@ -282,7 +329,7 @@ const FeaturesPage: React.FC = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MentorConnect. All rights reserved. Built with ❤️ for the developer community.</p>
+            <p>&copy; 2025 Unlimitly. All rights reserved. Built with ❤️ for the developer community.</p>
           </div>
         </div>
       </footer>

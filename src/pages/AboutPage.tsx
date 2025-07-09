@@ -114,13 +114,13 @@ export function AboutPage() {
             <div className="text-center mb-8">
               <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full mb-4">
                 <Target className="w-5 h-5" />
-                <span className="font-medium">🧭 Our Mission</span>
+                <span className="font-medium">Our Mission</span>
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">Connecting Learners with Leaders</h3>
             </div>
             <div className="max-w-4xl mx-auto text-center">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                At MentorConnect, our mission is simple yet powerful: To connect learners with the right mentors who can guide, inspire, and empower them at every step of their journey.
+                At Unlimitly, our mission is simple yet powerful: To connect learners with the right mentors who can guide, inspire, and empower them at every step of their journey.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
                 We aim to create a space where mentorship is not just occasional advice but a long-term, trusted relationship that helps unlock true potential.
@@ -140,10 +140,10 @@ export function AboutPage() {
               <h3 className="text-3xl font-bold text-gray-900 mb-6">Born from Student Experience</h3>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  MentorConnect was born from a shared realization among four students: meaningful mentorship is hard to find, yet crucial for growth. Whether you're a beginner navigating career paths or a student seeking domain-specific guidance, having someone who's "been there, done that" can make all the difference.
+                  Unlimitly was born from a shared realization among four students: meaningful mentorship is hard to find, yet crucial for growth. Whether you're a beginner navigating career paths or a student seeking domain-specific guidance, having someone who's "been there, done that" can make all the difference.
                 </p>
                 <p>
-                  As students ourselves, we experienced this gap firsthand. That's why we built MentorConnect — a dynamic, student-centric platform designed to break barriers, connect generations, and foster genuine learning through personalized mentorship.
+                  As students ourselves, we experienced this gap firsthand. That's why we built Unlimitly — a dynamic, student-centric platform designed to break barriers, connect generations, and foster genuine learning through personalized mentorship.
                 </p>
               </div>
             </div>
@@ -168,7 +168,7 @@ export function AboutPage() {
               <Users className="w-5 h-5" />
               <span className="font-medium">👩‍💻 Meet the Team</span>
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">The Minds Behind MentorConnect</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">The Minds Behind Unlimitly</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
               A diverse team of passionate students working together to revolutionize mentorship
             </p>
@@ -229,7 +229,7 @@ export function AboutPage() {
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">💡 Our Core Values</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              The principles that guide everything we do at MentorConnect
+              The principles that guide everything we do at Unlimitly
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -250,7 +250,7 @@ export function AboutPage() {
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">💬 Join the Movement</h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Whether you're here to learn or to lead, there's a place for you at MentorConnect. Ready to grow? Ready to guide? We're just getting started.
+              Whether you're here to learn or to lead, there's a place for you at Unlimitly. Ready to grow? Ready to guide? We're just getting started.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth?role=mentee">
@@ -275,11 +275,11 @@ export function AboutPage() {
             <div className="col-span-1 md:col-span-2">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Compass className="h-6 w-6 text-white" />
+                  <img src="./logo2.png" alt="Unlimitly" className="h-6 w-6" />
                 </div>
                 <div>
-                  <span className="text-xl font-bold">MentorConnect</span>
-                  <p className="text-sm text-gray-400">Professional Mentorship Platform</p>
+                  <span className="text-xl font-bold">Unlimitly</span>
+                  <p className="text-sm text-gray-400">Be Limitless</p>
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
@@ -317,7 +317,7 @@ export function AboutPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MentorConnect. All rights reserved. Built with ❤️ for the developer community.</p>
+            <p>&copy; 2025 Unlimitly. All rights reserved. Built with ❤️ for the developer community.</p>
           </div>
         </div>
       </footer>
