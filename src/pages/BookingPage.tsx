@@ -83,7 +83,9 @@ const RateMentor: React.FC<{ mentorId: string; mentorName: string }> = ({ mentor
           <button
             key={star}
             className={`p-2 rounded-full transition-colors ${
-              rating === star ? "bg-yellow-400 text-white" : "bg-gray-200 hover:bg-gray-300"
+              rating && star <= rating
+                ? 'bg-yellow-400 text-white'
+                : 'bg-gray-200 hover:bg-gray-300'
             }`}
             onClick={() => setRating(star)}
           >
@@ -292,6 +294,7 @@ export function BookingPage() {
         menteeName: user.displayName,
         mentorId: selectedMentor.id,
         mentorName: selectedMentor.name,
+        mentorPhotoURL: selectedMentor.photoURL, // Add this line
         date: selectedDate.toISOString(), // Fixed syntax error
         timeSlot: selectedTime,
         createdAt: serverTimestamp(),
@@ -336,30 +339,25 @@ export function BookingPage() {
     }
   };
 
-  // Filter meetings into ongoing, attended, and missed categories
+  // Filter meetings into attended, ongoing, and missed categories
   const today = new Date();
-  const ongoingMeetingsFiltered = ongoingMeetings.filter(
-    (meeting) => {
-      const meetingDate = meeting.createdAt instanceof Timestamp
-        ? meeting.createdAt.toDate()
-        : new Date(meeting.createdAt);
-      return meetingDate.toDateString() === today.toDateString() && !meeting.attended;
-    }
-  );
-
-  // Ensure proper handling of the 'attended' field and Firestore Timestamp
   const attendedMeetingsFiltered = ongoingMeetings.filter((meeting) => {
     const meetingDate = meeting.createdAt instanceof Timestamp
       ? meeting.createdAt.toDate()
       : new Date(meeting.createdAt);
-    return meetingDate <= today && meeting.attended; // Correctly filter attended meetings
+    return meeting.attended; // Show all attended meetings
   });
-
+  const ongoingMeetingsFiltered = ongoingMeetings.filter((meeting) => {
+    const meetingDate = meeting.createdAt instanceof Timestamp
+      ? meeting.createdAt.toDate()
+      : new Date(meeting.createdAt);
+    return !meeting.attended && meetingDate.toDateString() === today.toDateString();
+  });
   const missedMeetings = ongoingMeetings.filter((meeting) => {
     const meetingDate = meeting.createdAt instanceof Timestamp
       ? meeting.createdAt.toDate()
       : new Date(meeting.createdAt);
-    return meetingDate < today && !meeting.attended;
+    return !meeting.attended && meetingDate < today;
   });
 
   // Ensure proper type annotations and error handling for updateMeetingStatus
@@ -533,6 +531,7 @@ export function BookingPage() {
                       <Video className="w-4 h-4 mr-1" />
                       Join Meeting
                     </a>
+                    
                   </div>
                 ))}
               </div>
@@ -646,6 +645,9 @@ export function BookingPage() {
                 selected={selectedDate}
                 onSelect={setSelectedDate}
                 className="border rounded-lg p-4"
+                modifiersClassNames={{
+                  selected: 'custom-selected-day',
+                }}
               />
             </div>
 

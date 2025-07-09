@@ -228,12 +228,12 @@ const AuthPage = () => {
             >
               Logout
             </button>
-            <button
+            {/* <button
               onClick={() => navigate('/create-workspace')}
               className="mt-4 py-2 px-4 rounded bg-green-500 text-white font-bold hover:bg-green-600 transition duration-200"
             >
               Create Workspace
-            </button>
+            </button> */}
           </div>
         )}
       </div>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Google } from "lucide-react";
 
 const Login: React.FC = () => {
   const { signInWithGoogle } = useAuth();
@@ -71,7 +70,7 @@ const Login: React.FC = () => {
           onClick={handleLogin}
           disabled={loading}
         >
-          <Google className="h-5 w-5" />
+          {/* <Google className="h-5 w-5" /> */}
           {loading ? "Signing in..." : "Sign in with Google"}
         </button>
 

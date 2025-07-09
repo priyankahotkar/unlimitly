@@ -31,3 +31,10 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom highlight for selected day in DayPicker */
+.custom-selected-day {
+  background-color: #2563eb !important; /* Tailwind blue-600 */
+  color: #fff !important;
+  border-radius: 9999px !important;
+}

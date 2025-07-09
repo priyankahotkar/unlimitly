@@ -232,8 +232,8 @@ export function ContactUs() {
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900">Email Us</h3>
-                    <p className="text-gray-600">support@mentorconnect.com</p>
-                    <p className="text-gray-600">info@mentorconnect.com</p>
+                    <p className="text-gray-600">unlimitlytech@gmail.com</p>
+                    <p className="text-gray-600">priyankahotkar4@gmail.com</p>
                   </div>
                 </div>
 
@@ -325,7 +325,7 @@ export function ContactUs() {
                 <a href="http://www.linkedin.com/in/priyanka-hotkar-3a667a259" className="text-gray-400 hover:text-white transition-colors">
                   <Linkedin className="h-5 w-5" />
                 </a>
-                <a href="mailto:priyankahotkar4@gmail.com?subject=Hello%20Priyanka&body=I%20saw%20your%20website..." className="text-gray-400 hover:text-white transition-colors">
+                <a href="mailto:unlimitlytech@gmail.com?subject=Hello%20Priyanka&body=I%20saw%20your%20website..." className="text-gray-400 hover:text-white transition-colors">
                   <Mail className="h-5 w-5" />
                 </a>
               </div>
