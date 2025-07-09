@@ -17,9 +17,6 @@ Unlimitly is a free, AI-driven online mentoring platform designed to connect men
 
 ## Project Overview
 **Project Name**: Unlimitly  
-**Theme**: Education  
-**Team Name**: MentorSync  
-**Event**: ORCHATHON 2K25, organized by N.K. Orchid College of Engineering and Technology, Solapur  
 
 Unlimitly aims to eliminate the limitations of existing mentoring platforms by providing a free, all-in-one solution for career guidance, skill development, and professional networking.
 
