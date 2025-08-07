@@ -13,14 +13,14 @@ const AuthPage = () => {
     return <p>Error: Authentication context is missing.</p>;
   }
 
-  const { user, signInWithGoogle, signInWithEmail, registerWithEmail, logout } = auth;
+  const { user, role: contextRole, signInWithGoogle, signInWithEmail, registerWithEmail, logout } = auth;
 
-  const [role, setRole] = useState<"mentor" | "student" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showRoleSelection, setShowRoleSelection] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
+  const [role, setRole] = useState<"mentor" | "student" | "">(""); // Local role state for registration
 
   useEffect(() => {
     if (user) {
@@ -48,8 +48,6 @@ const AuthPage = () => {
 
       if (userSnap.exists()) {
         const userData = userSnap.data();
-        setRole(userData.role || null);
-
         // Redirect to profile completion if user hasn't filled details
         if (!userData.detailsCompleted && userData.role) {
           navigate(`/FillDetails/${userData.role}`); // Redirect to profile form with role
@@ -78,7 +76,6 @@ const AuthPage = () => {
         detailsCompleted: false, // Reset details completion status
         updatedAt: new Date() // Add a timestamp for updates
       }, { merge: true });
-      setRole(selectedRole);
       setShowRoleSelection(false);
 
       // Redirect to the respective dashboard immediately after role selection
@@ -89,9 +86,20 @@ const AuthPage = () => {
     }
   };
 
-  const handleRoleChange = async (newRole: "mentor" | "student") => {
-    if (!newRole || newRole === role) return; // Prevent unnecessary updates
-    await auth.updateRole(newRole); // Call updateRole from AuthContext
+  const handleGoogleSignIn = async () => {
+    try {
+      const { user, isNewUser } = await auth.signInWithGoogle();
+      if (user) {
+        if (isNewUser || !role) {
+          setShowRoleSelection(true);
+        } else {
+          navigate(role === "mentor" ? "/mentor-dashboard" : "/dashboard");
+        }
+      }
+    } catch (error: any) {
+      console.error("Google sign-in error:", error.message || error);
+      setError(error.message || "Failed to sign in with Google.");
+    }
   };
 
   const handleEmailAuth = async (e: React.FormEvent) => {
@@ -160,7 +168,7 @@ const AuthPage = () => {
         {/* Google Authentication */}
         <button
           className="w-full py-3 px-4 rounded text-white font-bold flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 transition duration-200 mb-4"
-          onClick={signInWithGoogle}
+          onClick={handleGoogleSignIn}
         >
           Sign in with Google
         </button>
@@ -228,15 +236,30 @@ const AuthPage = () => {
             >
               Logout
             </button>
-            {/* <button
-              onClick={() => navigate('/create-workspace')}
-              className="mt-4 py-2 px-4 rounded bg-green-500 text-white font-bold hover:bg-green-600 transition duration-200"
-            >
-              Create Workspace
-            </button> */}
           </div>
         )}
       </div>
+      {showRoleSelection && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-gray-500 bg-opacity-75">
+          <div className="bg-white p-8 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Select Your Role</h2>
+            <div className="space-y-4">
+              <button
+                className="w-full py-3 px-4 rounded text-white font-bold bg-blue-500 hover:bg-blue-600 transition duration-200"
+                onClick={() => handleRoleSelection("student")}
+              >
+                Student
+              </button>
+              <button
+                className="w-full py-3 px-4 rounded text-white font-bold bg-blue-500 hover:bg-blue-600 transition duration-200"
+                onClick={() => handleRoleSelection("mentor")}
+              >
+                Mentor
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

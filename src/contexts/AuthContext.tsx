@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { signInWithGoogle, signInWithEmail, registerWithEmail, logout } from "../services/auth";
+import { signInWithGoogle as signInWithGoogleService, signInWithEmail, registerWithEmail, logout } from "../services/auth";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase"; // Ensure `auth` is imported from firebase.ts
@@ -8,7 +8,7 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 interface AuthContextType {
   user: User | null;
   role: string | null;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: () => Promise<{ user: User | null; isNewUser: boolean }>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
   registerWithEmail: (email: string, password: string, role: "mentor" | "student") => Promise<void>;
   logout: () => Promise<void>;
@@ -33,13 +33,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (userSnap.exists()) {
         const userData = userSnap.data();
         setRole(userData.role || null);
-
-        if (!userData.role) {
-          navigate("/auth"); // Redirect to role selection if role is not set
-        }
       } else {
         setRole(null); // Ensure role is null for new users
-        navigate("/auth"); // Redirect to role selection for new users
       }
     } catch (error) {
       console.error("Error fetching user role:", error);
@@ -61,11 +56,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     return () => unsubscribe();
-  }, [navigate]);
+  }, []);
 
   async function handleSignIn() {
     try {
-      const { user, isNewUser } = await signInWithGoogle();
+      const { user, isNewUser } = await signInWithGoogleService();
       setUser(user);
 
       if (isNewUser) {
@@ -89,8 +84,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           navigate("/dashboard");
         }
       }
+      return { user, isNewUser };
     } catch (error) {
       console.error("Sign-in error:", error);
+      return { user: null, isNewUser: false };
     }
   }
 
