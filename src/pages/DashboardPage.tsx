@@ -31,7 +31,7 @@ interface Mentor {
 export function DashboardPage() {
   const { user, logout, role, updateRole } = useAuth();
   const [upcomingSessions, setUpcomingSessions] = useState<UpcomingSession[]>([]);
-  const [mentors, setMentors] = useState<Mentor[]>([]);
+  const [experts, setExperts] = useState<Mentor[]>([]);
   const [badges, setBadges] = useState<string[]>([]);
 
   // Fetch real upcoming sessions from Firestore
@@ -43,7 +43,7 @@ export function DashboardPage() {
         const sessionsRef = collection(db, "bookings");
         const q = query(
           sessionsRef,
-          where("menteeId", "==", user.uid),
+          where("studentId", "==", user.uid),
           orderBy("date", "asc")
         );
         const snapshot = await getDocs(q);
@@ -81,12 +81,12 @@ export function DashboardPage() {
   }, [user]);
 
   useEffect(() => {
-    const fetchMentors = async () => {
+    const fetchExperts = async () => {
       try {
-        const mentorsRef = collection(db, "users");
-        const snapshot = await getDocs(mentorsRef);
+        const expertsRef = collection(db, "users");
+        const snapshot = await getDocs(expertsRef);
 
-        const fetchedMentors = snapshot.docs
+        const fetchedExperts = snapshot.docs
           .map((doc) => {
             const data = doc.data();
             const ratings = data.ratings || [];
@@ -116,13 +116,13 @@ export function DashboardPage() {
           })
           .filter((mentor) => mentor.role === "mentor");
 
-        setMentors(fetchedMentors);
+        setExperts(fetchedExperts);
       } catch (error) {
-        console.error("Error fetching mentors:", error);
+        console.error("Error fetching experts:", error);
       }
     };
 
-    fetchMentors();
+    fetchExperts();
   }, []);
 
   // Fetch user badges from Firestore
@@ -141,7 +141,7 @@ export function DashboardPage() {
     fetchBadges();
   }, [user]);
 
-  const handleRoleChange = async (newRole: "mentor" | "mentee") => {
+  const handleRoleChange = async (newRole: "mentor" | "student") => {
     if (!newRole || newRole === role || !user) return; // Prevent unnecessary updates and null user
     try {
       const userRef = doc(db, "users", user.uid);
@@ -262,11 +262,11 @@ export function DashboardPage() {
                 {/* <select
                   className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent hover:border-gray-400 transition-colors"
                   value={role || ""}
-                  onChange={(e) => handleRoleChange(e.target.value as "mentor" | "mentee")}
+                  onChange={(e) => handleRoleChange(e.target.value as "mentor" | "student")}
                 >
                   <option value="">Select Role</option>
                   <option value="mentor">Mentor</option>
-                  <option value="mentee">Mentee</option>
+                  <option value="student">Student</option>
                 </select> */}
                 
                 {/* Logout Button */}
@@ -296,7 +296,7 @@ export function DashboardPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {user?.displayName?.split(' ')[0] || 'User'}!
           </h1>
-          <p className="text-gray-600">Ready to continue your learning journey with our expert mentors.</p>
+          <p className="text-gray-600">Ready to continue your learning journey with our expert experts.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -326,7 +326,7 @@ export function DashboardPage() {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Users className="w-4 h-4 mr-2" />
-                  <span>{mentors.length} available mentors</span>
+                  <span>{experts.length} available experts</span>
                 </div>
               </div>
             </div>
@@ -396,8 +396,8 @@ export function DashboardPage() {
                     <Users className="w-6 h-6 text-green-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Available Mentors</p>
-                    <p className="text-2xl font-bold text-gray-900">{mentors.length}</p>
+                    <p className="text-sm font-medium text-gray-600">Available Experts</p>
+                    <p className="text-2xl font-bold text-gray-900">{experts.length}</p>
                   </div>
                 </div>
               </div>
@@ -456,12 +456,12 @@ export function DashboardPage() {
               )}
             </div>
 
-            {/* Mentors Section */}
+            {/* Experts Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Available Mentors</h3>
-              {mentors.length > 0 ? (
+              <h3 className="font-semibold text-gray-900 mb-4">Available Experts</h3>
+              {experts.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {mentors.map((mentor) => (
+                  {experts.map((mentor) => (
                     <div
                       key={mentor.id}
                       className="p-4 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-md transition-shadow cursor-pointer"
@@ -494,8 +494,8 @@ export function DashboardPage() {
               ) : (
                 <div className="text-center py-8">
                   <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No mentors available</p>
-                  <p className="text-sm text-gray-400">Check back later for available mentors</p>
+                  <p className="text-gray-500">No experts available</p>
+                  <p className="text-sm text-gray-400">Check back later for available experts</p>
                 </div>
               )}
             </div>
@@ -518,7 +518,7 @@ export function DashboardPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -536,7 +536,7 @@ export function DashboardPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

@@ -49,10 +49,10 @@ interface Mentor {
 
 export const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [mentors, setMentors] = useState<Mentor[]>([]);
+  const [experts, setExperts] = useState<Mentor[]>([]);
   const [stats, setStats] = useState({
     totalUsers: 0,
-    totalMentors: 0,
+    totalExperts: 0,
     totalSessions: 0,
     successRate: 95
   });
@@ -63,7 +63,7 @@ export const LandingPage: React.FC = () => {
         const usersRef = collection(db, "users");
         const snapshot = await getDocs(usersRef);
 
-        const fetchedMentors = snapshot.docs.map((doc) => {
+        const fetchedExperts = snapshot.docs.map((doc) => {
           const data = doc.data();
           const ratings = data.ratings || [];
 
@@ -87,10 +87,10 @@ export const LandingPage: React.FC = () => {
           };
         }).filter((mentor) => mentor.role === "mentor");
 
-        setMentors(fetchedMentors.slice(0, 6)); // Show top 6 mentors
+        setExperts(fetchedExperts.slice(0, 6)); // Show top 6 experts
         setStats({
           totalUsers: snapshot.docs.length,
-          totalMentors: fetchedMentors.length,
+          totalExperts: fetchedExperts.length,
           totalSessions: Math.floor(snapshot.docs.length * 2.5), // Estimated sessions
           successRate: 95
         });
@@ -105,8 +105,8 @@ export const LandingPage: React.FC = () => {
   const features = [
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Expert Mentorship",
-      description: "Connect with industry professionals and experienced mentors across various domains.",
+      title: "Expert Expertship",
+      description: "Connect with industry professionals and experienced experts across various domains.",
       color: "text-blue-600"
     },
     {
@@ -160,7 +160,7 @@ export const LandingPage: React.FC = () => {
     {
       icon: <Brain className="h-8 w-8" />,
       title: "AI & ML Hub",
-      description: "Specialized resources and mentorship for Machine Learning and AI.",
+      description: "Specialized resources and expertship for Machine Learning and AI.",
       color: "text-emerald-600"
     },
     {
@@ -185,7 +185,7 @@ export const LandingPage: React.FC = () => {
     "Mobile-responsive design",
     "Professional networking opportunities",
     "Career guidance and skill development",
-    "Industry-specific mentorship",
+    "Industry-specific expertship",
     "Flexible learning schedules",
     "Community-driven learning"
   ];
@@ -202,7 +202,7 @@ export const LandingPage: React.FC = () => {
               </div>
               <div>
                 <span className="text-xl font-bold text-gray-900">MentorConnect</span>
-                <p className="text-xs text-gray-500 -mt-1">Professional Mentorship Platform</p>
+                <p className="text-xs text-gray-500 -mt-1">Professional Expertship Platform</p>
               </div> */}
               <img src="./logo2.png" alt="Unlimitly" className="w-15 h-10" />
               <div>
@@ -240,10 +240,10 @@ export const LandingPage: React.FC = () => {
                 </div>
                 <h1 className="text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
                   Accelerate Your Career with
-                  <span className="text-blue-600"> Expert Mentorship</span>
+                  <span className="text-blue-600"> Expert Expertship</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Connect with industry professionals, access comprehensive learning resources, and build your network through our all-in-one mentorship platform. Everything you need for career growth in one place.
+                  Connect with industry professionals, access comprehensive learning resources, and build your network through our all-in-one expertship platform. Everything you need for career growth in one place.
                 </p>
               </div>
               
@@ -330,7 +330,7 @@ export const LandingPage: React.FC = () => {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-green-600 mb-2">10+</div>
-              <div className="text-gray-600">Expert Mentors</div>
+              <div className="text-gray-600">Expert Experts</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-600 mb-2">20+</div>
@@ -352,7 +352,7 @@ export const LandingPage: React.FC = () => {
               Everything You Need for Career Growth
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Our comprehensive platform combines mentorship, learning resources, and networking tools to accelerate your professional development.
+              Our comprehensive platform combines expertship, learning resources, and networking tools to accelerate your professional development.
             </p>
           </div>
 
@@ -370,20 +370,20 @@ export const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Top Mentors Section */}
+      {/* Top Experts Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Meet Our Expert Mentors
+              Meet Our Expert Experts
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Connect with industry professionals who have helped thousands of mentees accelerate their careers.
+              Connect with industry professionals who have helped thousands of students accelerate their careers.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mentors.map((mentor) => (
+            {experts.map((mentor) => (
               <div
                 key={mentor.id}
                 className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-lg transition-all duration-300 cursor-pointer group"
@@ -435,7 +435,7 @@ export const LandingPage: React.FC = () => {
               className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 px-8 py-3 rounded-lg font-medium"
               onClick={() => navigate('/users')}
             >
-              View All Mentors
+              View All Experts
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -451,7 +451,7 @@ export const LandingPage: React.FC = () => {
                 Why Choose Unlimitly?
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                We've built the most comprehensive mentorship platform that combines professional networking, skill development, and career guidance in one seamless experience.
+                We've built the most comprehensive expertship platform that combines professional networking, skill development, and career guidance in one seamless experience.
               </p>
               
               <div className="space-y-4">
@@ -498,7 +498,7 @@ export const LandingPage: React.FC = () => {
             Ready to Transform Your Career?
           </h2>
           <p className="text-xl text-blue-100 mb-10 leading-relaxed">
-            Join thousands of professionals who have accelerated their careers through expert mentorship. Start your journey today - it's completely free!
+            Join thousands of professionals who have accelerated their careers through expert expertship. Start your journey today - it's completely free!
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -539,7 +539,7 @@ export const LandingPage: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -558,7 +558,7 @@ export const LandingPage: React.FC = () => {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
               </ul>

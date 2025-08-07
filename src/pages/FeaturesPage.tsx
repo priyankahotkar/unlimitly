@@ -4,86 +4,86 @@ import { Github, Linkedin, Mail, Calendar, Users, Video, MessageSquare, Star, Fi
 import { Button } from "@/components/ui/button";
 
 const features = [
-  // Mentee Experience
+  // Student Experience
   {
     icon: <Users className="h-8 w-8 text-blue-600" />,
     title: "Find Your Perfect Mentor",
-    desc: "Search and match with mentors who fit your goals, interests, and schedule.",
-    category: "For Mentees"
+    desc: "Search and match with experts who fit your goals, interests, and schedule.",
+    category: "For Students"
   },
   {
     icon: <Calendar className="h-8 w-8 text-green-600" />,
     title: "Book Sessions Instantly",
     desc: "See real-time mentor availability and book sessions in just a few clicks.",
-    category: "For Mentees"
+    category: "For Students"
   },
   {
     icon: <Video className="h-8 w-8 text-purple-600" />,
     title: "Join Video or Voice Calls",
     desc: "Attend 1:1 or group mentoring sessions with built-in video and voice chat.",
-    category: "For Mentees"
+    category: "For Students"
   },
   {
     icon: <MessageSquare className="h-8 w-8 text-orange-600" />,
     title: "Chat in Real Time",
     desc: "Message your mentor, share files, and get instant feedback before, during, or after sessions.",
-    category: "For Mentees"
+    category: "For Students"
   },
   {
     icon: <Layers className="h-8 w-8 text-indigo-600" />,
     title: "Track Your Progress",
     desc: "Earn badges, see your learning streak, and visualize your activity with a LeetCode-style grid.",
-    category: "For Mentees"
+    category: "For Students"
   },
   {
     icon: <HelpCircle className="h-8 w-8 text-teal-600" />,
     title: "Get Instant Answers",
     desc: "Access a smart FAQ and discussion forum to clear doubts and learn from the community.",
-    category: "For Mentees"
+    category: "For Students"
   },
   {
     icon: <Star className="h-8 w-8 text-yellow-600" />,
     title: "Give Feedback & Rate Sessions",
-    desc: "Help mentors improve and guide other mentees by sharing your experience.",
-    category: "For Mentees"
+    desc: "Help experts improve and guide other students by sharing your experience.",
+    category: "For Students"
   },
 
   // Mentor Experience
   {
     icon: <Users className="h-8 w-8 text-blue-600" />,
     title: "Showcase Your Expertise",
-    desc: "Create a profile, highlight your skills, and attract mentees who need your guidance.",
-    category: "For Mentors"
+    desc: "Create a profile, highlight your skills, and attract students who need your guidance.",
+    category: "For Experts"
   },
   {
     icon: <Calendar className="h-8 w-8 text-green-600" />,
     title: "Set Your Own Schedule",
     desc: "Choose your available time slots and manage bookings with ease.",
-    category: "For Mentors"
+    category: "For Experts"
   },
   {
     icon: <Video className="h-8 w-8 text-purple-600" />,
     title: "Host Group Sessions & Webinars",
     desc: "Lead group mentoring, webinars, and Q&A sessions to impact more students at once.",
-    category: "For Mentors"
+    category: "For Experts"
   },
   {
     icon: <MessageSquare className="h-8 w-8 text-orange-600" />,
-    title: "Support Mentees in Real Time",
+    title: "Support Students in Real Time",
     desc: "Answer questions, provide resources, and offer feedback instantly via chat.",
-    category: "For Mentors"
+    category: "For Experts"
   },
   {
     icon: <Layers className="h-8 w-8 text-indigo-600" />,
     title: "Manage Groups & Channels",
     desc: "Create and moderate topic-specific groups for focused mentoring.",
-    category: "For Mentors"
+    category: "For Experts"
   },
   {
     icon: <Star className="h-8 w-8 text-yellow-600" />,
     title: "Build Your Reputation",
-    desc: "Receive ratings and testimonials from mentees to grow your profile.",
-    category: "For Mentors"
+    desc: "Receive ratings and testimonials from students to grow your profile.",
+    category: "For Experts"
   },
 
   // Platform/General User Experience
@@ -144,9 +144,9 @@ const FeaturesPage: React.FC = () => {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Powerful Features for Seamless Mentorship</h2>
+          <h2 className="text-4xl font-bold mb-4">Powerful Features for Seamless Expertship</h2>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto mb-8">
-            Everything you need for effective mentorship in one integrated platform. No external tools, no complexity, just pure learning.
+            Everything you need for effective expertship in one integrated platform. No external tools, no complexity, just pure learning.
           </p>
           <div className="flex justify-center space-x-8">
             <div className="text-center">
@@ -172,7 +172,7 @@ const FeaturesPage: React.FC = () => {
           <div className="text-center mb-12">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">Comprehensive Feature Set</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              From smart matching to secure video calls, every feature is designed to make mentorship effortless and effective.
+              From smart matching to secure video calls, every feature is designed to make expertship effortless and effective.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -207,7 +207,7 @@ const FeaturesPage: React.FC = () => {
         <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-12">
           <div className="text-center mb-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-4">Why Choose Unlimitly?</h3>
-            <p className="text-gray-600">The advantages that set us apart from traditional mentorship platforms</p>
+            <p className="text-gray-600">The advantages that set us apart from traditional expertship platforms</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((benefit, idx) => (
@@ -295,7 +295,7 @@ const FeaturesPage: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -313,7 +313,7 @@ const FeaturesPage: React.FC = () => {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

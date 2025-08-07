@@ -11,7 +11,7 @@ interface Testimonial {
   rating?: number;
 }
 
-const menteeTestimonials: Testimonial[] = [
+const studentTestimonials: Testimonial[] = [
   {
     id: '1',
     text: "I used to feel overwhelmed choosing the right career direction. With Unlimitly, I got matched with a mentor who understood my background and gave me clarity within one session. The built-in video and chat made everything seamless. I didn't even need Zoom or Calendly!",
@@ -21,14 +21,14 @@ const menteeTestimonials: Testimonial[] = [
   },
   {
     id: '2',
-    text: "Unlike other platforms that felt transactional, Unlimitly felt human. I could ask questions in the discussion forum without fear of judgment, and mentors were surprisingly responsive.",
+    text: "Unlike other platforms that felt transactional, Unlimitly felt human. I could ask questions in the discussion forum without fear of judgment, and experts were surprisingly responsive.",
     author: "Arjun Mehta",
     role: "Aspiring Data Scientist",
     rating: 5
   },
   {
     id: '3',
-    text: "What makes Unlimitly powerful is its simplicity. I logged in, joined a group, and within minutes, I was in a live video session with three mentors. No fees, no friction, just focused guidance.",
+    text: "What makes Unlimitly powerful is its simplicity. I logged in, joined a group, and within minutes, I was in a live video session with three experts. No fees, no friction, just focused guidance.",
     author: "Nikita Sharma",
     role: "MBA Aspirant",
     rating: 5
@@ -38,21 +38,21 @@ const menteeTestimonials: Testimonial[] = [
 const mentorTestimonials: Testimonial[] = [
   {
     id: '4',
-    text: "Unlimitly is the only platform that respects both the mentor's time and the mentee's need. I loved how I could set my availability and mentor students without external plugins or distractions.",
+    text: "Unlimitly is the only platform that respects both the mentor's time and the student's need. I loved how I could set my availability and mentor students without external plugins or distractions.",
     author: "Dr. Sameer Rane",
     role: "Industry Mentor & Career Coach",
     rating: 5
   },
   {
     id: '5',
-    text: "Being able to mentor directly through video, chat, and even forums without any setup headaches was a game-changer. The mentees are driven, and the system makes mentorship feel meaningful again.",
+    text: "Being able to mentor directly through video, chat, and even forums without any setup headaches was a game-changer. The students are driven, and the system makes expertship feel meaningful again.",
     author: "Ankita Joshi",
     role: "Senior Software Engineer @ TCS",
     rating: 5
   },
   {
     id: '6',
-    text: "The psychology of giving back is built into Unlimitly. I've been mentoring for years, but this platform gave me structure and focus. I now run monthly group sessions with 30+ mentees.",
+    text: "The psychology of giving back is built into Unlimitly. I've been mentoring for years, but this platform gave me structure and focus. I now run monthly group sessions with 30+ students.",
     author: "Ravi Sutar",
     role: "Data Analytics Mentor",
     rating: 5
@@ -62,7 +62,7 @@ const mentorTestimonials: Testimonial[] = [
 const institutionTestimonials: Testimonial[] = [
   {
     id: '7',
-    text: "We included Unlimitly in our campus program, and within a week, over 120 mentorship sessions were conducted—no third-party tools, no coordination nightmares. Just pure, automated, impactful mentorship.",
+    text: "We included Unlimitly in our campus program, and within a week, over 120 expertship sessions were conducted—no third-party tools, no coordination nightmares. Just pure, automated, impactful expertship.",
     author: "Prof. Manisha More",
     role: "T&P Head, Orchid College of Engineering",
     rating: 5
@@ -130,12 +130,12 @@ export function Testimonials() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-4">What Our Community Says</h2>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-            Discover how Unlimitly is transforming mentorship for students, professionals, and institutions across India
+            Discover how Unlimitly is transforming expertship for students, professionals, and institutions across India
           </p>
           <div className="mt-8 flex justify-center space-x-8">
             <div className="text-center">
               <div className="text-3xl font-bold">500+</div>
-              <div className="text-blue-100">Mentorship Sessions</div>
+              <div className="text-blue-100">Expertship Sessions</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">4.9/5</div>
@@ -143,7 +143,7 @@ export function Testimonials() {
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold">50+</div>
-              <div className="text-blue-100">Expert Mentors</div>
+              <div className="text-blue-100">Expert Experts</div>
             </div>
           </div>
         </div>
@@ -151,20 +151,20 @@ export function Testimonials() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Mentee Testimonials */}
+        {/* Student Testimonials */}
         <section className="mb-16">
           <div className="text-center mb-12">
             <div className="inline-flex items-center space-x-2 bg-blue-100 text-blue-800 px-4 py-2 rounded-full mb-4">
               <GraduationCap className="w-5 h-5" />
-              <span className="font-medium">🧑‍🎓 Mentee Testimonials</span>
+              <span className="font-medium">🧑‍🎓 Student Testimonials</span>
             </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-4">Students Share Their Success Stories</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Hear from students who found clarity, guidance, and direction through Unlimitly's seamless mentorship experience.
+              Hear from students who found clarity, guidance, and direction through Unlimitly's seamless expertship experience.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {menteeTestimonials.map(renderTestimonialCard)}
+            {studentTestimonials.map(renderTestimonialCard)}
           </div>
         </section>
 
@@ -175,7 +175,7 @@ export function Testimonials() {
               <Users className="w-5 h-5" />
               <span className="font-medium">🎓 Mentor Testimonials</span>
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-4">Mentors Share Their Experience</h3>
+            <h3 className="text-3xl font-bold text-gray-900 mb-4">Experts Share Their Experience</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Discover why industry professionals and career coaches choose Unlimitly to make a meaningful impact.
             </p>
@@ -238,7 +238,7 @@ export function Testimonials() {
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-8 text-white">
             <h3 className="text-2xl font-bold mb-4">Ready to Experience the Difference?</h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join thousands of students and mentors who are already benefiting from Unlimitly's innovative platform.
+              Join thousands of students and experts who are already benefiting from Unlimitly's innovative platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/auth">
@@ -271,7 +271,7 @@ export function Testimonials() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -289,7 +289,7 @@ export function Testimonials() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

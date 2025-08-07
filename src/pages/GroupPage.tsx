@@ -99,12 +99,49 @@ export function GroupPage() {
   }, []);
 
   // Fetch groups where current user is a member
-  useEffect(() => {
-    if (!user) return;
+  // useEffect(() => {
+  //   if (!user) return;
 
-    const groupsRef = collection(db, 'groups');
-    const q = query(groupsRef, where('members', 'array-contains', user.uid));
+  //   const groupsRef = collection(db, 'groups');
+  //   const q = query(groupsRef, where('members', 'array-contains', user.uid));
     
+  //   const unsubscribe = onSnapshot(q, async (snapshot) => {
+  //     const groupsList = await Promise.all(
+  //       snapshot.docs.map(async (doc) => {
+  //         const groupData = doc.data();
+  //         // Fetch member details
+  //         const memberDetails = await Promise.all(
+  //           groupData.members.map(async (memberId: string) => {
+  //             const userDoc = await getDocs(query(collection(db, 'users'), where('__name__', '==', memberId)));
+  //             return userDoc.docs[0]?.data() as User;
+  //           })
+  //         );
+          
+  //         return {
+  //           id: doc.id,
+  //           ...groupData,
+  //           memberDetails: memberDetails.filter(Boolean),
+  //         } as Group;
+  //       })
+  //     );
+      
+  //     // Sort by last message timestamp
+  //     const sortedGroups = groupsList.sort((a, b) => {
+  //       const aTime = a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp.seconds * 1000).getTime() : 0;
+  //       const bTime = b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp.seconds * 1000).getTime() : 0;
+  //       return bTime - aTime;
+  //     });
+      
+  //     setGroups(sortedGroups);
+  //   });
+    
+  //   return () => unsubscribe();
+  // }, [user]);
+
+  // Fetch all groups (not just user's groups)
+  useEffect(() => {
+    const groupsRef = collection(db, 'groups');
+    const q = query(groupsRef, orderBy('lastMessageTimestamp', 'desc'));
     const unsubscribe = onSnapshot(q, async (snapshot) => {
       const groupsList = await Promise.all(
         snapshot.docs.map(async (doc) => {
@@ -116,7 +153,6 @@ export function GroupPage() {
               return userDoc.docs[0]?.data() as User;
             })
           );
-          
           return {
             id: doc.id,
             ...groupData,
@@ -124,17 +160,14 @@ export function GroupPage() {
           } as Group;
         })
       );
-      
       // Sort by last message timestamp
       const sortedGroups = groupsList.sort((a, b) => {
         const aTime = a.lastMessageTimestamp ? new Date(a.lastMessageTimestamp.seconds * 1000).getTime() : 0;
         const bTime = b.lastMessageTimestamp ? new Date(b.lastMessageTimestamp.seconds * 1000).getTime() : 0;
         return bTime - aTime;
       });
-      
       setGroups(sortedGroups);
     });
-    
     return () => unsubscribe();
   }, [user]);
 
@@ -146,10 +179,21 @@ export function GroupPage() {
     const q = query(videoCallsRef, orderBy('startedAt', 'desc'));
     
     const unsubscribe = onSnapshot(q, (snapshot) => {
-      const videoCalls = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as GroupVideoCall[];
+      const videoCalls: GroupVideoCall[] = snapshot.docs.map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          groupId: data.groupId,
+          groupName: data.groupName,
+          roomName: data.roomName,
+          startedBy: data.startedBy,
+          startedByName: data.startedByName,
+          participants: data.participants || [],
+          startedAt: data.startedAt,
+          status: data.status,
+          endedAt: data.endedAt,
+        } as GroupVideoCall;
+      });
       
       // Filter video calls for groups where current user is a member
       const userGroups = groups.map(group => group.id);
@@ -171,12 +215,13 @@ export function GroupPage() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const voiceCalls = snapshot.docs.map((doc) => ({
         id: doc.id,
+        groupId: doc.data().groupId, // Ensure groupId is present
         ...doc.data(),
       }));
       // Filter voice calls for groups where current user is a member
       const userGroups = groups.map(group => group.id);
       const relevantVoiceCalls = voiceCalls.filter(call => 
-        userGroups.includes(call.groupId) && call.participants.includes(user.uid)
+        userGroups.includes(call.groupId) && (call as unknown as { participants: string[] }).participants.includes(user.uid)
       );
       setOngoingVoiceCalls(relevantVoiceCalls);
     });
@@ -550,6 +595,22 @@ export function GroupPage() {
     );
   }
 
+  // Helper to check if current user is a member of a group
+  const isMember = (group: Group) => !!user?.uid && group.members.includes(user.uid);
+
+  // Handler to join a group
+  const handleJoinGroup = async (groupId: string) => {
+    if (!user) return;
+    try {
+      const groupDocRef = doc(db, 'groups', groupId);
+      await updateDoc(groupDocRef, {
+        members: arrayUnion(user.uid),
+      });
+    } catch (error) {
+      console.error("Error joining group:", error);
+    }
+  };
+
   return (
     <div className="flex h-screen w-full bg-gray-50">
       {/* Groups List */}
@@ -670,13 +731,17 @@ export function GroupPage() {
           {groups.map((group) => {
             const hasOngoingCall = ongoingVideoCalls.some(call => call.groupId === group.id && call.status === 'active');
             const hasEndedCall = ongoingVideoCalls.some(call => call.groupId === group.id && call.status === 'ended');
+            const member = isMember(group);
+
             return (
               <div
                 key={group.id}
-                className={`flex items-center space-x-3 cursor-pointer hover:bg-gray-50 rounded-lg p-3 transition-all ${
-                  selectedGroup?.id === group.id ? 'bg-blue-50 border border-blue-200' : ''
+                className={`flex items-center space-x-3 rounded-lg p-3 transition-all ${
+                  member
+                    ? `cursor-pointer hover:bg-gray-50 ${selectedGroup?.id === group.id ? 'bg-blue-50 border border-blue-200' : ''}`
+                    : 'bg-gray-100 opacity-70'
                 }`}
-                onClick={() => setSelectedGroup(group)}
+                onClick={member ? () => setSelectedGroup(group) : undefined}
               >
                 <div className="relative">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -710,13 +775,22 @@ export function GroupPage() {
                   {hasEndedCall && !hasOngoingCall && (
                     <p className="text-xs text-gray-600 font-medium">📞 Call ended</p>
                   )}
+                  {!member && (
+                    <Button
+                      size="sm"
+                      className="mt-2 bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => handleJoinGroup(group.id)}
+                    >
+                      <UserPlus className="w-4 h-4 mr-1" />
+                      Join Group
+                    </Button>
+                  )}
                 </div>
               </div>
             );
           })}
         </div>
       </div>
-
       {/* Chat Area */}
       <div className="flex-1 flex flex-col bg-white">
         {selectedGroup ? (
@@ -982,4 +1056,4 @@ export function GroupPage() {
       </div>
     </div>
   );
-} 
+}

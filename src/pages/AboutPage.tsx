@@ -85,9 +85,9 @@ export function AboutPage() {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold mb-4">Building the Future of Mentorship</h2>
+          <h2 className="text-4xl font-bold mb-4">Building the Future of Expertship</h2>
           <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-            We're a team of passionate students who believe that meaningful mentorship should be accessible to everyone, everywhere.
+            We're a team of passionate students who believe that meaningful expertship should be accessible to everyone, everywhere.
           </p>
           <div className="mt-8 flex justify-center space-x-8">
             <div className="text-center">
@@ -120,10 +120,10 @@ export function AboutPage() {
             </div>
             <div className="max-w-4xl mx-auto text-center">
               <p className="text-lg text-gray-700 leading-relaxed mb-6">
-                At Unlimitly, our mission is simple yet powerful: To connect learners with the right mentors who can guide, inspire, and empower them at every step of their journey.
+                At Unlimitly, our mission is simple yet powerful: To connect learners with the right experts who can guide, inspire, and empower them at every step of their journey.
               </p>
               <p className="text-lg text-gray-700 leading-relaxed">
-                We aim to create a space where mentorship is not just occasional advice but a long-term, trusted relationship that helps unlock true potential.
+                We aim to create a space where expertship is not just occasional advice but a long-term, trusted relationship that helps unlock true potential.
               </p>
             </div>
           </div>
@@ -140,10 +140,10 @@ export function AboutPage() {
               <h3 className="text-3xl font-bold text-gray-900 mb-6">Born from Student Experience</h3>
               <div className="space-y-4 text-gray-700">
                 <p>
-                  Unlimitly was born from a shared realization among four students: meaningful mentorship is hard to find, yet crucial for growth. Whether you're a beginner navigating career paths or a student seeking domain-specific guidance, having someone who's "been there, done that" can make all the difference.
+                  Unlimitly was born from a shared realization among four students: meaningful expertship is hard to find, yet crucial for growth. Whether you're a beginner navigating career paths or a student seeking domain-specific guidance, having someone who's "been there, done that" can make all the difference.
                 </p>
                 <p>
-                  As students ourselves, we experienced this gap firsthand. That's why we built Unlimitly — a dynamic, student-centric platform designed to break barriers, connect generations, and foster genuine learning through personalized mentorship.
+                  As students ourselves, we experienced this gap firsthand. That's why we built Unlimitly — a dynamic, student-centric platform designed to break barriers, connect generations, and foster genuine learning through personalized expertship.
                 </p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export function AboutPage() {
                 </div>
                 <h4 className="text-xl font-semibold text-gray-900 mb-2">Student-Led Innovation</h4>
                 <p className="text-gray-600">
-                  Built by students, for students, with the understanding that mentorship should be accessible, meaningful, and transformative.
+                  Built by students, for students, with the understanding that expertship should be accessible, meaningful, and transformative.
                 </p>
               </div>
             </div>
@@ -170,7 +170,7 @@ export function AboutPage() {
             </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-4">The Minds Behind Unlimitly</h3>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              A diverse team of passionate students working together to revolutionize mentorship
+              A diverse team of passionate students working together to revolutionize expertship
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -206,9 +206,9 @@ export function AboutPage() {
                 <Target className="w-5 h-5" />
                 <span className="font-medium">🚀 Our Vision</span>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">Envisioning the Future of Mentorship</h3>
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">Envisioning the Future of Expertship</h3>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                We envision a future where mentorship is accessible, community-driven, and sustainable for everyone.
+                We envision a future where expertship is accessible, community-driven, and sustainable for everyone.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -253,9 +253,9 @@ export function AboutPage() {
               Whether you're here to learn or to lead, there's a place for you at Unlimitly. Ready to grow? Ready to guide? We're just getting started.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/auth?role=mentee">
+              <Link to="/auth?role=student">
                 <Button className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3">
-                  Become a Mentee
+                  Become a Student
                 </Button>
               </Link>
               <Link to="/auth?role=mentor">
@@ -283,7 +283,7 @@ export function AboutPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -301,7 +301,7 @@ export function AboutPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

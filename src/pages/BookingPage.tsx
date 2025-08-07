@@ -106,8 +106,8 @@ const RateMentor: React.FC<{ mentorId: string; mentorName: string }> = ({ mentor
 
 export function BookingPage() {
   const { user } = useAuth();
-  const [mentors, setMentors] = useState<Mentor[]>([]);
-  const [filteredMentors, setFilteredMentors] = useState<Mentor[]>([]);
+  const [experts, setExperts] = useState<Mentor[]>([]);
+  const [filteredExperts, setFilteredExperts] = useState<Mentor[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedMentor, setSelectedMentor] = useState<Mentor | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date>();
@@ -118,9 +118,9 @@ export function BookingPage() {
   const [mentorTimeSlots, setMentorTimeSlots] = useState<string[]>([]); // Add state for mentor's time slots
   const [attendedMeetings, setAttendedMeetings] = useState<Meeting[]>([]); // Add state for attended meetings
 
-  // Fetch mentors from Firestore
+  // Fetch experts from Firestore
   useEffect(() => {
-    const fetchMentors = async () => {
+    const fetchExperts = async () => {
       try {
         const usersRef = collection(db, "users");
         const snapshot = await getDocs(usersRef);
@@ -129,7 +129,7 @@ export function BookingPage() {
         console.log("Fetched users:", snapshot.docs.map((doc) => doc.data()));
 
         // Ensure the role and domain fields are properly fetched
-        const mentorsList = snapshot.docs
+        const expertsList = snapshot.docs
           .map((doc) => {
             const data = doc.data();
             return {
@@ -145,20 +145,20 @@ export function BookingPage() {
               rating: data.details?.rating || 0, // Fetch rating from details
             } as Mentor;
           })
-          .filter((u) => u.role === "mentor"); // Filter only mentors
+          .filter((u) => u.role === "mentor"); // Filter only experts
 
-        console.log("Filtered mentors:", mentorsList); // Log filtered mentors
-        setMentors(mentorsList);
-        setFilteredMentors(mentorsList); // Initialize filtered mentors
+        console.log("Filtered experts:", expertsList); // Log filtered experts
+        setExperts(expertsList);
+        setFilteredExperts(expertsList); // Initialize filtered experts
       } catch (error) {
-        console.error("Error fetching mentors:", error);
+        console.error("Error fetching experts:", error);
       }
     };
 
-    fetchMentors();
+    fetchExperts();
   }, []);
 
-  // Fetch booked sessions for the mentee
+  // Fetch booked sessions for the student
   useEffect(() => {
     const fetchBookedSessions = async () => {
       if (!user) return;
@@ -167,7 +167,7 @@ export function BookingPage() {
         const sessionsRef = collection(db, "bookings");
         const q = query(
           sessionsRef,
-          where("menteeId", "==", user.uid),
+          where("studentId", "==", user.uid),
           orderBy("date", "asc")
         );
         const snapshot = await getDocs(q);
@@ -186,10 +186,10 @@ export function BookingPage() {
           };
         }) as Session[];
 
-        console.log("Fetched booked sessions for mentee:", sessionsList);
+        console.log("Fetched booked sessions for student:", sessionsList);
         setBookedSessions(sessionsList);
       } catch (error) {
-        console.error("Error fetching booked sessions for mentee:", error);
+        console.error("Error fetching booked sessions for student:", error);
       }
     };
 
@@ -243,13 +243,13 @@ export function BookingPage() {
     fetchAttendedMeetings();
   }, []);
 
-  // Filter mentors based on search query
+  // Filter experts based on search query
   useEffect(() => {
-    const filtered = mentors.filter((mentor) =>
+    const filtered = experts.filter((mentor) =>
       mentor.domain.toLowerCase().includes(searchQuery.toLowerCase())
     );
-    setFilteredMentors(filtered);
-  }, [searchQuery, mentors]);
+    setFilteredExperts(filtered);
+  }, [searchQuery, experts]);
 
   useEffect(() => {
     if (selectedMentor) {
@@ -290,8 +290,8 @@ export function BookingPage() {
       // Save booking details to Firestore
       const bookingRef = collection(db, "bookings");
       await addDoc(bookingRef, {
-        menteeId: user.uid,
-        menteeName: user.displayName,
+        studentId: user.uid,
+        studentName: user.displayName,
         mentorId: selectedMentor.id,
         mentorName: selectedMentor.name,
         mentorPhotoURL: selectedMentor.photoURL, // Add this line
@@ -316,7 +316,7 @@ export function BookingPage() {
       const notificationsRef = collection(db, "notifications");
       await addDoc(notificationsRef, {
         mentorId: selectedMentor.id,
-        menteeName: user.displayName,
+        studentName: user.displayName,
         date: selectedDate.toISOString(), // Fixed syntax error
         timeSlot: selectedTime,
         message: `You have a new session booked by ${user.displayName} on ${format(
@@ -488,7 +488,7 @@ export function BookingPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Book a Mentoring Session
           </h1>
-          <p className="text-gray-600">Connect with expert mentors to accelerate your learning journey.</p>
+          <p className="text-gray-600">Connect with expert experts to accelerate your learning journey.</p>
         </div>
 
         {/* Search Bar */}
@@ -497,7 +497,7 @@ export function BookingPage() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search mentors by domain (e.g., React, Python, Data Science)..."
+              placeholder="Search experts by domain (e.g., React, Python, Data Science)..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white shadow-sm"
@@ -593,7 +593,7 @@ export function BookingPage() {
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
               <h2 className="text-xl font-semibold mb-6 text-gray-900">Choose a Mentor</h2>
               <div className="space-y-4">
-                {filteredMentors.map((mentor) => (
+                {filteredExperts.map((mentor) => (
                   <div
                     key={mentor.id}
                     className={`p-4 rounded-xl border cursor-pointer transition-all ${
@@ -700,11 +700,11 @@ export function BookingPage() {
           </div>
         </div>
 
-        {/* Recommended Mentors */}
-        {searchQuery && <RecommendedMentors domain={searchQuery} />}
+        {/* Recommended Experts */}
+        {searchQuery && <RecommendedExperts domain={searchQuery} />}
 
-        {/* Top Mentors Section */}
-        <TopMentors />
+        {/* Top Experts Section */}
+        <TopExperts />
       </main>
 
       {/* Footer */}
@@ -722,7 +722,7 @@ export function BookingPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -740,7 +740,7 @@ export function BookingPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>
@@ -764,23 +764,23 @@ export function BookingPage() {
   );
 }
 
-const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
-  const [mentors, setMentors] = useState<Mentor[]>([]);
+const RecommendedExperts: React.FC<{ domain: string }> = ({ domain }) => {
+  const [experts, setExperts] = useState<Mentor[]>([]);
 
   useEffect(() => {
-    const fetchTopMentors = async () => {
+    const fetchTopExperts = async () => {
       if (!domain) return;
 
       try {
-        const mentorsRef = collection(db, "users");
+        const expertsRef = collection(db, "users");
         const q = query(
-          mentorsRef,
+          expertsRef,
           where("role", "==", "mentor"),
           where("domain", "==", domain)
         );
 
         const snapshot = await getDocs(q);
-        const fetchedMentors = snapshot.docs.map((doc) => {
+        const fetchedExperts = snapshot.docs.map((doc) => {
           const data = doc.data();
           const ratings = data.ratings || [];
           const highRatingFrequency = ratings.filter((r: number) => r >= 4).length; // Count ratings >= 4
@@ -809,27 +809,27 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
           } as Mentor;
         });
 
-        // Sort mentors by the frequency of high ratings (descending)
-        const sortedMentors = fetchedMentors.sort(
+        // Sort experts by the frequency of high ratings (descending)
+        const sortedExperts = fetchedExperts.sort(
           (a, b) => 
             (Number(b.highRatingFrequency ?? 0)) - (Number(a.highRatingFrequency ?? 0))
         );
 
-        setMentors(sortedMentors.slice(0, 5)); // Limit to top 5 mentors
+        setExperts(sortedExperts.slice(0, 5)); // Limit to top 5 experts
       } catch (error) {
-        console.error("Error fetching top mentors:", error);
+        console.error("Error fetching top experts:", error);
       }
     };
 
-    fetchTopMentors();
+    fetchTopExperts();
   }, [domain]);
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Mentors for {domain}</h2>
-      {mentors.length > 0 ? (
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Experts for {domain}</h2>
+      {experts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mentors.map((mentor) => (
+          {experts.map((mentor) => (
             <div key={mentor.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center space-x-4 mb-4">
                 <Avatar className="w-12 h-12">
@@ -857,22 +857,22 @@ const RecommendedMentors: React.FC<{ domain: string }> = ({ domain }) => {
       ) : (
         <div className="text-center py-8">
           <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500">No top mentors found for this domain.</p>
+          <p className="text-gray-500">No top experts found for this domain.</p>
         </div>
       )}
     </div>
   );
 };
 
-const TopMentors: React.FC = () => {
-  const [mentors, setMentors] = useState<any[]>([]);
+const TopExperts: React.FC = () => {
+  const [experts, setExperts] = useState<any[]>([]);
 
   useEffect(() => {
-    const fetchTopMentors = async () => {
+    const fetchTopExperts = async () => {
       try {
-        const mentorsRef = collection(db, "users");
-        const snapshot = await getDocs(mentorsRef);
-        const fetchedMentors = snapshot.docs
+        const expertsRef = collection(db, "users");
+        const snapshot = await getDocs(expertsRef);
+        const fetchedExperts = snapshot.docs
           .map((doc) => {
             const data = doc.data();
             const ratings = data.ratings || [];
@@ -889,19 +889,19 @@ const TopMentors: React.FC = () => {
             };
           })
           .filter((mentor) => mentor.role === "mentor");
-        setMentors(fetchedMentors);
+        setExperts(fetchedExperts);
       } catch (error) {
-        console.error("Error fetching top mentors:", error);
+        console.error("Error fetching top experts:", error);
       }
     };
-    fetchTopMentors();
+    fetchTopExperts();
   }, []);
 
   return (
     <div className="mt-8">
-      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Rated Mentors</h2>
+      <h2 className="text-2xl font-bold mb-6 text-gray-900">Top Rated Experts</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mentors.map((mentor) => (
+        {experts.map((mentor) => (
           <div
             key={mentor.id}
             className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow cursor-pointer"
@@ -921,4 +921,4 @@ const TopMentors: React.FC = () => {
   );
 };
 
-export default RecommendedMentors;
+export default RecommendedExperts;

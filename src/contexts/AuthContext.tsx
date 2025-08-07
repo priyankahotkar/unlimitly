@@ -10,9 +10,9 @@ interface AuthContextType {
   role: string | null;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
-  registerWithEmail: (email: string, password: string, role: "mentor" | "mentee") => Promise<void>;
+  registerWithEmail: (email: string, password: string, role: "mentor" | "student") => Promise<void>;
   logout: () => Promise<void>;
-  updateRole: (newRole: "mentor" | "mentee") => Promise<void>;
+  updateRole: (newRole: "mentor" | "student") => Promise<void>;
   loading: boolean;
 }
 
@@ -116,7 +116,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Redirect based on role
       if (userData.role === "mentor") {
         navigate("/mentor-dashboard");
-      } else if (userData.role === "mentee") {
+      } else if (userData.role === "student") {
         navigate("/dashboard");
       } else {
         console.error("Invalid role. Please contact support.");
@@ -128,7 +128,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function handleRegisterWithEmail(email: string, password: string, role: "mentor" | "mentee") {
+  async function handleRegisterWithEmail(email: string, password: string, role: "mentor" | "student") {
     try {
       const user = await registerWithEmail(email, password, role);
       setUser(user);
@@ -157,7 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function updateRole(newRole: "mentor" | "mentee") {
+  async function updateRole(newRole: "mentor" | "student") {
     if (!user) return;
 
     try {

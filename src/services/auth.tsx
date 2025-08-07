@@ -59,7 +59,7 @@ async function signInWithEmail(email: string, password: string) {
 }
 
 // Email Registration Function
-async function registerWithEmail(email: string, password: string, role: "mentor" | "mentee") {
+async function registerWithEmail(email: string, password: string, role: "mentor" | "student") {
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
     const user = result.user;
@@ -72,7 +72,7 @@ async function registerWithEmail(email: string, password: string, role: "mentor"
       email: user.email || "",
       role, // Store the user's role
       detailsCompleted: false, // Mark details as incomplete
-      availableTimeSlots: role === "mentor" ? [] : [], // Initialize time slots for mentors
+      availableTimeSlots: role === "mentor" ? [] : [], // Initialize time slots for experts
       createdAt: new Date(),
     });
 

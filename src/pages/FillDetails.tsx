@@ -10,8 +10,8 @@ const FillDetails = () => {
   const { role } = useParams(); // Extract role from URL params
   const navigate = useNavigate();
 
-  // Ensure role is either 'mentor' or 'mentee'
-  const validRole = role === "mentor" || role === "mentee" ? role : null;
+  // Ensure role is either 'mentor' or 'student'
+  const validRole = role === "mentor" || role === "student" ? role : null;
 
   const [formData, setFormData] = useState({
     fullName: user?.displayName || "",
@@ -72,7 +72,7 @@ const FillDetails = () => {
         role: validRole, // Ensure role is saved
         detailsCompleted: true, // Mark as completed
         details: formData, // Store form data in Firestore
-        availableTimeSlots: validRole === "mentor" ? timeSlots : [], // Save time slots for mentors
+        availableTimeSlots: validRole === "mentor" ? timeSlots : [], // Save time slots for experts
         updatedAt: new Date(), // Add a timestamp for updates
       };
 
@@ -171,7 +171,7 @@ const FillDetails = () => {
               </>
             )}
 
-            {validRole === "mentee" && (
+            {validRole === "student" && (
               <>
                 <input
                   className="border p-2 mb-4 w-full rounded"

@@ -42,7 +42,7 @@ export function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterRole, setFilterRole] = useState<'all' | 'mentor' | 'mentee'>('all');
+  const [filterRole, setFilterRole] = useState<'all' | 'mentor' | 'student'>('all');
 
   // Fetch all users from Firestore
   useEffect(() => {
@@ -175,12 +175,12 @@ export function UsersPage() {
             </div>
             <select
               value={filterRole}
-              onChange={(e) => setFilterRole(e.target.value as 'all' | 'mentor' | 'mentee')}
+              onChange={(e) => setFilterRole(e.target.value as 'all' | 'mentor' | 'student')}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Roles</option>
-              <option value="mentor">Mentors Only</option>
-              <option value="mentee">Mentees Only</option>
+              <option value="mentor">Experts Only</option>
+              <option value="student">Students Only</option>
             </select>
           </div>
         </div>
@@ -503,7 +503,7 @@ export function UsersPage() {
                   </div>
                 )}
 
-                {/* Available Time Slots (for mentors) */}
+                {/* Available Time Slots (for experts) */}
                 {selectedUser.role === 'mentor' && selectedUser.availableTimeSlots && selectedUser.availableTimeSlots.length > 0 && (
                   <div>
                     <h4 className="text-sm font-medium text-gray-500 mb-2 flex items-center">
@@ -580,7 +580,7 @@ export function UsersPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -598,7 +598,7 @@ export function UsersPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

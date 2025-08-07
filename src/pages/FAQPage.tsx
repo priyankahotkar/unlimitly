@@ -18,7 +18,7 @@ interface FAQ {
   question: string;
   answer: string;
   topic: string;
-  menteeId: string;
+  studentId: string;
   mentorId: string;
   createdAt: any;
 }
@@ -115,7 +115,7 @@ export function FAQPage() {
         question: newQuestion,
         answer: newAnswer,
         topic: newTopic,
-        menteeId: user.uid,
+        studentId: user.uid,
         mentorId: "",
         createdAt: serverTimestamp(),
       });
@@ -247,7 +247,7 @@ export function FAQPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -265,7 +265,7 @@ export function FAQPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

@@ -15,7 +15,7 @@ const AuthPage = () => {
 
   const { user, signInWithGoogle, signInWithEmail, registerWithEmail, logout } = auth;
 
-  const [role, setRole] = useState<"mentor" | "mentee" | null>(null);
+  const [role, setRole] = useState<"mentor" | "student" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [showRoleSelection, setShowRoleSelection] = useState(false);
   const [email, setEmail] = useState("");
@@ -68,7 +68,7 @@ const AuthPage = () => {
     }
   };
 
-  const handleRoleSelection = async (selectedRole: "mentor" | "mentee") => {
+  const handleRoleSelection = async (selectedRole: "mentor" | "student") => {
     if (!user) return;
 
     try {
@@ -89,7 +89,7 @@ const AuthPage = () => {
     }
   };
 
-  const handleRoleChange = async (newRole: "mentor" | "mentee") => {
+  const handleRoleChange = async (newRole: "mentor" | "student") => {
     if (!newRole || newRole === role) return; // Prevent unnecessary updates
     await auth.updateRole(newRole); // Call updateRole from AuthContext
   };
@@ -129,7 +129,7 @@ const AuthPage = () => {
         // Redirect based on role
         if (userData.role === "mentor") {
           navigate("/mentor-dashboard");
-        } else if (userData.role === "mentee") {
+        } else if (userData.role === "student") {
           navigate("/dashboard");
         } else {
           setError("Invalid role. Please contact support.");
@@ -148,7 +148,7 @@ const AuthPage = () => {
           Welcome to Unlimitly
         </h1>
         <p className="text-center text-gray-600 mb-4">
-          Sign in to continue and connect with mentors and mentees.
+          Sign in to continue and connect with experts and students.
         </p>
 
         {error && (
@@ -192,11 +192,11 @@ const AuthPage = () => {
                 id="role"
                 className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={role || ""}
-                onChange={(e) => setRole(e.target.value as "mentor" | "mentee")}
+                onChange={(e) => setRole(e.target.value as "mentor" | "student")}
                 required
               >
                 <option value="">Select Role</option>
-                <option value="mentee">Mentee</option>
+                <option value="student">Student</option>
                 <option value="mentor">Mentor</option>
               </select>
             </div>

@@ -354,7 +354,7 @@ export function EditProfile() {
               />
             </div>
 
-            {/* Available Time Slots (for mentors) */}
+            {/* Available Time Slots (for experts) */}
             {profile.role === 'mentor' && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-3">

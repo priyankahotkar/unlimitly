@@ -16,7 +16,7 @@ export function VideoCallPage() {
     const handleRoomLogic = async () => {
       if (!sessionId) {
         if (role === "mentor") {
-          // Generate a new room for mentors
+          // Generate a new room for experts
           const newRoomId = `mentor-room-${uuidv4()}`;
           try {
             const roomRef = doc(db, "videoRooms", newRoomId);
@@ -31,13 +31,13 @@ export function VideoCallPage() {
             console.error("Error creating room:", error);
           }
         } else {
-          // Redirect mentees to their dashboard if no room ID is provided
-          console.error("No room ID provided for mentee.");
+          // Redirect students to their dashboard if no room ID is provided
+          console.error("No room ID provided for student.");
           navigate("/dashboard");
         }
-      } else if (role === "mentee") {
-        // Ensure mentees can only join existing rooms
-        console.log("Mentee joining room:", sessionId);
+      } else if (role === "student") {
+        // Ensure students can only join existing rooms
+        console.log("Student joining room:", sessionId);
       }
     };
 

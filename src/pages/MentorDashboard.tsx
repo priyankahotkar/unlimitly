@@ -9,7 +9,7 @@ import { doc, setDoc, collection, query, where, orderBy, getDocs, getDoc } from 
 import { db } from '@/firebase';
 import Notifications from "@/components/Notifications";
 
-interface Mentee {
+interface Student {
   id: string;
   name: string;
   avatar: string;
@@ -18,7 +18,7 @@ interface Mentee {
 
 interface Session {
   id: string;
-  menteeName: string;
+  studentName: string;
   date: string;
   timeSlot: string;
 }
@@ -27,12 +27,12 @@ export function MentorDashboardPage() {
   const { user, logout } = useAuth();
   const [jitsiRoom, setJitsiRoom] = useState<string | null>(null);
   const [bookedSessions, setBookedSessions] = useState<Session[]>([]);
-  const [mentees, setMentees] = useState<Mentee[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
   const [timeSlots, setTimeSlots] = useState<string[]>([]);
   const navigate = useNavigate();
 
   // Refs for smooth scrolling
-  const menteesRef = useRef<HTMLDivElement>(null);
+  const studentsRef = useRef<HTMLDivElement>(null);
   const notificationsRef = useRef<HTMLDivElement>(null);
   const sessionsRef = useRef<HTMLDivElement>(null);
   const timeSlotsRef = useRef<HTMLDivElement>(null);
@@ -61,7 +61,7 @@ export function MentorDashboardPage() {
 
             return {
               id: doc.id,
-              menteeName: data.menteeName,
+              studentName: data.studentName,
               date: date.toLocaleString(), // Convert Date to readable string
               timeSlot: data.timeSlot,
               originalDate: date, // Keep original date for comparison
@@ -82,9 +82,9 @@ export function MentorDashboardPage() {
     fetchBookedSessions();
   }, [user]);
 
-  // Fetch real mentees associated with the mentor
+  // Fetch real students associated with the mentor
   useEffect(() => {
-    const fetchMentees = async () => {
+    const fetchStudents = async () => {
       if (!user) return;
 
       try {
@@ -92,28 +92,28 @@ export function MentorDashboardPage() {
         const q = query(sessionsRef, where("mentorId", "==", user.uid));
         const snapshot = await getDocs(q);
 
-        const menteesList = snapshot.docs.map((doc) => {
+        const studentsList = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
-            id: data.menteeId,
-            name: data.menteeName,
-            avatar: data.menteePhotoURL || "https://via.placeholder.com/100", // Default avatar if missing
-            domain: data.menteeDomain || "Not Specified", // Optional mentee domain
+            id: data.studentId,
+            name: data.studentName,
+            avatar: data.studentPhotoURL || "https://via.placeholder.com/100", // Default avatar if missing
+            domain: data.studentDomain || "Not Specified", // Optional student domain
           };
         });
 
-        // Remove duplicates based on mentee ID
-        const uniqueMentees = Array.from(
-          new Map(menteesList.map((mentee) => [mentee.id, mentee])).values()
+        // Remove duplicates based on student ID
+        const uniqueStudents = Array.from(
+          new Map(studentsList.map((student) => [student.id, student])).values()
         );
 
-        setMentees(uniqueMentees);
+        setStudents(uniqueStudents);
       } catch (error) {
-        console.error("Error fetching mentees for mentor:", error);
+        console.error("Error fetching students for mentor:", error);
       }
     };
 
-    fetchMentees();
+    fetchStudents();
   }, [user]);
 
   useEffect(() => {
@@ -165,7 +165,7 @@ export function MentorDashboardPage() {
     const newRoom = `mentor-room-${uuidv4()}`;
     setJitsiRoom(newRoom);
   
-    // Save the room to Firestore for mentees to join
+    // Save the room to Firestore for students to join
     try {
       const roomRef = doc(db, "videoRooms", newRoom);
       await setDoc(roomRef, {
@@ -182,8 +182,8 @@ export function MentorDashboardPage() {
     }
   };
 
-  const scrollToMentees = () => {
-    menteesRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToStudents = () => {
+    studentsRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const scrollToNotifications = () => {
@@ -271,7 +271,7 @@ export function MentorDashboardPage() {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Welcome back, {user?.displayName?.split(' ')[0] || 'Mentor'}!
           </h1>
-          <p className="text-gray-600">Here's what's happening with your mentorship program today.</p>
+          <p className="text-gray-600">Here's what's happening with your expertship program today.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -297,7 +297,7 @@ export function MentorDashboardPage() {
               <div className="space-y-3 text-sm">
                 <div className="flex items-center text-gray-600">
                   <Users className="w-4 h-4 mr-2" />
-                  <span>{mentees.length} mentees</span>
+                  <span>{students.length} students</span>
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Calendar className="w-4 h-4 mr-2" />
@@ -379,15 +379,15 @@ export function MentorDashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div 
                 className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 cursor-pointer hover:shadow-md transition-shadow"
-                onClick={scrollToMentees}
+                onClick={scrollToStudents}
               >
                 <div className="flex items-center">
                   <div className="p-3 bg-blue-100 rounded-lg">
                     <Users className="w-6 h-6 text-blue-600" />
                   </div>
                   <div className="ml-4">
-                    <p className="text-sm font-medium text-gray-600">Active Mentees</p>
-                    <p className="text-2xl font-bold text-gray-900">{mentees.length}</p>
+                    <p className="text-sm font-medium text-gray-600">Active Students</p>
+                    <p className="text-2xl font-bold text-gray-900">{students.length}</p>
                   </div>
                 </div>
               </div>
@@ -439,7 +439,7 @@ export function MentorDashboardPage() {
                           <Calendar className="w-5 h-5 text-blue-600" />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">{session.menteeName}</p>
+                          <p className="font-medium text-gray-900">{session.studentName}</p>
                           <p className="text-sm text-gray-600">{session.date} • {session.timeSlot}</p>
                         </div>
                       </div>
@@ -458,22 +458,22 @@ export function MentorDashboardPage() {
               )}
             </div>
 
-            {/* Mentees List */}
-            <div ref={menteesRef} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Your Mentees</h3>
-              {mentees.length > 0 ? (
+            {/* Students List */}
+            <div ref={studentsRef} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+              <h3 className="font-semibold text-gray-900 mb-4">Your Students</h3>
+              {students.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {mentees.map((mentee) => (
-                    <div key={mentee.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  {students.map((student) => (
+                    <div key={student.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                       <Avatar className="w-12 h-12">
-                        <AvatarImage src={mentee.avatar} alt={mentee.name || "Unknown"} />
+                        <AvatarImage src={student.avatar} alt={student.name || "Unknown"} />
                         <AvatarFallback className="bg-gray-200 text-gray-600">
-                          {mentee.name?.[0] || "U"}
+                          {student.name?.[0] || "U"}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 truncate">{mentee.name || "Unknown"}</p>
-                        <p className="text-sm text-gray-600 truncate">{mentee.domain || "Not Specified"}</p>
+                        <p className="font-medium text-gray-900 truncate">{student.name || "Unknown"}</p>
+                        <p className="text-sm text-gray-600 truncate">{student.domain || "Not Specified"}</p>
                       </div>
                       <Link to="/chat">
                         <Button variant="outline" size="sm" className="text-blue-600 border-blue-200 hover:bg-blue-50">
@@ -487,8 +487,8 @@ export function MentorDashboardPage() {
               ) : (
                 <div className="text-center py-8">
                   <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500">No mentees yet</p>
-                  <p className="text-sm text-gray-400">Mentees will appear here once they book sessions</p>
+                  <p className="text-gray-500">No students yet</p>
+                  <p className="text-sm text-gray-400">Students will appear here once they book sessions</p>
                 </div>
               )}
             </div>
@@ -511,7 +511,7 @@ export function MentorDashboardPage() {
                 </div>
               </div>
               <p className="text-gray-400 mb-6 max-w-md">
-                Connect, learn, and grow with expert mentorship. Our comprehensive platform provides everything you need for career development and professional networking.
+                Connect, learn, and grow with expert expertship. Our comprehensive platform provides everything you need for career development and professional networking.
               </p>
               <div className="flex space-x-4">
                 <a href="https://github.com/priyankahotkar" className="text-gray-400 hover:text-white transition-colors">
@@ -529,7 +529,7 @@ export function MentorDashboardPage() {
               <h3 className="font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><a href="/features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="/users" className="hover:text-white transition-colors">Mentors</a></li>
+                <li><a href="/users" className="hover:text-white transition-colors">Experts</a></li>
                 <li><a href="/study-materials" className="hover:text-white transition-colors">Study Materials</a></li>
                 <li><a href="/discussion-forum" className="hover:text-white transition-colors">Community</a></li>
               </ul>

@@ -5,7 +5,7 @@ const Login: React.FC = () => {
   const { signInWithGoogle } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedRole, setSelectedRole] = useState<"mentee" | "mentor" | "">("");
+  const [selectedRole, setSelectedRole] = useState<"student" | "mentor" | "">("");
 
   const handleLogin = async () => {
     if (!selectedRole) {
@@ -32,7 +32,7 @@ const Login: React.FC = () => {
           Welcome to Unlimitly
         </h1>
         <p className="text-center text-gray-600 mb-4">
-          Sign in to continue and connect with mentors and mentees.
+          Sign in to continue and connect with experts and students.
         </p>
 
         {error && (
@@ -53,10 +53,10 @@ const Login: React.FC = () => {
             id="role"
             className="border border-gray-300 p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value as "mentee" | "mentor" | "")}
+            onChange={(e) => setSelectedRole(e.target.value as "student" | "mentor" | "")}
           >
             <option value="">Select Role</option>
-            <option value="mentee">Mentee</option>
+            <option value="student">Student</option>
             <option value="mentor">Mentor</option>
           </select>
         </div>
