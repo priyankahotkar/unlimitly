@@ -42,7 +42,7 @@ export function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterRole, setFilterRole] = useState<'all' | 'mentor' | 'student'>('all');
+  const [filterRole, setFilterRole] = useState<'all' | 'mentor' | 'mentee'>('all');
 
   // Fetch all users from Firestore
   useEffect(() => {
@@ -175,12 +175,12 @@ export function UsersPage() {
             </div>
             <select
               value={filterRole}
-              onChange={(e) => setFilterRole(e.target.value as 'all' | 'mentor' | 'student')}
+              onChange={(e) => setFilterRole(e.target.value as 'all' | 'mentor' | 'mentee')}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             >
               <option value="all">All Roles</option>
               <option value="mentor">Experts Only</option>
-              <option value="student">Students Only</option>
+              <option value="mentee">Students Only</option>
             </select>
           </div>
         </div>

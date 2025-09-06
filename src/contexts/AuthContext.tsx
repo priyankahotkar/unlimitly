@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { signInWithGoogle as signInWithGoogleService, signInWithEmail, registerWithEmail, logout } from "../services/auth";
-import { onAuthStateChanged, User } from "firebase/auth";
+import { onAuthStateChanged, User, sendEmailVerification } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { db, auth } from "../firebase"; // Ensure `auth` is imported from firebase.ts
 import { doc, getDoc, setDoc } from "firebase/firestore";
@@ -10,9 +10,9 @@ interface AuthContextType {
   role: string | null;
   signInWithGoogle: () => Promise<{ user: User | null; isNewUser: boolean }>;
   signInWithEmail: (email: string, password: string) => Promise<void>;
-  registerWithEmail: (email: string, password: string, role: "mentor" | "student") => Promise<void>;
+  registerWithEmail: (email: string, password: string, role: "mentor" | "mentee") => Promise<void>;
   logout: () => Promise<void>;
-  updateRole: (newRole: "mentor" | "student") => Promise<void>;
+  updateRole: (newRole: "mentor" | "mentee") => Promise<void>;
   loading: boolean;
 }
 
@@ -113,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Redirect based on role
       if (userData.role === "mentor") {
         navigate("/mentor-dashboard");
-      } else if (userData.role === "student") {
+      } else if (userData.role === "mentee") {
         navigate("/dashboard");
       } else {
         console.error("Invalid role. Please contact support.");
@@ -125,9 +125,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function handleRegisterWithEmail(email: string, password: string, role: "mentor" | "student") {
+  async function handleRegisterWithEmail(email: string, password: string, role: "mentor" | "mentee") {
     try {
       const user = await registerWithEmail(email, password, role);
+      await sendEmailVerification(user);
       setUser(user);
       setRole(role); // Set the user's role in state
 
@@ -154,7 +155,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  async function updateRole(newRole: "mentor" | "student") {
+  async function updateRole(newRole: "mentor" | "mentee") {
     if (!user) return;
 
     try {
