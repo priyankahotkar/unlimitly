@@ -32,6 +32,7 @@ import { UsersPage }from './pages/UsersPage';
 import { ContactUs } from './pages/ContactUs';
 import ViewProfile from './pages/ViewProfile';
 import CreateWorkspace from './pages/CreateWorkspace';
+import LiveStocks from "./pages/LiveStocks";
 
 // ✅ Private route protection (only for authenticated users)
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -106,6 +107,7 @@ const App: React.FC = () => {
           <Route path="/contact-us" element={<ContactUs />} /> {/* Route for ContactUs */}
           <Route path="/view-profile" element={<ViewProfile />} /> {/* Route for ViewProfile */}
           <Route path="/create-workspace" element={<CreateWorkspace />} /> {/* Route for CreateWorkspace */}
+          <Route path="/live-stocks" element={<LiveStocks />} /> {/* Route for Live stock updates */}
         </Routes>
       </AuthProvider>
     </Router>
