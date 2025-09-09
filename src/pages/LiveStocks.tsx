@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 interface StockData {
   symbol: string;
@@ -9,13 +9,16 @@ interface StockData {
 
 const LiveStocks: React.FC = () => {
   const [stocks, setStocks] = useState<Record<string, StockData>>({});
+  const reconnectRef = useRef<number>(1000); // start with 1s retry delay
+  const wsRef = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
-    // Connect to your backend WebSocket
+  const connect = () => {
     const socket = new WebSocket("ws://localhost:3000");
+    wsRef.current = socket;
 
     socket.onopen = () => {
-      console.log("WebSocket connected");
+      console.log("✅ WebSocket connected");
+      reconnectRef.current = 1000; // reset delay after successful connect
     };
 
     socket.onmessage = (event) => {
@@ -23,17 +26,30 @@ const LiveStocks: React.FC = () => {
         const data: StockData = JSON.parse(event.data);
         setStocks((prev) => ({
           ...prev,
-          [data.symbol]: data, // Update stock by symbol
+          [data.symbol]: data,
         }));
       } catch (err) {
         console.error("Invalid WS message:", event.data, err);
       }
     };
 
-    socket.onclose = () => console.log("WebSocket disconnected");
+    socket.onclose = () => {
+      console.warn("⚠️ WebSocket disconnected. Reconnecting...");
+      setTimeout(connect, reconnectRef.current);
+      reconnectRef.current = Math.min(reconnectRef.current * 2, 30000); // backoff up to 30s
+    };
+
+    socket.onerror = (err) => {
+      console.error("❌ WebSocket error:", err);
+      socket.close();
+    };
+  };
+
+  useEffect(() => {
+    connect();
 
     return () => {
-      socket.close();
+      wsRef.current?.close();
     };
   }, []);
 
